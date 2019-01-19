@@ -2,7 +2,7 @@ import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import Essay from "../src/essay";
-import generate from "../data";
+import generate from "../data/essays";
 
 function Essays({ data, classes }) {
   return (

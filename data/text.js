@@ -1,5 +1,3 @@
-import faker from "faker";
-
 export function getStages() {
   return [
     "Early polished draft",

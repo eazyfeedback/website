@@ -4,7 +4,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Link from "next/link";
+import NextLink from "next/link";
+import MaterialLink from "@material-ui/core/Link";
 
 const styles = {
   root: {
@@ -25,18 +26,20 @@ function ButtonAppBar(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            essayfeedback
-          </Typography>
-          <Link href="/post" passHref prefetch>
+          <NextLink href="/" prefetch passHref>
+            <MaterialLink variant="h6" color="inherit" className={classes.grow}>
+              essayfeedback
+            </MaterialLink>
+          </NextLink>
+          <NextLink href="/post" passHref prefetch>
             <Button color="inherit">post</Button>
-          </Link>
-          <Link href="/essays" passHref prefetch>
+          </NextLink>
+          <NextLink href="/essays" passHref prefetch>
             <Button color="inherit">essays</Button>
-          </Link>
-          <Link href="/profile" passHref prefetch>
+          </NextLink>
+          <NextLink href="/profile" passHref prefetch>
             <Button color="inherit">profile</Button>
-          </Link>
+          </NextLink>
         </Toolbar>
       </AppBar>
     </div>

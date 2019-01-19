@@ -15,7 +15,6 @@
     "start": "next start"
   },
   "devDependencies": {
-    "eslint-loader": "^2.1.1",
     "faker": "^4.1.0"
   }
 }

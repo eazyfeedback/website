@@ -1,0 +1,21 @@
+{
+  "name": "website",
+  "dependencies": {
+    "@material-ui/core": "latest",
+    "jss": "latest",
+    "next": "latest",
+    "prop-types": "latest",
+    "react": "next",
+    "react-dom": "next",
+    "react-jss": "^8.1.0"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "devDependencies": {
+    "eslint-loader": "^2.1.1",
+    "faker": "^4.1.0"
+  }
+}

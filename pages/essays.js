@@ -23,12 +23,6 @@ Essays.getInitialProps = async () =>
     data: generate(10)
   };
 
-const styles = () => ({
-  root: {
-    flexGrow: 1
-  }
-});
-
 Essays.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
@@ -39,5 +33,11 @@ Essays.propTypes = {
   ),
   classes: PropTypes.object.isRequired
 };
+
+const styles = () => ({
+  root: {
+    flexGrow: 1
+  }
+});
 
 export default withStyles(styles)(Essays);

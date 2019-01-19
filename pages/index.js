@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 
-const Landing = props => {
+const Index = props => {
   const { classes } = props;
   return (
     <div className={classes.root}>
@@ -68,8 +68,8 @@ const styles = theme => ({
   }
 });
 
-Landing.propTypes = {
+Index.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Landing);
+export default withStyles(styles)(Index);

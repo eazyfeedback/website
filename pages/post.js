@@ -25,11 +25,13 @@ function Areas() {
     <div>
       {areas.map((area, idx) => (
         <div key={idx}>
-          <Checkbox
-            checked={checked[idx]}
-            onChange={e => handleCheck(e, idx)}
-          />
-          {area}
+          <Typography>
+            <Checkbox
+              checked={checked[idx]}
+              onChange={e => handleCheck(e, idx)}
+            />
+            {area}
+          </Typography>
         </div>
       ))}
       <TextField
@@ -54,15 +56,15 @@ function Stages() {
   const [selectedIndex, setSelectedIndex] = useState(1);
   return (
     <div>
-      {stages.map((area, idx) => (
-        <p key={idx}>
+      {stages.map((stage, idx) => (
+        <Typography key={idx}>
           <Radio
             checked={selectedIndex === idx}
             onChange={() => setSelectedIndex(idx)}
             value={idx}
           />
-          {area}
-        </p>
+          {stage}
+        </Typography>
       ))}
     </div>
   );
@@ -125,7 +127,7 @@ function Post({ classes }) {
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
             <StepContent>
-              <Typography>{getStepContent(index)}</Typography>
+              <div>{getStepContent(index)}</div>
               <div className={classes.actionsContainer}>
                 <div>
                   <Button
@@ -164,10 +166,6 @@ function Post({ classes }) {
   );
 }
 
-Post.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
 const styles = theme => ({
   root: {
     width: "96%"
@@ -183,5 +181,9 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3
   }
 });
+
+Post.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
 export default withStyles(styles)(Post);

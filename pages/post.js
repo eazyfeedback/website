@@ -8,84 +8,8 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
-import Radio from "@material-ui/core/Radio";
-import { getStages, getAreas } from "../data/text";
-
-function Areas() {
-  const areas = getAreas();
-  const initialChecked = Array.from(Array(areas.length), () => false);
-  const [checked, setChecked] = useState(initialChecked);
-  const [text, setText] = useState("");
-  function handleCheck(e, idx) {
-    setChecked(checked.map((bool, i) => (i === idx ? e.target.checked : bool)));
-  }
-  return (
-    <div>
-      {areas.map((area, idx) => (
-        <div key={idx}>
-          <Typography>
-            <Checkbox
-              checked={checked[idx]}
-              onChange={e => handleCheck(e, idx)}
-            />
-            {area}
-          </Typography>
-        </div>
-      ))}
-      <TextField
-        label="Questions or notes for the reviewer..."
-        fullWidth
-        margin="normal"
-        onChange={e => setText(e.target.value)}
-        value={text}
-        inputProps={{ maxLength: "200" }}
-        helperText="Example: Does the third paragraph make sense?"
-        multiline
-        rows="2"
-        rowsMax="3"
-        type="text"
-      />
-    </div>
-  );
-}
-
-function Stages() {
-  const stages = getStages();
-  const [selectedIndex, setSelectedIndex] = useState(1);
-  return (
-    <div>
-      {stages.map((stage, idx) => (
-        <Typography key={idx}>
-          <Radio
-            checked={selectedIndex === idx}
-            onChange={() => setSelectedIndex(idx)}
-            value={idx}
-          />
-          {stage}
-        </Typography>
-      ))}
-    </div>
-  );
-}
-
-function Doc() {
-  const [link, setLink] = useState("");
-  return (
-    <div>
-      <TextField
-        label="Enter Google docs link"
-        margin="normal"
-        onChange={e => setLink(e.target.value)}
-        value={link}
-        helperText={`ensure "Anyone with link can comment" sharing permission`}
-        type="url"
-        required
-      />
-    </div>
-  );
-}
+import Link from "next/link";
+import { Areas, Doc, Stages } from "../src/post";
 
 function getStepContent(step) {
   switch (step) {
@@ -107,6 +31,8 @@ function getSteps() {
     "Post Google docs link"
   ];
 }
+
+function handleFinish() {}
 
 function Post({ classes }) {
   const [activeStep, setActiveStep] = useState(0);
@@ -143,7 +69,7 @@ function Post({ classes }) {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? "Post" : "Next"}
+                    Next
                   </Button>
                 </div>
               </div>
@@ -160,6 +86,16 @@ function Post({ classes }) {
           <Button onClick={handleReset} className={classes.button}>
             Reset
           </Button>
+          <Link href="/essays" passHref prefetch>
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              handleFinish={handleFinish}
+            >
+              finish
+            </Button>
+          </Link>
         </Paper>
       )}
     </div>
@@ -168,7 +104,7 @@ function Post({ classes }) {
 
 const styles = theme => ({
   root: {
-    width: "96%"
+    width: "100%"
   },
   button: {
     marginTop: theme.spacing.unit,

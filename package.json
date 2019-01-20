@@ -3,7 +3,7 @@
   "dependencies": {
     "@material-ui/core": "latest",
     "jss": "latest",
-    "next": "latest",
+    "next": "canary",
     "prop-types": "latest",
     "react": "next",
     "react-dom": "next",

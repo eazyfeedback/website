@@ -37,8 +37,10 @@ function ButtonAppBar(props) {
           <NextLink href="/essays" passHref prefetch>
             <Button color="inherit">essays</Button>
           </NextLink>
-          <NextLink href="/profile" passHref prefetch>
-            <Button color="inherit">profile</Button>
+          <NextLink href="/login" passHref prefetch>
+            <Button variant="contained" color="default">
+              login
+            </Button>
           </NextLink>
         </Toolbar>
       </AppBar>

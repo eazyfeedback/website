@@ -40,7 +40,7 @@ function Essay({ stage, areas, questions, classes }) {
   );
 }
 
-const styles = theme => ({
+const styles = () => ({
   card: {
     minWidth: 120
   },

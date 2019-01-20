@@ -8,44 +8,134 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
-import { Areas, Doc, Stages } from "../src/post";
+import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
+import Radio from "@material-ui/core/Radio";
+import { getStages, getAreas } from "../data/text";
+import Router from "next/router";
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <Areas />;
-    case 1:
-      return <Stages />;
-    case 2:
-      return <Doc />;
-    default:
-      return "Unknown step";
-  }
+function Areas({ areas, checked, handleCheck, comment, setComment }) {
+  return (
+    <div>
+      {areas.map((area, idx) => (
+        <div key={idx}>
+          <Typography>
+            <Checkbox checked={checked[idx]} onChange={e => handleCheck(e, idx)} />
+            {area}
+          </Typography>
+        </div>
+      ))}
+      <TextField
+        label="Questions or notes for the reviewer..."
+        fullWidth
+        margin="normal"
+        onChange={e => setComment(e.target.value)}
+        value={comment}
+        inputProps={{ maxLength: "200" }}
+        helperText="Example: Does the third paragraph make sense?"
+        multiline
+        rows="2"
+        rowsMax="3"
+        type="text"
+      />
+    </div>
+  );
 }
 
-function getSteps() {
-  return [
-    "What areas do you want feedback on?",
-    "What stage are you in?",
-    "Post Google docs link"
-  ];
+Areas.propTypes = {
+  areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+  checked: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  comment: PropTypes.string.isRequired,
+  handleCheck: PropTypes.func.isRequired,
+  setComment: PropTypes.func.isRequired
+};
+
+function Stages({ stages, selectedIndex, setSelectedIndex }) {
+  return (
+    <div>
+      {stages.map((stage, idx) => (
+        <Typography key={idx}>
+          <Radio checked={selectedIndex === idx} onChange={() => setSelectedIndex(idx)} value={idx} />
+          {stage}
+        </Typography>
+      ))}
+    </div>
+  );
 }
 
-function handleFinish() {}
+Stages.propTypes = {
+  stages: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedIndex: PropTypes.number.isRequired,
+  setSelectedIndex: PropTypes.func.isRequired
+};
+
+function Doc({ link, setLink }) {
+  return (
+    <div>
+      <TextField
+        label="Enter Google docs link"
+        margin="normal"
+        onChange={e => setLink(e.target.value)}
+        value={link}
+        helperText={`ensure "Anyone with link can comment" sharing permission`}
+        type="url"
+        required
+      />
+    </div>
+  );
+}
+
+Doc.propTypes = {
+  link: PropTypes.string.isRequired,
+  setLink: PropTypes.func.isRequired
+};
 
 function Post({ classes }) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
-  function handleNext() {
-    setActiveStep(prevActiveStep => prevActiveStep + 1);
-  }
-  function handleBack() {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
-  }
-  function handleReset() {
+  const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
+  const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
+
+  const areas = getAreas();
+  const [comment, setComment] = useState("");
+  const initialChecked = Array.from(Array(areas.length), () => false);
+  const [checked, setChecked] = useState(initialChecked);
+  const handleCheck = (e, idx) => setChecked(checked.map((bool, i) => (i === idx ? e.target.checked : bool)));
+  const stages = getStages();
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [link, setLink] = useState("");
+
+  const handleReset = () => {
     setActiveStep(0);
+    setComment(""), setChecked(initialChecked), setSelectedIndex(1), setLink("");
+  };
+  const handleFinish = () => {
+    Router.push("/essays");
+    console.log({
+      areas: checked.reduce((acc, curr, idx) => (curr ? `${areas[idx]} ` + acc : ""), ""),
+      comment,
+      stages: stages[selectedIndex],
+      link
+    });
+  };
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <Areas areas={areas} checked={checked} handleCheck={handleCheck} comment={comment} setComment={setComment} />;
+      case 1:
+        return <Stages stages={stages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />;
+      case 2:
+        return <Doc link={link} setLink={setLink} />;
+      default:
+        return "Unknown step";
+    }
   }
+
+  function getSteps() {
+    return ["What areas do you want feedback on?", "What stage are you in?", "Post Google docs link"];
+  }
+
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical">
@@ -56,20 +146,11 @@ function Post({ classes }) {
               <div>{getStepContent(index)}</div>
               <div className={classes.actionsContainer}>
                 <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
+                  <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                     Back
                   </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    Next
+                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
+                    {activeStep === steps.length - 1 ? "Complete" : "Next"}
                   </Button>
                 </div>
               </div>
@@ -79,23 +160,13 @@ function Post({ classes }) {
       </Stepper>
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>
-            All steps completed - your essay in now awaiting a reviwer in the
-            feedback pool
-          </Typography>
+          <Typography>All steps completed - your essay in now awaiting a reviwer in the feedback pool</Typography>
           <Button onClick={handleReset} className={classes.button}>
             Reset
           </Button>
-          <Link href="/essays" passHref prefetch>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              handleFinish={handleFinish}
-            >
-              finish
-            </Button>
-          </Link>
+          <Button variant="contained" color="secondary" className={classes.button} onClick={handleFinish}>
+            go to essays
+          </Button>
         </Paper>
       )}
     </div>

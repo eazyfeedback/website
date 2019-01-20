@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "now-build": "npm build"
   },
   "devDependencies": {
     "faker": "^4.1.0"

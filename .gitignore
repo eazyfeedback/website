@@ -8,3 +8,4 @@ npm-debug.log*
 # Next.js
 /.next
 /.vscode
+secrets.json

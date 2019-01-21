@@ -13,7 +13,10 @@ router.use("/:id", (req, res, next) => {
 router
   .route("/")
   .get((req, res) => {
-    Essay.find({}, (err, essays) => res.json(essays));
+    Essay.find({}, (err, essays) => {
+      if (err) res.status(500).send(err);
+      else res.json(essays);
+    });
   })
   .post((req, res) => {
     const essay = new Essay(req.body);

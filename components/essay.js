@@ -5,6 +5,10 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
+import { getAreas } from "../pages/post";
+
+const areas = getAreas();
+const formatAreas = checked => checked.map((bool, idx) => (bool ? areas[idx] : "")).filter(elem => elem !== "");
 
 function Essay({ stage, areas, question, link, classes }) {
   return (
@@ -19,7 +23,7 @@ function Essay({ stage, areas, question, link, classes }) {
         <Typography color="textSecondary" gutterBottom>
           Areas
         </Typography>
-        {areas.map((area, idx) => (
+        {formatAreas(areas).map((area, idx) => (
           <Typography key={idx} component="p" gutterBottom={idx === areas.length - 1}>
             {`${idx + 1}. ${area}`}
           </Typography>

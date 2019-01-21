@@ -11,6 +11,8 @@ import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
+import Router from "next/router";
+import axios from "axios";
 
 function getSteps() {
   return ["What areas do you want feedback on?", "What stage are you in?", "Post Google docs link"];
@@ -20,7 +22,7 @@ function getStages() {
   return ["Early polished draft", "Revised draft", "Late or final polished draft"];
 }
 
-function getAreas() {
+export function getAreas() {
   return [
     "Interpretation/analysis i.e. Does my argument make sense? Is it logical and consistent?",
     "Organization i.e. Are my ideas in a useful order? Is there another way to consider ordering?",
@@ -126,13 +128,14 @@ function Post({ classes }) {
   };
 
   const handleFinish = () => {
-    // Router.push("/essays");
-    console.log({
-      areas: checked.reduce((acc, curr, idx) => (curr ? `${areas[idx]} ` + acc : ""), ""),
-      question,
-      stage: stages[selectedIndex],
-      link
-    });
+    axios
+      .post("/api", {
+        areas: checked,
+        question,
+        stage: stages[selectedIndex],
+        link
+      })
+      .then(() => Router.push("/essays"));
   };
 
   function getStepContent(step) {

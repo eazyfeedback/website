@@ -1,7 +1,13 @@
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
+import axios from "axios";
 import Essay from "../components/essay";
+
+async function fetchEssays() {
+  const { data } = await axios.get("http://localhost:3000/api");
+  return { essays: data };
+}
 
 function Essays({ essays, classes }) {
   return (
@@ -17,9 +23,7 @@ function Essays({ essays, classes }) {
   );
 }
 
-Essays.getInitialProps = async () => ({
-  essays: []
-});
+Essays.getInitialProps = fetchEssays;
 
 Essays.propTypes = {
   essays: PropTypes.arrayOf(

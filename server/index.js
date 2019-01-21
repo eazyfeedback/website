@@ -10,7 +10,7 @@ const {
   mongodb: { username, password }
 } = require("../secrets.json");
 
-const db = mongoose.connect(
+mongoose.connect(
   `mongodb://${username}:${encodeURIComponent(password)}@ds161804.mlab.com:61804/essayfeedback`,
   { useNewUrlParser: true }
 );

@@ -31,15 +31,10 @@ function ButtonAppBar(props) {
             </MaterialLink>
           </NextLink>
           <NextLink href="/post" passHref prefetch>
-            <Button color="inherit">post</Button>
+            <Button color="inherit">get feedback</Button>
           </NextLink>
           <NextLink href="/essays" passHref prefetch>
-            <Button color="inherit">essays</Button>
-          </NextLink>
-          <NextLink href="/login" passHref prefetch>
-            <Button variant="contained" color="default">
-              login
-            </Button>
+            <Button color="inherit">review essay</Button>
           </NextLink>
         </Toolbar>
       </AppBar>

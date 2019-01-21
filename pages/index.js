@@ -13,8 +13,8 @@ const Index = props => {
       <Grid container spacing={16} alignItems="center" justify="center" style={{ height: `calc(100vh - 80px)` }}>
         <Grid item>
           <Paper className={classes.paper}>
-            <Typography variant="h4" gutterBottom>
-              college applicant
+            <Typography variant="h6" gutterBottom className={classes.uppercase}>
+              writer
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
               Post your essay to get feedback
@@ -28,7 +28,7 @@ const Index = props => {
         </Grid>
         <Grid item>
           <Paper className={classes.paper}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h6" gutterBottom className={classes.uppercase}>
               reviewer
             </Typography>
             <Typography variant="subtitle1" gutterBottom>
@@ -47,6 +47,9 @@ const Index = props => {
 };
 
 const styles = theme => ({
+  uppercase: {
+    textTransform: "uppercase"
+  },
   root: {
     flexGrow: 1
   },

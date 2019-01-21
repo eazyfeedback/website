@@ -119,12 +119,12 @@ function Post({ classes }) {
   const [checked, setChecked] = useState(initialChecked);
   const handleCheck = (e, idx) => setChecked(checked.map((bool, i) => (i === idx ? e.target.checked : bool)));
   const stages = getStages();
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const [link, setLink] = useState("");
 
   const handleReset = () => {
     setActiveStep(0);
-    setQuestion(""), setChecked(initialChecked), setSelectedIndex(1), setLink("");
+    setQuestion(""), setChecked(initialChecked), setSelectedIndex(-1), setLink("");
   };
 
   const handleFinish = () => {
@@ -151,6 +151,23 @@ function Post({ classes }) {
     }
   }
 
+  const isChecked = () => checked.some(bool => bool === true);
+  const isLink = () => link.length > 0 && link.startsWith("https://docs.google.com");
+  const isStage = () => selectedIndex > -1;
+
+  const canGoNext = step => {
+    switch (step) {
+      case 0:
+        return isChecked();
+      case 1:
+        return isStage();
+      case 2:
+        return isLink();
+      default:
+        return isChecked();
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical">
@@ -164,7 +181,7 @@ function Post({ classes }) {
                   <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                     Back
                   </Button>
-                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
+                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button} disabled={!canGoNext(activeStep)}>
                     {activeStep === steps.length - 1 ? "Complete" : "Next"}
                   </Button>
                 </div>

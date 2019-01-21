@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -28,8 +29,12 @@ function Essay({ stage, areas, question, link, classes }) {
             {`${idx + 1}. ${area}`}
           </Typography>
         ))}
-        <Typography color="textSecondary">Question</Typography>
-        <Typography>{question}</Typography>
+        {question && (
+          <Fragment>
+            <Typography color="textSecondary">Question</Typography>
+            <Typography>{question}</Typography>
+          </Fragment>
+        )}
       </CardContent>
       <CardActions className={classes.action}>
         <Button href={link} target="_blank" rel="noreferrer" color="secondary">

@@ -12,7 +12,6 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
 import { getStages, getAreas } from "../data/text";
-import Router from "next/router";
 
 function Areas({ areas, checked, handleCheck, question, setQuestion }) {
   return (
@@ -90,7 +89,7 @@ Doc.propTypes = {
   setLink: PropTypes.func.isRequired
 };
 
-function Post({ classes, db }) {
+function Post({ classes }) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -111,7 +110,7 @@ function Post({ classes, db }) {
   };
 
   const handleFinish = () => {
-    Router.push("/essays");
+    // Router.push("/essays");
     console.log({
       areas: checked.reduce((acc, curr, idx) => (curr ? `${areas[idx]} ` + acc : ""), ""),
       question,
@@ -173,12 +172,6 @@ function Post({ classes, db }) {
     </div>
   );
 }
-
-Post.getInitialProps = async ({ req: { db } }) => {
-  return {
-    db
-  };
-};
 
 const styles = theme => ({
   root: {

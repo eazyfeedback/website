@@ -7,9 +7,9 @@ function Essays({ essays, classes }) {
   return (
     <div className={classes.root}>
       <Grid container spacing={16}>
-        {essays.map(({ stage, areas, questions }, idx) => (
+        {essays.map(({ stage, areas, question, link }, idx) => (
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
-            <Essay stage={stage} areas={areas} questions={questions} />
+            <Essay stage={stage} areas={areas} question={question} link={link} />
           </Grid>
         ))}
       </Grid>
@@ -17,21 +17,15 @@ function Essays({ essays, classes }) {
   );
 }
 
-Essays.getInitialProps = async ({ req: { db } }) =>
-  await {
-    essays: db
-      .collection("essays")
-      .find()
-      .sort({ createdAt: -1 })
-      .toArray()
-  };
+Essays.getInitialProps = async () => ({});
 
 Essays.propTypes = {
   essays: PropTypes.arrayOf(
     PropTypes.shape({
-      questions: PropTypes.arrayOf(PropTypes.string),
+      question: PropTypes.string.isRequired,
       stage: PropTypes.string,
-      areas: PropTypes.arrayOf(PropTypes.string)
+      areas: PropTypes.arrayOf(PropTypes.string),
+      link: PropTypes.string.isRequired
     })
   ),
   classes: PropTypes.object.isRequired

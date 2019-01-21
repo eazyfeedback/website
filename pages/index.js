@@ -10,8 +10,8 @@ const Index = props => {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <Grid container spacing={24}>
-        <Grid item xs={6}>
+      <Grid container spacing={16} alignItems="center" justify="center" style={{ height: `calc(100vh - 64px)` }}>
+        <Grid item>
           <Paper className={classes.paper}>
             <Typography variant="h4" gutterBottom>
               college applicant
@@ -20,17 +20,13 @@ const Index = props => {
               post your essay to get feedback
             </Typography>
             <Link href="/post" passHref prefetch>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
+              <Button variant="contained" color="primary" className={classes.button}>
                 Post essay
               </Button>
             </Link>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item>
           <Paper className={classes.paper}>
             <Typography variant="h4" gutterBottom>
               reviewer
@@ -39,11 +35,7 @@ const Index = props => {
               select an essay to give feedback on
             </Typography>
             <Link href="/essays" passHref prefetch>
-              <Button
-                variant="contained"
-                color="secondary"
-                className={classes.button}
-              >
+              <Button variant="contained" color="secondary" className={classes.button}>
                 choose essay
               </Button>
             </Link>

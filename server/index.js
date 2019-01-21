@@ -20,15 +20,9 @@ nextApp.prepare().then(() => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use("/api", require("./routes"));
-  app.use((req, res, next) => {
-    req.db = db;
-    next();
-  });
-  app.get("*", (req, res) => {
-    return handle(req, res);
-  });
+  app.get("*", (req, res) => handle(req, res));
   app.listen(PORT, err => {
     if (err) throw err;
-    console.log(`ready at http://localhost:${PORT}`);
+    console.log(`server ready at http://localhost:${PORT}`);
   });
 });

@@ -18,7 +18,7 @@ router
   .post((req, res) => {
     const essay = new Essay(req.body);
     essay.save();
-    res.status(201).send(essay);
+    res.status(201).json(essay);
   });
 
 router
@@ -34,7 +34,7 @@ router
   .delete((req, res) => {
     res.essay.remove(err => {
       if (err) res.status(500).send(err);
-      else res.status(204).send("removed");
+      else res.status(204).send("");
     });
   });
 

@@ -36,8 +36,10 @@ class MyApp extends App {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server-side. */}
-            <AppBar />
-            <Component pageContext={this.pageContext} {...pageProps} />
+            <div style={{ height: "100vh" }}>
+              <AppBar />
+              <Component pageContext={this.pageContext} {...pageProps} />
+            </div>
           </MuiThemeProvider>
         </JssProvider>
       </Container>

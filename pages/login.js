@@ -1,7 +1,5 @@
-import React from "react";
-
 const Login = () => {
-  return <div>login here</div>;
+  return <div>login or signup here</div>;
 };
 
 export default Login;

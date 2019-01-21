@@ -3,10 +3,10 @@ import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 
-function Essay({ stage, areas, questions, classes }) {
+function Essay({ stage, areas, question, link, classes }) {
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -20,21 +20,17 @@ function Essay({ stage, areas, questions, classes }) {
           Areas
         </Typography>
         {areas.map((area, idx) => (
-          <Typography
-            key={idx}
-            component="p"
-            gutterBottom={idx === areas.length - 1}
-          >
+          <Typography key={idx} component="p" gutterBottom={idx === areas.length - 1}>
             {`${idx + 1}. ${area}`}
           </Typography>
         ))}
-        <Typography color="textSecondary">Questions</Typography>
-        {questions.map((question, idx) => (
-          <Typography key={idx}>{`${idx + 1}. ${question}`}</Typography>
-        ))}
+        <Typography color="textSecondary">Question</Typography>
+        <Typography>{question}</Typography>
       </CardContent>
       <CardActions className={classes.action}>
-        <Button size="small">review</Button>
+        <Link href={link} target="_blank" rel="noreferrer" size="small">
+          review
+        </Link>
       </CardActions>
     </Card>
   );
@@ -50,9 +46,10 @@ const styles = () => ({
 });
 
 Essay.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  question: PropTypes.arrayOf(PropTypes.string).isRequired,
   stage: PropTypes.string.isRequired,
   areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+  link: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired
 };
 

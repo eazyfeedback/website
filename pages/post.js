@@ -11,7 +11,23 @@ import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
-import { getStages, getAreas } from "../data/text";
+
+function getSteps() {
+  return ["What areas do you want feedback on?", "What stage are you in?", "Post Google docs link"];
+}
+
+function getStages() {
+  return ["Early polished draft", "Revised draft", "Late or final polished draft"];
+}
+
+function getAreas() {
+  return [
+    "Interpretation/analysis i.e. Does my argument make sense? Is it logical and consistent?",
+    "Organization i.e. Are my ideas in a useful order? Is there another way to consider ordering?",
+    "Flow i.e. Do I have good transitions? Can the reader follow me?",
+    "Style i.e. Is my writing style appealing? Do I use the passive voice too often?"
+  ];
+}
 
 function Areas({ areas, checked, handleCheck, question, setQuestion }) {
   return (
@@ -130,10 +146,6 @@ function Post({ classes }) {
       default:
         return "Unknown step";
     }
-  }
-
-  function getSteps() {
-    return ["What areas do you want feedback on?", "What stage are you in?", "Post Google docs link"];
   }
 
   return (

@@ -17,7 +17,9 @@ function Essays({ essays, classes }) {
   );
 }
 
-Essays.getInitialProps = async () => ({});
+Essays.getInitialProps = async () => ({
+  essays: []
+});
 
 Essays.propTypes = {
   essays: PropTypes.arrayOf(

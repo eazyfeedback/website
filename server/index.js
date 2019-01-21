@@ -3,7 +3,8 @@ const next = require("next");
 const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 3000;
 const dev = process.env.NODE_DEV !== "production";
-const nextApp = next({ dev });
+const conf = require("../next.config");
+const nextApp = next({ dev, conf });
 const handle = nextApp.getRequestHandler();
 const mongoose = require("mongoose");
 const {

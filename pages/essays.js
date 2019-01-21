@@ -1,14 +1,13 @@
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-import Essay from "../src/essay";
-import generate from "../data/essays";
+import Essay from "../components/essay";
 
-function Essays({ data, classes }) {
+function Essays({ essays, classes }) {
   return (
     <div className={classes.root}>
       <Grid container spacing={16}>
-        {data.map(({ stage, areas, questions }, idx) => (
+        {essays.map(({ stage, areas, questions }, idx) => (
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
             <Essay stage={stage} areas={areas} questions={questions} />
           </Grid>
@@ -18,13 +17,17 @@ function Essays({ data, classes }) {
   );
 }
 
-Essays.getInitialProps = async () =>
+Essays.getInitialProps = async ({ req: { db } }) =>
   await {
-    data: generate(10)
+    essays: db
+      .collection("essays")
+      .find()
+      .sort({ createdAt: -1 })
+      .toArray()
   };
 
 Essays.propTypes = {
-  data: PropTypes.arrayOf(
+  essays: PropTypes.arrayOf(
     PropTypes.shape({
       questions: PropTypes.arrayOf(PropTypes.string),
       stage: PropTypes.string,

@@ -14,7 +14,7 @@ import Radio from "@material-ui/core/Radio";
 import { getStages, getAreas } from "../data/text";
 import Router from "next/router";
 
-function Areas({ areas, checked, handleCheck, comment, setComment }) {
+function Areas({ areas, checked, handleCheck, question, setQuestion }) {
   return (
     <div>
       {areas.map((area, idx) => (
@@ -29,8 +29,8 @@ function Areas({ areas, checked, handleCheck, comment, setComment }) {
         label="Questions or notes for the reviewer..."
         fullWidth
         margin="normal"
-        onChange={e => setComment(e.target.value)}
-        value={comment}
+        onChange={e => setQuestion(e.target.value)}
+        value={question}
         inputProps={{ maxLength: "200" }}
         helperText="Example: Does the third paragraph make sense?"
         multiline
@@ -45,9 +45,9 @@ function Areas({ areas, checked, handleCheck, comment, setComment }) {
 Areas.propTypes = {
   areas: PropTypes.arrayOf(PropTypes.string).isRequired,
   checked: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  comment: PropTypes.string.isRequired,
+  question: PropTypes.string.isRequired,
   handleCheck: PropTypes.func.isRequired,
-  setComment: PropTypes.func.isRequired
+  setQuestion: PropTypes.func.isRequired
 };
 
 function Stages({ stages, selectedIndex, setSelectedIndex }) {
@@ -77,7 +77,7 @@ function Doc({ link, setLink }) {
         margin="normal"
         onChange={e => setLink(e.target.value)}
         value={link}
-        helperText={`ensure "Anyone with link can comment" sharing permission`}
+        helperText={`ensure "Anyone with link can question" sharing permission`}
         type="url"
         required
       />
@@ -90,14 +90,14 @@ Doc.propTypes = {
   setLink: PropTypes.func.isRequired
 };
 
-function Post({ classes }) {
+function Post({ classes, db }) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
   const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
 
   const areas = getAreas();
-  const [comment, setComment] = useState("");
+  const [question, setQuestion] = useState("");
   const initialChecked = Array.from(Array(areas.length), () => false);
   const [checked, setChecked] = useState(initialChecked);
   const handleCheck = (e, idx) => setChecked(checked.map((bool, i) => (i === idx ? e.target.checked : bool)));
@@ -107,14 +107,15 @@ function Post({ classes }) {
 
   const handleReset = () => {
     setActiveStep(0);
-    setComment(""), setChecked(initialChecked), setSelectedIndex(1), setLink("");
+    setQuestion(""), setChecked(initialChecked), setSelectedIndex(1), setLink("");
   };
+
   const handleFinish = () => {
     Router.push("/essays");
     console.log({
       areas: checked.reduce((acc, curr, idx) => (curr ? `${areas[idx]} ` + acc : ""), ""),
-      comment,
-      stages: stages[selectedIndex],
+      question,
+      stage: stages[selectedIndex],
       link
     });
   };
@@ -122,7 +123,7 @@ function Post({ classes }) {
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <Areas areas={areas} checked={checked} handleCheck={handleCheck} comment={comment} setComment={setComment} />;
+        return <Areas areas={areas} checked={checked} handleCheck={handleCheck} question={question} setQuestion={setQuestion} />;
       case 1:
         return <Stages stages={stages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />;
       case 2:
@@ -172,6 +173,12 @@ function Post({ classes }) {
     </div>
   );
 }
+
+Post.getInitialProps = async ({ req: { db } }) => {
+  return {
+    db
+  };
+};
 
 const styles = theme => ({
   root: {

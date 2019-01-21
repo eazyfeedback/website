@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 
 const essayModel = new schema({
-  areas: { type: Array, default: [] },
-  stages: { type: Array, default: [] },
-  comment: { type: String },
-  link: { type: String }
+  areas: Array,
+  stage: String,
+  question: String,
+  link: String
 });
 
-module.exports = mongoose.model("essays", essayModel);
+module.exports = mongoose.model("Essay", essayModel);

@@ -5,6 +5,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import JssProvider from "react-jss/lib/JssProvider";
 import getPageContext from "../lib/getPageContext";
 import AppBar from "../components/appbar";
+import Layout from "../components/layout";
 
 class MyApp extends App {
   constructor() {
@@ -38,7 +39,9 @@ class MyApp extends App {
                 to render collected styles on server-side. */}
             <div style={{ height: "100vh" }}>
               <AppBar />
-              <Component pageContext={this.pageContext} {...pageProps} />
+              <Layout>
+                <Component pageContext={this.pageContext} {...pageProps} />
+              </Layout>
             </div>
           </MuiThemeProvider>
         </JssProvider>

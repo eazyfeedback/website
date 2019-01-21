@@ -50,9 +50,9 @@ const styles = () => ({
 });
 
 Essay.propTypes = {
-  question: PropTypes.arrayOf(PropTypes.string).isRequired,
+  question: PropTypes.string,
   stage: PropTypes.string.isRequired,
-  areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+  areas: PropTypes.arrayOf(PropTypes.bool).isRequired,
   link: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired
 };

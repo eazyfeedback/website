@@ -28,9 +28,9 @@ Essays.getInitialProps = fetchEssays;
 Essays.propTypes = {
   essays: PropTypes.arrayOf(
     PropTypes.shape({
-      question: PropTypes.string.isRequired,
-      stage: PropTypes.string,
-      areas: PropTypes.arrayOf(PropTypes.string),
+      question: PropTypes.string,
+      stage: PropTypes.string.isRequired,
+      areas: PropTypes.arrayOf(PropTypes.bool).isRequired,
       link: PropTypes.string.isRequired
     })
   ),

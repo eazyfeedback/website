@@ -1,5 +1,11 @@
+import { Typography } from "@material-ui/core";
+
 const Login = () => {
-  return <div>login or signup here</div>;
+  return (
+    <div>
+      <Typography>login or signup here</Typography>
+    </div>
+  );
 };
 
 export default Login;

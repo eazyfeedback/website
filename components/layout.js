@@ -1,7 +1,6 @@
-import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core";
 
-const Layout = ({ children, classes }) => <Paper className={classes.root}>{children}</Paper>;
+const Layout = ({ children, classes }) => <div className={classes.root}>{children}</div>;
 
 const styles = theme => ({
   root: {

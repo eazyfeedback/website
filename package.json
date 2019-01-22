@@ -1,23 +1,23 @@
 {
   "name": "website",
   "dependencies": {
-    "@material-ui/core": "latest",
+    "@material-ui/core": "^3.9.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "jss": "latest",
+    "jss": "^9.8.7",
     "mongoose": "^5.4.5",
-    "next": "^8.0.0-canary.10",
-    "prop-types": "latest",
-    "react": "next",
-    "react-dom": "next",
+    "next": "^8.0.0-canary.7",
+    "prop-types": "^15.6.2",
+    "react": "^16.8.0-alpha.1",
+    "react-dom": "^16.8.0-alpha.1",
     "react-jss": "^8.1.0"
   },
   "scripts": {
     "dev": "nodemon server/index.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server/index.js",
-    "now-build": "npm build",
+    "now-build": "next build",
+    "start": "node server/index.js",
     "deploy": "now"
   },
   "devDependencies": {

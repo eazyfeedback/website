@@ -8,10 +8,12 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { getAreas } from "../pages/post";
 
-const areas = getAreas();
-const formatAreas = checked => checked.map((bool, idx) => (bool ? areas[idx] : "")).filter(elem => elem !== "");
+const areasList = getAreas();
+const formatAreas = checked => checked.map((bool, idx) => (bool ? areasList[idx] : "")).filter(elem => elem !== "");
 
-function Essay({ stage, areas, question, link, classes }) {
+const getAreasLength = checked => checked.reduce((acc, curr) => (curr ? acc + 1 : acc), 0);
+
+function Essay({ stage, areas, question, link, classes, customArea }) {
   return (
     <Card className={classes.card} style={{ height: "100%" }}>
       <CardContent>
@@ -25,10 +27,11 @@ function Essay({ stage, areas, question, link, classes }) {
           Areas
         </Typography>
         {formatAreas(areas).map((area, idx) => (
-          <Typography key={idx} component="p" gutterBottom={idx === areas.length - 1}>
+          <Typography key={idx} component="p">
             {`${idx + 1}. ${area}`}
           </Typography>
         ))}
+        {customArea && <Typography gutterBottom>{`${getAreasLength(areas) + 1}. ${customArea}`}</Typography>}
         {question && (
           <Fragment>
             <Typography color="textSecondary">Question</Typography>
@@ -59,6 +62,7 @@ Essay.propTypes = {
   stage: PropTypes.string.isRequired,
   areas: PropTypes.arrayOf(PropTypes.bool).isRequired,
   link: PropTypes.string.isRequired,
+  customArea: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired
 };
 

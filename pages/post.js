@@ -13,6 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
 import Router from "next/router";
 import axios from "axios";
+import { Grid } from "@material-ui/core";
 
 function getSteps() {
   return ["What stage are you in?", "What areas do you want feedback on?", "Post Google docs link"];
@@ -31,7 +32,7 @@ export function getAreas() {
   ];
 }
 
-function Areas({ areas, checked, handleCheck, question, setQuestion }) {
+function Areas({ areas, checked, handleCheck, question, setQuestion, customArea, setCustomArea }) {
   return (
     <div>
       {areas.map((area, idx) => (
@@ -42,6 +43,14 @@ function Areas({ areas, checked, handleCheck, question, setQuestion }) {
           </Typography>
         </div>
       ))}
+      <Grid container>
+        <Grid item>
+          <Checkbox checked={customArea[0]} onChange={e => setCustomArea([e.target.checked, customArea[1]])} />
+        </Grid>
+        <Grid item xs={8}>
+          <TextField label="Other area" fullWidth onChange={e => setCustomArea([customArea[0], e.target.value])} value={customArea[1]} type="text" />
+        </Grid>
+      </Grid>
       <TextField
         label="Questions or notes for the reviewer..."
         fullWidth
@@ -121,10 +130,15 @@ function Post({ classes }) {
   const stages = getStages();
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [link, setLink] = useState("");
+  const [customArea, setCustomArea] = useState([false, ""]);
 
   const handleReset = () => {
     setActiveStep(0);
-    setQuestion(""), setChecked(initialChecked), setSelectedIndex(-1), setLink("");
+    setQuestion("");
+    setChecked(initialChecked);
+    setSelectedIndex(-1);
+    setLink("");
+    setCustomArea([false, ""]);
   };
 
   const handleFinish = () => {
@@ -133,15 +147,30 @@ function Post({ classes }) {
         areas: checked,
         question,
         stage: stages[selectedIndex],
-        link
+        link,
+        customArea: customArea[1]
       })
       .then(() => Router.push("/essays"));
   };
 
+  const isArea = () => checked.some(bool => bool === true) || (customArea[0] && customArea[1].length > 0);
+  const isLink = () => link.length > 0 && link.startsWith("docs.google.com");
+  const isStage = () => selectedIndex > -1;
+
   function getStepContent(step) {
     switch (step) {
       case 1:
-        return <Areas areas={areas} checked={checked} handleCheck={handleCheck} question={question} setQuestion={setQuestion} />;
+        return (
+          <Areas
+            areas={areas}
+            checked={checked}
+            handleCheck={handleCheck}
+            question={question}
+            setQuestion={setQuestion}
+            customArea={customArea}
+            setCustomArea={setCustomArea}
+          />
+        );
       case 0:
         return <Stages stages={stages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />;
       case 2:
@@ -151,20 +180,16 @@ function Post({ classes }) {
     }
   }
 
-  const isChecked = () => checked.some(bool => bool === true);
-  const isLink = () => link.length > 0 && link.startsWith("https://docs.google.com");
-  const isStage = () => selectedIndex > -1;
-
   const canGoNext = step => {
     switch (step) {
       case 1:
-        return isChecked();
+        return isArea();
       case 0:
         return isStage();
       case 2:
         return isLink();
       default:
-        return isChecked();
+        return isArea();
     }
   };
 

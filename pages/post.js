@@ -15,7 +15,7 @@ import Router from "next/router";
 import axios from "axios";
 
 function getSteps() {
-  return ["What areas do you want feedback on?", "What stage are you in?", "Post Google docs link"];
+  return ["What stage are you in?", "What areas do you want feedback on?", "Post Google docs link"];
 }
 
 function getStages() {
@@ -24,8 +24,8 @@ function getStages() {
 
 export function getAreas() {
   return [
-    "Interpretation/analysis i.e. Does my argument make sense? Is it logical and consistent?",
-    "Organization i.e. Are my ideas in a useful order? Is there another way to consider ordering?",
+    "Interpretation/analysis i.e. Does my essay make sense? Is it logical and consistent?",
+    "Organization i.e. Are my ideas in a useful order? Is there another way to consider ordering them?",
     "Flow i.e. Do I have good transitions? Can the reader follow me?",
     "Style i.e. Is my writing style appealing? Do I use the passive voice too often?"
   ];
@@ -140,9 +140,9 @@ function Post({ classes }) {
 
   function getStepContent(step) {
     switch (step) {
-      case 0:
-        return <Areas areas={areas} checked={checked} handleCheck={handleCheck} question={question} setQuestion={setQuestion} />;
       case 1:
+        return <Areas areas={areas} checked={checked} handleCheck={handleCheck} question={question} setQuestion={setQuestion} />;
+      case 0:
         return <Stages stages={stages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />;
       case 2:
         return <Doc link={link} setLink={setLink} />;
@@ -157,9 +157,9 @@ function Post({ classes }) {
 
   const canGoNext = step => {
     switch (step) {
-      case 0:
-        return isChecked();
       case 1:
+        return isChecked();
+      case 0:
         return isStage();
       case 2:
         return isLink();

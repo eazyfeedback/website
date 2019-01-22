@@ -10,6 +10,7 @@ const Index = props => {
   const { classes } = props;
   return (
     <div className={classes.root}>
+      <Typography>Get the feedback you want for your essay - for free!</Typography>
       <Grid container spacing={16} alignItems="center" justify="center" style={{ height: `calc(100vh - 80px)` }}>
         <Grid item>
           <Paper className={classes.paper}>
@@ -42,6 +43,7 @@ const Index = props => {
           </Paper>
         </Grid>
       </Grid>
+      <Typography>"Essayfeedback is what I wish I had during my college applications" - Samuel, co-founder.</Typography>
     </div>
   );
 };

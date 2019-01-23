@@ -14,6 +14,10 @@ import Radio from "@material-ui/core/Radio";
 import Router from "next/router";
 import axios from "axios";
 import { Grid } from "@material-ui/core";
+import getConfig from "next/config";
+const {
+  publicRuntimeConfig: { APIEndpoint }
+} = getConfig();
 
 function getSteps() {
   return ["What stage are you in?", "What areas do you want feedback on?", "Post Google docs link"];
@@ -143,7 +147,7 @@ function Post({ classes }) {
 
   const handleFinish = () => {
     axios
-      .post("/api", {
+      .post(APIEndpoint, {
         areas: checked,
         question,
         stage: stages[selectedIndex],

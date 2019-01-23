@@ -3,9 +3,13 @@ import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import Essay from "../components/essay";
+import getConfig from "next/config";
+const {
+  publicRuntimeConfig: { APIEndpoint }
+} = getConfig();
 
 async function fetchEssays() {
-  const { data } = await axios.get("/api");
+  const { data } = await axios.get(APIEndpoint);
   return { essays: data };
 }
 

@@ -158,7 +158,7 @@ function Post({ classes }) {
   };
 
   const isArea = () => checked.some(bool => bool === true) || (customArea[0] && customArea[1].length > 0);
-  const isLink = () => link.length > 0 && link.startsWith("docs.google.com");
+  const isLink = () => link.length > 0 && link.includes("docs.google.com");
   const isStage = () => selectedIndex > -1;
 
   function getStepContent(step) {

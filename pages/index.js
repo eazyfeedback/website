@@ -12,7 +12,9 @@ const Index = props => {
     <div className={classes.root}>
       <Grid container style={{ height: `calc(100vh - 96px)` }} justify="space-around" alignItems="center" direction="column">
         <Grid item>
-          <Typography variant="h2">Get the feedback you want for your essay - for free!</Typography>
+          <Typography align="center" variant="h4">
+            Get the feedback you want for your essay - for free!
+          </Typography>
         </Grid>
         <Grid item>
           <Grid container spacing={16} alignItems="center" justify="center">
@@ -49,7 +51,9 @@ const Index = props => {
           </Grid>
         </Grid>
         <Grid item>
-          <Typography variant="caption">"Essayfeedback is what I wish I had during my college applications" - Samuel, co-founder.</Typography>
+          <Typography align="justify" variant="caption">
+            "Essayfeedback is what I wish I had during my college applications" - Samuel, co-founder.
+          </Typography>
         </Grid>
       </Grid>
     </div>

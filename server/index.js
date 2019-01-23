@@ -19,7 +19,6 @@ nextApp.prepare().then(() => {
   const app = express();
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use("/api", require("./routes"));
   app.get("*", (req, res) => handle(req, res));
   app.listen(PORT, err => {
     if (err) throw err;

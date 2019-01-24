@@ -47,16 +47,9 @@ function Areas({ areas, checked, handleCheck, question, setQuestion, customArea,
           </Typography>
         </div>
       ))}
-      <Grid container>
-        <Grid item>
-          <Checkbox checked={customArea[0]} onChange={e => setCustomArea([e.target.checked, customArea[1]])} />
-        </Grid>
-        <Grid item xs={8}>
-          <TextField label="Other area" fullWidth onChange={e => setCustomArea([customArea[0], e.target.value])} value={customArea[1]} type="text" />
-        </Grid>
-      </Grid>
+      <TextField label="Other area" onChange={e => setCustomArea(e.target.value)} value={customArea} type="text" />
       <TextField
-        label="Questions or notes for the reviewer..."
+        label="Optional questions or notes for the reviewer..."
         fullWidth
         margin="normal"
         onChange={e => setQuestion(e.target.value)}
@@ -134,7 +127,7 @@ function Post({ classes }) {
   const stages = getStages();
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [link, setLink] = useState("");
-  const [customArea, setCustomArea] = useState([false, ""]);
+  const [customArea, setCustomArea] = useState("");
 
   const handleReset = () => {
     setActiveStep(0);
@@ -142,7 +135,7 @@ function Post({ classes }) {
     setChecked(initialChecked);
     setSelectedIndex(-1);
     setLink("");
-    setCustomArea([false, ""]);
+    setCustomArea("");
   };
 
   const handleFinish = () => {
@@ -152,12 +145,12 @@ function Post({ classes }) {
         question,
         stage: stages[selectedIndex],
         link,
-        customArea: customArea[1]
+        customArea
       })
       .then(() => Router.push("/essays"));
   };
 
-  const isArea = () => checked.some(bool => bool === true) || (customArea[0] && customArea[1].length > 0);
+  const isArea = () => checked.some(bool => bool === true) || customArea.length > 0;
   const isLink = () => link.length > 0 && link.includes("docs.google.com");
   const isStage = () => selectedIndex > -1;
 
@@ -193,7 +186,7 @@ function Post({ classes }) {
       case 2:
         return isLink();
       default:
-        return isArea();
+        return isStage();
     }
   };
 

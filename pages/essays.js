@@ -4,16 +4,27 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import Essay from "../components/essay";
 import getConfig from "next/config";
+import { useEffect, useState } from "react";
+
 const {
   publicRuntimeConfig: { APIEndpoint }
 } = getConfig();
 
 async function fetchEssays() {
   const { data } = await axios.get(APIEndpoint);
-  return { essays: data };
+  return { essaysProps: data };
 }
 
-function Essays({ essays, classes }) {
+function Essays({ essaysProps, classes }) {
+  const [essays, setEssays] = useState(essaysProps);
+
+  useEffect(async () => {
+    if (!essaysProps) {
+      const { essaysProps: essays } = await fetchEssays();
+      setEssays(essays);
+    }
+  });
+
   return (
     <div className={classes.root}>
       <Grid container spacing={16}>
@@ -27,10 +38,16 @@ function Essays({ essays, classes }) {
   );
 }
 
+const styles = () => ({
+  root: {
+    flexGrow: 1
+  }
+});
+
 Essays.getInitialProps = fetchEssays;
 
 Essays.propTypes = {
-  essays: PropTypes.arrayOf(
+  essaysProps: PropTypes.arrayOf(
     PropTypes.shape({
       question: PropTypes.string,
       stage: PropTypes.string.isRequired,
@@ -41,11 +58,5 @@ Essays.propTypes = {
   ),
   classes: PropTypes.object.isRequired
 };
-
-const styles = () => ({
-  root: {
-    flexGrow: 1
-  }
-});
 
 export default withStyles(styles)(Essays);

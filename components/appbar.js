@@ -6,19 +6,6 @@ import Button from "@material-ui/core/Button";
 import NextLink from "next/link";
 import MaterialLink from "@material-ui/core/Link";
 
-const styles = {
-  root: {
-    flexGrow: 1
-  },
-  grow: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
-  }
-};
-
 function ButtonAppBar(props) {
   const { classes } = props;
   return (
@@ -41,6 +28,19 @@ function ButtonAppBar(props) {
     </div>
   );
 }
+
+const styles = {
+  root: {
+    flexGrow: 1
+  },
+  grow: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20
+  }
+};
 
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired

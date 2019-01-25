@@ -1,4 +1,5 @@
 import { Typography } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 export default class Error extends React.Component {
   static getInitialProps({ res, err }) {
@@ -7,12 +8,10 @@ export default class Error extends React.Component {
   }
 
   render() {
-    return (
-      <Typography>
-        {this.props.statusCode
-          ? `An error ${this.props.statusCode} occurred on server`
-          : "An error occurred on client"}
-      </Typography>
-    );
+    return <Typography>{this.props.statusCode ? `An error ${this.props.statusCode} occurred on server` : "An error occurred on client"}</Typography>;
   }
 }
+
+Error.PropTypes = {
+  statusCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]).isRequired
+};

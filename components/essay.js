@@ -10,7 +10,6 @@ import { getAreas } from "../pages/post";
 
 const areasList = getAreas();
 const formatAreas = checked => checked.map((bool, idx) => (bool ? areasList[idx] : "")).filter(elem => elem !== "");
-
 const getAreasLength = checked => checked.reduce((acc, curr) => (curr ? acc + 1 : acc), 0);
 
 function Essay({ stage, areas, question, link, classes, customArea }) {

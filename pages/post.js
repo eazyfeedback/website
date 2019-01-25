@@ -8,13 +8,11 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Checkbox from "@material-ui/core/Checkbox";
-import TextField from "@material-ui/core/TextField";
-import Radio from "@material-ui/core/Radio";
 import Router from "next/router";
 import axios from "axios";
-import { Grid } from "@material-ui/core";
 import getConfig from "next/config";
+import { Stages, Areas, Doc } from "../components/post";
+
 const {
   publicRuntimeConfig: { APIEndpoint }
 } = getConfig();
@@ -36,89 +34,11 @@ export function getAreas() {
   ];
 }
 
-function Areas({ areas, checked, handleCheck, question, setQuestion, customArea, setCustomArea }) {
-  return (
-    <div>
-      {areas.map((area, idx) => (
-        <div key={idx}>
-          <Typography>
-            <Checkbox checked={checked[idx]} onChange={e => handleCheck(e, idx)} />
-            {area}
-          </Typography>
-        </div>
-      ))}
-      <TextField label="Other area" onChange={e => setCustomArea(e.target.value)} value={customArea} type="text" />
-      <TextField
-        label="Optional questions or notes for the reviewer..."
-        fullWidth
-        margin="normal"
-        onChange={e => setQuestion(e.target.value)}
-        value={question}
-        inputProps={{ maxLength: "200" }}
-        helperText="Example: Does the third paragraph make sense?"
-        multiline
-        rows="2"
-        rowsMax="3"
-        type="text"
-      />
-    </div>
-  );
-}
-
-Areas.propTypes = {
-  areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-  checked: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  question: PropTypes.string.isRequired,
-  handleCheck: PropTypes.func.isRequired,
-  setQuestion: PropTypes.func.isRequired
-};
-
-function Stages({ stages, selectedIndex, setSelectedIndex }) {
-  return (
-    <div>
-      {stages.map((stage, idx) => (
-        <Typography key={idx}>
-          <Radio checked={selectedIndex === idx} onChange={() => setSelectedIndex(idx)} value={idx} />
-          {stage}
-        </Typography>
-      ))}
-    </div>
-  );
-}
-
-Stages.propTypes = {
-  stages: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedIndex: PropTypes.number.isRequired,
-  setSelectedIndex: PropTypes.func.isRequired
-};
-
-function Doc({ link, setLink }) {
-  return (
-    <div>
-      <TextField
-        label="Enter Google docs link"
-        margin="normal"
-        onChange={e => setLink(e.target.value)}
-        value={link}
-        helperText={`ensure "Anyone with link can question" sharing permission`}
-        type="url"
-        required
-      />
-    </div>
-  );
-}
-
-Doc.propTypes = {
-  link: PropTypes.string.isRequired,
-  setLink: PropTypes.func.isRequired
-};
-
 function Post({ classes }) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
   const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
-
   const areas = getAreas();
   const [question, setQuestion] = useState("");
   const initialChecked = Array.from(Array(areas.length), () => false);
@@ -128,7 +48,6 @@ function Post({ classes }) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [link, setLink] = useState("");
   const [customArea, setCustomArea] = useState("");
-
   const handleReset = () => {
     setActiveStep(0);
     setQuestion("");
@@ -137,7 +56,6 @@ function Post({ classes }) {
     setLink("");
     setCustomArea("");
   };
-
   const handleFinish = () => {
     axios
       .post(APIEndpoint, {
@@ -149,11 +67,9 @@ function Post({ classes }) {
       })
       .then(() => Router.push("/essays"));
   };
-
   const isArea = () => checked.some(bool => bool === true) || customArea.length > 0;
   const isLink = () => link.length > 0 && link.includes("docs.google.com");
   const isStage = () => selectedIndex > -1;
-
   function getStepContent(step) {
     switch (step) {
       case 1:
@@ -176,7 +92,6 @@ function Post({ classes }) {
         return "Unknown step";
     }
   }
-
   const canGoNext = step => {
     switch (step) {
       case 1:
@@ -189,7 +104,6 @@ function Post({ classes }) {
         return isStage();
     }
   };
-
   return (
     <div className={classes.root}>
       <Stepper activeStep={activeStep} orientation="vertical">
@@ -214,7 +128,7 @@ function Post({ classes }) {
       </Stepper>
       {activeStep === steps.length && (
         <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>All steps completed - your essay in now awaiting a reviwer in the feedback pool</Typography>
+          <Typography>All steps completed - your essay in now awaiting a reviewer in the essay pool</Typography>
           <Button onClick={handleReset} className={classes.button}>
             Reset
           </Button>

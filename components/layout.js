@@ -12,7 +12,7 @@ const styles = theme => ({
 });
 
 Layout.propTypes = {
-  chidlren: PropTypes.element.isRequired,
+  children: PropTypes.element.isRequired,
   classes: PropTypes.object.isRequired
 };
 

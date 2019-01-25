@@ -15,7 +15,16 @@ function Areas({ areas, checked, handleCheck, question, setQuestion, customArea,
           </Typography>
         </div>
       ))}
-      <TextField label="Other area" onChange={e => setCustomArea(e.target.value)} value={customArea} type="text" fullWidth />
+      <TextField
+        style={{
+          marginLeft: 48
+        }}
+        label="Other area"
+        onChange={e => setCustomArea(e.target.value)}
+        value={customArea}
+        type="text"
+        fullWidth
+      />
       <TextField
         label="Questions or notes for the reviewer..."
         fullWidth
@@ -81,8 +90,4 @@ Doc.propTypes = {
   setLink: PropTypes.func.isRequired
 };
 
-export default {
-  Areas,
-  Stages,
-  Doc
-};
+export { Areas, Stages, Doc };

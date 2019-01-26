@@ -12,6 +12,6 @@ export default class Error extends React.Component {
   }
 }
 
-Error.PropTypes = {
+Error.propTypes = {
   statusCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]).isRequired
 };

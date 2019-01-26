@@ -3,19 +3,28 @@
   "dependencies": {
     "@material-ui/core": "^3.9.0",
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "firebase": "^5.8.1",
+    "firebase-admin": "^6.5.1",
     "jss": "^9.8.7",
     "next": "^7.0.2",
     "prop-types": "^15.6.2",
     "react": "^16.8.0-alpha.1",
     "react-dom": "^16.8.0-alpha.1",
-    "react-jss": "^8.1.0"
+    "react-jss": "^8.1.0",
+    "session-file-store": "^1.2.0"
   },
   "scripts": {
-    "dev": "next dev",
+    "dev": "nodemon server.js",
     "build": "next build",
     "now-build": "npm run build",
-    "start": "NODE_ENV=production next start",
+    "start": "NODE_ENV=production node server.js",
     "deploy": "./deploy.sh",
     "stage": "now"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
   }
 }

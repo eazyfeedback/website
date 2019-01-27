@@ -11,6 +11,8 @@ import { getAreas } from "../pages/post";
 const areasList = getAreas();
 const formatAreas = checked => checked.map((bool, idx) => (bool ? areasList[idx] : "")).filter(elem => elem !== "");
 
+const getAreasLength = areas => areas.reduce((acc, curr, idx) => (curr ? acc + curr : acc), 0);
+
 const Essay = ({ stage, areas, question, link, classes }) => (
   <Card className={classes.card} style={{ height: "100%" }}>
     <CardContent>
@@ -24,7 +26,7 @@ const Essay = ({ stage, areas, question, link, classes }) => (
         Areas
       </Typography>
       {formatAreas(areas).map((area, idx) => (
-        <Typography key={idx} variant="body1" gutterBottom={idx === areas.length - 1}>
+        <Typography key={idx} variant="body1" gutterBottom={idx === getAreasLength(areas) - 1}>
           {`${idx + 1}. ${area}`}
         </Typography>
       ))}

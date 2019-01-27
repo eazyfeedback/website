@@ -7,24 +7,21 @@ import Radio from "@material-ui/core/Radio";
 const Areas = ({ areas, checked, handleCheck, question, setQuestion }) => (
   <div>
     {areas.map((area, idx) => (
-      <div key={idx}>
-        <Typography style={{ marginBottom: "1rem" }}>
-          <Checkbox checked={checked[idx]} onChange={e => handleCheck(e, idx)} style={{ padding: `0px 4px` }} />
-          {area}
-        </Typography>
-      </div>
+      <Typography style={{ marginBottom: "1rem" }} key={idx}>
+        <Checkbox checked={checked[idx]} onChange={e => handleCheck(e, idx)} style={{ padding: `0px 4px` }} />
+        {area}
+      </Typography>
     ))}
     <TextField
-      label="Questions or notes for the reviewer..."
+      label="Details for the reviewer..."
       fullWidth
       margin="normal"
       onChange={e => setQuestion(e.target.value)}
       value={question}
-      inputProps={{ maxLength: "200" }}
       helperText="Example: Does the third paragraph make sense?"
       multiline
       rows="2"
-      rowsMax="3"
+      rowsMax="2"
       type="text"
     />
   </div>

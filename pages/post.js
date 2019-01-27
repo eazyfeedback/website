@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import Router from "next/router";
 import axios from "axios";
 import getConfig from "next/config";
+import { Grid } from "@material-ui/core";
 import { Stages, Areas, Doc } from "../components/post";
 
 function getSteps() {
@@ -92,44 +93,51 @@ function Post({ classes }) {
   };
   return (
     <div className={classes.root}>
-      <Stepper activeStep={activeStep} orientation="vertical">
-        {steps.map((label, index) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-            <StepContent>
-              <div>{getStepContent(index)}</div>
-              <div className={classes.actionsContainer}>
-                <div>
-                  <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                    Back
-                  </Button>
-                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button} disabled={!canGoNext(activeStep)}>
-                    {activeStep === steps.length - 1 ? "Complete" : "Next"}
-                  </Button>
-                </div>
-              </div>
-            </StepContent>
-          </Step>
-        ))}
-      </Stepper>
-      {activeStep === steps.length && (
-        <Paper square elevation={0} className={classes.resetContainer}>
-          <Typography>All steps completed - your essay in now awaiting a reviewer in the essay pool</Typography>
-          <Button onClick={handleReset} className={classes.button}>
-            Reset
-          </Button>
-          <Button variant="contained" color="secondary" className={classes.button} onClick={handleFinish}>
-            go to essays
-          </Button>
-        </Paper>
-      )}
+      <Grid container justify="center" alignItems="center" direction="column">
+        <Grid item xs={12} className={classes.stepper}>
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {steps.map((label, index) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+                <StepContent>
+                  <div>{getStepContent(index)}</div>
+                  <div className={classes.actionsContainer}>
+                    <div>
+                      <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                        Back
+                      </Button>
+                      <Button variant="contained" color="primary" onClick={handleNext} className={classes.button} disabled={!canGoNext(activeStep)}>
+                        {activeStep === steps.length - 1 ? "Complete" : "Next"}
+                      </Button>
+                    </div>
+                  </div>
+                </StepContent>
+              </Step>
+            ))}
+          </Stepper>
+          {activeStep === steps.length && (
+            <Paper square elevation={0} className={classes.resetContainer}>
+              <Typography>All steps completed - your essay in now awaiting a reviewer in the essay pool</Typography>
+              <Button onClick={handleReset} className={classes.button}>
+                Reset
+              </Button>
+              <Button variant="contained" color="secondary" className={classes.button} onClick={handleFinish}>
+                go to essays
+              </Button>
+            </Paper>
+          )}
+        </Grid>
+      </Grid>
     </div>
   );
 }
 
 const styles = theme => ({
+  stepper: {
+    width: "100vw"
+  },
   root: {
-    width: "100%"
+    flexGrow: 1
   },
   button: {
     marginTop: theme.spacing.unit,

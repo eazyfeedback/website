@@ -14,15 +14,19 @@ import Appbar from "../components/appbar";
 import secrets from "../secrets";
 
 class MyApp extends App {
-  static getInitialProps = ({ req }) => ({
-    user: req && req.session ? req.session.decodedToken : null
-  });
+  static async getInitialProps({ Component, ctx, req }) {
+    let pageProps = {};
+    if (Component.getInitialProps) pageProps = await Component.getInitialProps(ctx);
+    const user = req && req.session ? req.session.decodedToken : null;
+    Object.assign(pageProps, { user });
+    return { pageProps };
+  }
 
   constructor(props) {
-    super();
+    super(props);
     this.pageContext = getPageContext();
     this.state = {
-      user: props.user
+      user: this.props.user
     };
   }
 

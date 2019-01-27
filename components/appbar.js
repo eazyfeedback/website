@@ -25,11 +25,6 @@ const Appbar = ({ classes }) => (
             review essay
           </Button>
         </NextLink>
-        <NextLink>
-          <Button className={classes.button} variant="outlined" color="inherit">
-            get started
-          </Button>
-        </NextLink>
       </Toolbar>
     </AppBar>
   </div>

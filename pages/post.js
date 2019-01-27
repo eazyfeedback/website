@@ -13,10 +13,6 @@ import axios from "axios";
 import getConfig from "next/config";
 import { Stages, Areas, Doc } from "../components/post";
 
-const {
-  publicRuntimeConfig: { APIEndpoint }
-} = getConfig();
-
 function getSteps() {
   return ["What stage are you in?", "What areas do you want feedback on?", "Post Google docs link"];
 }
@@ -57,6 +53,9 @@ function Post({ classes }) {
     setCustomArea("");
   };
   const handleFinish = () => {
+    const {
+      publicRuntimeConfig: { APIEndpoint }
+    } = getConfig();
     axios
       .post(APIEndpoint, {
         areas: checked,
@@ -67,7 +66,7 @@ function Post({ classes }) {
       })
       .then(() => Router.push("/essays"));
   };
-  const isArea = () => checked.some(bool => bool === true) || customArea.length > 0;
+  const isAreas = () => checked.some(bool => bool === true) || customArea.length > 0;
   const isLink = () => link.length > 0 && link.includes("docs.google.com");
   const isStage = () => selectedIndex > -1;
   function getStepContent(step) {
@@ -95,7 +94,7 @@ function Post({ classes }) {
   const canGoNext = step => {
     switch (step) {
       case 1:
-        return isArea();
+        return isAreas();
       case 0:
         return isStage();
       case 2:

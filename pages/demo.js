@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import "isomorphic-unfetch";
+import axios from "axios";
 import secrets from "../secrets";
 
 const clientCredentials = secrets.firebase.client;
@@ -48,7 +48,7 @@ export default class Index extends Component {
           .getIdToken()
           .then(token => {
             // eslint-disable-next-line no-undef
-            return fetch("/auth/login", {
+            return axios("/auth/login", {
               method: "POST",
               // eslint-disable-next-line no-undef
               headers: new Headers({
@@ -66,7 +66,7 @@ export default class Index extends Component {
           user: null
         });
         // eslint-disable-next-line no-undef
-        fetch("/auth/logout", {
+        axios("/auth/logout", {
           method: "POST",
           credentials: "same-origin"
         }).then(() => this.removeDbListener());

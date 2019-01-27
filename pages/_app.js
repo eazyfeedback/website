@@ -14,12 +14,9 @@ import Appbar from "../components/appbar";
 import secrets from "../secrets";
 
 class MyApp extends App {
-  static getInitialProps = ({ req }) => {
-    const user = req && req.session ? req.session.decodedToken : null;
-    return {
-      user
-    };
-  };
+  static getInitialProps = ({ req }) => ({
+    user: req && req.session ? req.session.decodedToken : null
+  });
 
   constructor(props) {
     super();
@@ -72,6 +69,7 @@ class MyApp extends App {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+
     const { user } = this.state; // TODO
     if (!firebase.apps.length) {
       firebase.initializeApp(secrets.firebase.client);

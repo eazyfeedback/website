@@ -5,13 +5,17 @@ import axios from "axios";
 import Essay from "../components/essay";
 import getConfig from "next/config";
 
-function Essays({ essays, classes }) {
-  return (
-    <div className={classes.root}>
-      <Grid container spacing={16} />
-    </div>
-  );
-}
+const Essays = ({ essays, classes }) => (
+  <div className={classes.root}>
+    <Grid container spacing={16}>
+      {essays.map(({ stage, areas, question, link, customArea }, idx) => (
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
+          <Essay stage={stage} areas={areas} question={question} link={link} customArea={customArea} />
+        </Grid>
+      ))}
+    </Grid>
+  </div>
+);
 
 Essays.getInitialProps = async () => {
   const {

@@ -10,9 +10,8 @@ import { getAreas } from "../pages/post";
 
 const areasList = getAreas();
 const formatAreas = checked => checked.map((bool, idx) => (bool ? areasList[idx] : "")).filter(elem => elem !== "");
-const getNumAreas = checked => checked.reduce((acc, curr) => (curr ? acc + 1 : acc), 0);
 
-const Essay = ({ stage, areas, question, link, classes, customArea }) => (
+const Essay = ({ stage, areas, question, link, classes }) => (
   <Card className={classes.card} style={{ height: "100%" }}>
     <CardContent>
       <Typography color="textSecondary" gutterBottom>
@@ -25,15 +24,14 @@ const Essay = ({ stage, areas, question, link, classes, customArea }) => (
         Areas
       </Typography>
       {formatAreas(areas).map((area, idx) => (
-        <Typography key={idx} component="p">
+        <Typography key={idx} variant="body1" gutterBottom={idx === areas.length - 1}>
           {`${idx + 1}. ${area}`}
         </Typography>
       ))}
-      {customArea && <Typography gutterBottom>{`${getNumAreas(areas) + 1}. ${customArea}`}</Typography>}
       {question && (
         <Fragment>
           <Typography color="textSecondary">Question</Typography>
-          <Typography>{question}</Typography>
+          <Typography variant="body1">{question}</Typography>
         </Fragment>
       )}
     </CardContent>
@@ -59,7 +57,6 @@ Essay.propTypes = {
   stage: PropTypes.string.isRequired,
   areas: PropTypes.arrayOf(PropTypes.bool).isRequired,
   link: PropTypes.string.isRequired,
-  customArea: PropTypes.string.isRequired,
   classes: PropTypes.object.isRequired
 };
 

@@ -8,9 +8,9 @@ import getConfig from "next/config";
 const Essays = ({ essays, classes }) => (
   <div className={classes.root}>
     <Grid container spacing={16}>
-      {essays.map(({ stage, areas, question, link, customArea }, idx) => (
+      {essays.map(({ stage, areas, question, link }, idx) => (
         <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
-          <Essay stage={stage} areas={areas} question={question} link={link} customArea={customArea} />
+          <Essay stage={stage} areas={areas} question={question} link={link} />
         </Grid>
       ))}
     </Grid>
@@ -37,7 +37,6 @@ Essays.propTypes = {
       question: PropTypes.string,
       stage: PropTypes.string.isRequired,
       areas: PropTypes.arrayOf(PropTypes.bool).isRequired,
-      customArea: PropTypes.String,
       link: PropTypes.string.isRequired
     })
   ),

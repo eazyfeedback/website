@@ -11,7 +11,7 @@ const Appbar = ({ classes }) => (
     <AppBar position="static">
       <Toolbar>
         <NextLink href="/" prefetch passHref>
-          <MaterialLink variant="body1" color="textPrimary" className={classes.logo}>
+          <MaterialLink variant="body1" color="inherit" className={classes.logo}>
             essayfeedback
           </MaterialLink>
         </NextLink>

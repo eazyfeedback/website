@@ -43,14 +43,12 @@ function Post({ classes }) {
   const stages = getStages();
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [link, setLink] = useState("");
-  const [customArea, setCustomArea] = useState("");
   const handleReset = () => {
     setActiveStep(0);
     setQuestion("");
     setChecked(initialChecked);
     setSelectedIndex(-1);
     setLink("");
-    setCustomArea("");
   };
   const handleFinish = () => {
     const {
@@ -61,28 +59,17 @@ function Post({ classes }) {
         areas: checked,
         question,
         stage: stages[selectedIndex],
-        link,
-        customArea
+        link
       })
       .then(() => Router.push("/essays"));
   };
-  const isAreas = () => checked.some(bool => bool === true) || customArea.length > 0;
+  const isAreas = () => checked.some(bool => bool === true);
   const isLink = () => link.length > 0 && link.includes("docs.google.com");
   const isStage = () => selectedIndex > -1;
   function getStepContent(step) {
     switch (step) {
       case 1:
-        return (
-          <Areas
-            areas={areas}
-            checked={checked}
-            handleCheck={handleCheck}
-            question={question}
-            setQuestion={setQuestion}
-            customArea={customArea}
-            setCustomArea={setCustomArea}
-          />
-        );
+        return <Areas areas={areas} checked={checked} handleCheck={handleCheck} question={question} setQuestion={setQuestion} />;
       case 0:
         return <Stages stages={stages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />;
       case 2:

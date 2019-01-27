@@ -4,26 +4,16 @@ import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
 
-const Areas = ({ areas, checked, handleCheck, question, setQuestion, customArea, setCustomArea }) => (
+const Areas = ({ areas, checked, handleCheck, question, setQuestion }) => (
   <div>
     {areas.map((area, idx) => (
       <div key={idx}>
-        <Typography>
-          <Checkbox checked={checked[idx]} onChange={e => handleCheck(e, idx)} />
+        <Typography style={{ marginBottom: "1rem" }}>
+          <Checkbox checked={checked[idx]} onChange={e => handleCheck(e, idx)} style={{ padding: `0px 4px` }} />
           {area}
         </Typography>
       </div>
     ))}
-    <TextField
-      style={{
-        marginLeft: 48
-      }}
-      label="Other area"
-      onChange={e => setCustomArea(e.target.value)}
-      value={customArea}
-      type="text"
-      fullWidth
-    />
     <TextField
       label="Questions or notes for the reviewer..."
       fullWidth

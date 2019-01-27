@@ -14,12 +14,12 @@ import Appbar from "../components/appbar";
 import secrets from "../secrets";
 
 class MyApp extends App {
-  static getInitialProps({ req }) {
+  static getInitialProps = ({ req }) => {
     const user = req && req.session ? req.session.decodedToken : null;
     return {
       user
     };
-  }
+  };
 
   constructor(props) {
     super();
@@ -73,8 +73,10 @@ class MyApp extends App {
       jssStyles.parentNode.removeChild(jssStyles);
     }
     const { user } = this.state; // TODO
-    firebase.initializeApp(secrets.firebase.client);
-    firebase.auth().onAuthStateChanged(this.handleAuth);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(secrets.firebase.client);
+      firebase.auth().onAuthStateChanged(this.handleAuth);
+    }
   }
 
   render() {

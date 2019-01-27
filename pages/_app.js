@@ -1,4 +1,5 @@
 import App, { Container } from "next/app";
+import PropTypes from "prop-types";
 import Head from "next/head";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -9,14 +10,22 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import axios from "axios";
+import Appbar from "../components/appbar";
 import secrets from "../secrets";
 
 class MyApp extends App {
-  constructor() {
+  static getInitialProps({ req }) {
+    const user = req && req.session ? req.session.decodedToken : null;
+    return {
+      user
+    };
+  }
+
+  constructor(props) {
     super();
     this.pageContext = getPageContext();
     this.state = {
-      user: this.props.user
+      user: props.user
     };
   }
 
@@ -28,9 +37,11 @@ class MyApp extends App {
     firebase.auth().signOut();
   }
 
-  handleAuth(user) {
+  handleAuth = user => {
     if (user) {
-      setUser(user);
+      this.setState({
+        user
+      });
       return user
         .getIdToken()
         .then(token => {
@@ -45,15 +56,15 @@ class MyApp extends App {
             })
           });
         })
-        .then(() => console.log("login successul"));
+        .then(() => console.log("login successful"));
     } else {
-      setUser(null);
+      this.setState({ user: null });
       axios("/auth/logout", {
         method: "POST",
         credentials: "same-origin"
       }).then(() => console.log("logout successful"));
     }
-  }
+  };
 
   componentDidMount() {
     // Remove the server-side injected CSS.
@@ -61,16 +72,14 @@ class MyApp extends App {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
-    // if (!firebase.apps.length) {
+    const { user } = this.state; // TODO
     firebase.initializeApp(secrets.firebase.client);
-    if (user) console.log(user);
-    else console.log("no user");
-    firebase.auth().onAuthStateChanged(handleAuth);
-    // }
+    firebase.auth().onAuthStateChanged(this.handleAuth);
   }
 
   render() {
     const { Component, pageProps } = this.props;
+    const { user } = this.state;
     return (
       <Container>
         <Head>
@@ -86,8 +95,9 @@ class MyApp extends App {
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server-side. */}
             <div style={{ height: "100vh" }}>
+              <Appbar />
               <Layout>
-                <Component pageContext={this.pageContext} {...pageProps} />
+                <Component user={user} pageContext={this.pageContext} {...pageProps} />
               </Layout>
             </div>
           </MuiThemeProvider>
@@ -95,17 +105,10 @@ class MyApp extends App {
       </Container>
     );
   }
-
-  static getInitialProps({ req }) {
-    const user = req && req.session ? req.session.decodedToken : null;
-    return {
-      user
-    };
-  }
 }
 
 MyApp.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object
 };
 
 export default MyApp;

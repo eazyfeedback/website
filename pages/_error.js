@@ -11,5 +11,7 @@ Error.getInitialProps = async function({ res, err }) {
 };
 
 Error.propTypes = {
-  statusCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]).isRequired
+  statusCode: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
+
+export default Error;

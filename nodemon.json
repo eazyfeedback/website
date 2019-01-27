@@ -1,5 +1,5 @@
 {
   "verbose": true,
-  "watch": ["server.js", "pages/", "lib", "components"],
+  "watch": ["index.js", "pages/", "lib/", "components/"],
   "ext": "js"
 }

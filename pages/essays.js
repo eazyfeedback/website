@@ -5,10 +5,6 @@ import axios from "axios";
 import Essay from "../components/essay";
 import getConfig from "next/config";
 
-const {
-  publicRuntimeConfig: { APIEndpoint }
-} = getConfig();
-
 function Essays({ essays, classes }) {
   return (
     <div className={classes.root}>
@@ -24,7 +20,11 @@ function Essays({ essays, classes }) {
 }
 
 Essays.getInitialProps = async function fetchEssays() {
+  const {
+    publicRuntimeConfig: { APIEndpoint }
+  } = getConfig();
   const { data } = await axios.get(APIEndpoint);
+  console.log(data);
   return { essays: data };
 };
 

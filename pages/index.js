@@ -11,7 +11,7 @@ const Index = ({ classes }) => (
     <Grid container style={{ height: `calc(100vh - 96px)` }} justify="space-around" alignItems="center" direction="column">
       <Grid item>
         <Typography align="center" variant="h4">
-          Get the feedback you want for your essay - for free!
+          Get feedback for your essay - for Free!
         </Typography>
       </Grid>
       <Grid item>
@@ -26,7 +26,7 @@ const Index = ({ classes }) => (
               </Typography>
               <Link href="/post" passHref prefetch>
                 <Button variant="contained" color="primary" className={classes.button}>
-                  get feedback
+                  post essay
                 </Button>
               </Link>
             </Paper>
@@ -37,17 +37,18 @@ const Index = ({ classes }) => (
                 reviewer
               </Typography>
               <Typography variant="subtitle1" gutterBottom>
-                Select an essay to give feedback on
+                Choose an essay to give feedback
               </Typography>
               <Link href="/essays" passHref prefetch>
-                <Button variant="contained" color="secondary" className={classes.button}>
-                  review essay
+                <Button color="secondary" className={classes.button}>
+                  go to essays
                 </Button>
               </Link>
             </Paper>
           </Grid>
         </Grid>
       </Grid>
+
       <Grid item>
         <Typography align="justify" variant="caption">
           "Essayfeedback is what I wish I had during my college applications" - Samuel, co-founder.
@@ -71,11 +72,15 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit
+  },
+  finePrint: {
+    fontSize: "0.8rem"
   }
 });
 
 Index.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object
 };
 
 export default withStyles(styles)(Index);

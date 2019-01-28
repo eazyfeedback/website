@@ -11,7 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import Router from "next/router";
 import axios from "axios";
 import getConfig from "next/config";
-import { Grid } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 import { Stages, Areas, Doc } from "../components/post";
 
 function getSteps() {
@@ -93,6 +93,7 @@ function Post({ classes }) {
   };
   return (
     <div className={classes.root}>
+      <Typography gutterBottom>These details will help your reviewer give you the feedback you want.</Typography>
       <Grid container justify="center" alignItems="center" direction="column">
         <Grid item xs={12} className={classes.stepper}>
           <Stepper activeStep={activeStep} orientation="vertical">
@@ -152,7 +153,8 @@ const styles = theme => ({
 });
 
 Post.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object
 };
 
 export default withStyles(styles)(Post);

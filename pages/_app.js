@@ -18,8 +18,7 @@ class MyApp extends App {
     let pageProps = {};
     if (Component.getInitialProps) pageProps = await Component.getInitialProps(ctx);
     const user = req && req.session ? req.session.decodedToken : null;
-    Object.assign(pageProps, { user });
-    return { pageProps };
+    return { pageProps, user };
   }
 
   constructor(props) {
@@ -41,7 +40,7 @@ class MyApp extends App {
   handleAuth = user => {
     if (user) {
       this.setState({
-        user
+        user: user
       });
       return user
         .getIdToken()
@@ -74,7 +73,6 @@ class MyApp extends App {
       jssStyles.parentNode.removeChild(jssStyles);
     }
 
-    const { user } = this.state; // TODO
     if (!firebase.apps.length) {
       firebase.initializeApp(secrets.firebase.client);
       firebase.auth().onAuthStateChanged(this.handleAuth);

@@ -18,18 +18,18 @@ const Appbar = ({ classes, handleLogin, handleLogout, user }) => (
         </NextLink>
         <NextLink href="/post" passHref prefetch>
           <Button className={classes.button} color="inherit">
-            get feedback
+            post
           </Button>
         </NextLink>
         <NextLink href="/essays" passHref prefetch>
           <Button className={classes.button} color="inherit">
-            review essay
+            essays
           </Button>
         </NextLink>
         {user ? (
-          <Menu handleLogout={handleLogout} photoURL={user.photoURL} />
+          <Menu handleLogout={handleLogout} user={user} />
         ) : (
-          <Button onClick={handleLogin} className={classes.button} variant="outlined" color="inherit">
+          <Button onClick={handleLogin} className={classes.button} color="inherit" variant="outlined">
             sign in
           </Button>
         )}

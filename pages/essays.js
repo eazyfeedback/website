@@ -40,7 +40,8 @@ Essays.propTypes = {
       link: PropTypes.string.isRequired
     })
   ),
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object
 };
 
 export default withStyles(styles)(Essays);

@@ -5,8 +5,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import NextLink from "next/link";
 import MaterialLink from "@material-ui/core/Link";
+import Menu from "./menu";
 
-const Appbar = ({ classes }) => (
+const Appbar = ({ classes, handleLogin, handleLogout, user }) => (
   <div className={classes.root}>
     <AppBar position="static">
       <Toolbar>
@@ -25,6 +26,13 @@ const Appbar = ({ classes }) => (
             review essay
           </Button>
         </NextLink>
+        {user ? (
+          <Menu handleLogout={handleLogout} photoURL={user.photoURL} />
+        ) : (
+          <Button onClick={handleLogin} className={classes.button} variant="outlined" color="inherit">
+            sign in
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   </div>
@@ -45,6 +53,10 @@ const styles = theme => ({
 });
 
 Appbar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  handleLogin: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
+  user: PropTypes.object
 };
+
 export default withStyles(styles)(Appbar);

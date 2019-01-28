@@ -10,7 +10,7 @@
     "firebase-admin": "^6.5.1",
     "isomorphic-unfetch": "^3.0.0",
     "jss": "^9.8.7",
-    "next": "^7.0.2",
+    "next": "^8.0.0-canary.16",
     "prop-types": "^15.6.2",
     "react": "^16.8.0-alpha.1",
     "react-dom": "^16.8.0-alpha.1",

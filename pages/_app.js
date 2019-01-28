@@ -57,7 +57,7 @@ class MyApp extends App {
             })
           });
         })
-        .then(() => console.log("login successful"));
+        .then(() => console.log("login successful", user));
     } else {
       this.setState({ user: null });
       axios("/auth/logout", {
@@ -99,7 +99,7 @@ class MyApp extends App {
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server-side. */}
             <div style={{ height: "100vh" }}>
-              <Appbar />
+              <Appbar handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={user} />
               <Layout>
                 <Component user={user} pageContext={this.pageContext} {...pageProps} />
               </Layout>

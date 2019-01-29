@@ -50,10 +50,10 @@ const Index = ({ classes }) => (
       </Grid>
       <Grid item className={classes.marginTop}>
         <Typography align="center" variant="h6" gutterBottom>
-          Your essay is private and protected
+          Your work is private and protected
         </Typography>
         <Typography align="center" gutterBottom>
-          We use sharing links from Google docs to protect your work. Your essay is only shared with reviewers.
+          We use sharing links from Google docs to protect your essay. Your essay is only shared with reviewers.
         </Typography>
       </Grid>
       <Grid item className={classes.marginTop}>
@@ -79,9 +79,6 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit
-  },
-  finePrint: {
-    fontSize: "0.8rem"
   },
   marginTop: {
     marginTop: theme.spacing.unit * 3

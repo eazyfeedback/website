@@ -63,8 +63,9 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit * 4,
     paddingRight: theme.spacing.unit * 4
   },
-  paper: {
-    marginRight: theme.spacing.unit * 2
+  avatar: {
+    width: 30,
+    height: 30
   }
 });
 

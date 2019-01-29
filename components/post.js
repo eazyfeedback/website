@@ -3,6 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
+import Button from "@material-ui/core/Button";
 
 const Areas = ({ areas, checked, handleCheck, question, setQuestion }) => (
   <div>
@@ -71,4 +72,17 @@ Doc.propTypes = {
   setLink: PropTypes.func.isRequired
 };
 
-export { Areas, Stages, Doc };
+const SignInFirst = ({ handleLogin }) => (
+  <div>
+    <Typography gutterBottom>You need to sign in to proceed</Typography>
+    <Button onClick={handleLogin} color="primary" variant="outlined">
+      sign in with google
+    </Button>
+  </div>
+);
+
+SignInFirst.propTypes = {
+  handleLogin: PropTypes.func.isRequired
+};
+
+export { Areas, Stages, Doc, SignInFirst };

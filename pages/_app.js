@@ -99,7 +99,7 @@ class MyApp extends App {
             <div style={{ minHeight: "100vh" }}>
               <Appbar handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={user} />
               <Layout>
-                <Component user={user} pageContext={this.pageContext} {...pageProps} />
+                <Component user={user} handleLogin={this.handleLogin} pageContext={this.pageContext} {...pageProps} />
               </Layout>
             </div>
           </MuiThemeProvider>

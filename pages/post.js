@@ -12,14 +12,14 @@ import Router from "next/router";
 import axios from "axios";
 import getConfig from "next/config";
 import Grid from "@material-ui/core/Grid";
-import { Stages, Areas, Doc } from "../components/post";
+import { Stages, Areas, Doc, SignInFirst } from "../components/post";
 
 function getSteps() {
   return ["What stage are you in?", "What areas do you want feedback on?", "Post Google docs link"];
 }
 
 function getStages() {
-  return ["Early polished draft", "Revised draft", "Late or final polished draft"];
+  return ["Early draft", "Revised draft", "Late draft"];
 }
 
 export function getAreas() {
@@ -31,7 +31,7 @@ export function getAreas() {
   ];
 }
 
-function Post({ classes }) {
+function Post({ classes, user, handleLogin = () => {} }) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -91,44 +91,57 @@ function Post({ classes }) {
         return isStage();
     }
   };
+
   return (
     <div className={classes.root}>
-      <Typography gutterBottom>These details will help your reviewer give you feedback you want.</Typography>
-      <Grid container justify="center" alignItems="center" direction="column">
-        <Grid item xs={12} className={classes.stepper}>
-          <Stepper activeStep={activeStep} orientation="vertical">
-            {steps.map((label, index) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-                <StepContent>
-                  <div>{getStepContent(index)}</div>
-                  <div className={classes.actionsContainer}>
-                    <div>
-                      <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                        Back
-                      </Button>
-                      <Button variant="contained" color="primary" onClick={handleNext} className={classes.button} disabled={!canGoNext(activeStep)}>
-                        {activeStep === steps.length - 1 ? "Complete" : "Next"}
-                      </Button>
-                    </div>
-                  </div>
-                </StepContent>
-              </Step>
-            ))}
-          </Stepper>
-          {activeStep === steps.length && (
-            <Paper square elevation={0} className={classes.resetContainer}>
-              <Typography>All steps completed - your essay in now awaiting a reviewer in the essay pool</Typography>
-              <Button onClick={handleReset} className={classes.button}>
-                Reset
-              </Button>
-              <Button variant="contained" color="secondary" className={classes.button} onClick={handleFinish}>
-                go to essays
-              </Button>
-            </Paper>
-          )}
-        </Grid>
-      </Grid>
+      {user ? (
+        <>
+          <Typography gutterBottom>These details will help your reviewer give you feedback you want.</Typography>
+          <Grid container justify="center" alignItems="center" direction="column">
+            <Grid item xs={12} className={classes.stepper}>
+              <Stepper activeStep={activeStep} orientation="vertical">
+                {steps.map((label, index) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                    <StepContent>
+                      <div>{getStepContent(index)}</div>
+                      <div className={classes.actionsContainer}>
+                        <div>
+                          <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                            Back
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleNext}
+                            className={classes.button}
+                            disabled={!canGoNext(activeStep)}
+                          >
+                            {activeStep === steps.length - 1 ? "Complete" : "Next"}
+                          </Button>
+                        </div>
+                      </div>
+                    </StepContent>
+                  </Step>
+                ))}
+              </Stepper>
+              {activeStep === steps.length && (
+                <Paper square elevation={0} className={classes.resetContainer}>
+                  <Typography>All steps completed - your essay in now awaiting a reviewer in the essay pool</Typography>
+                  <Button onClick={handleReset} className={classes.button}>
+                    Reset
+                  </Button>
+                  <Button variant="contained" color="secondary" className={classes.button} onClick={handleFinish}>
+                    go to essays
+                  </Button>
+                </Paper>
+              )}
+            </Grid>
+          </Grid>
+        </>
+      ) : (
+        <SignInFirst handleLogin={handleLogin} />
+      )}
     </div>
   );
 }

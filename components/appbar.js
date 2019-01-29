@@ -5,15 +5,16 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import NextLink from "next/link";
 import MaterialLink from "@material-ui/core/Link";
+import { withRouter } from "next/router";
 import Menu from "./menu";
 
-const Appbar = ({ classes, handleLogin, handleLogout, user }) => (
+const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } }) => (
   <div className={classes.root}>
     <AppBar position="static">
       <Toolbar>
         <NextLink href="/" prefetch passHref>
           <MaterialLink variant="body1" color="inherit" className={classes.logo}>
-            essayfeedback
+            <img src="/static/favicon-white.png" alt="logo" className={classes.logoImage} />
           </MaterialLink>
         </NextLink>
         <NextLink href="/post" passHref prefetch>
@@ -44,11 +45,15 @@ const styles = theme => ({
   },
   logo: {
     flexGrow: 1,
-    fontSize: "1.2rem"
+    fontSize: "1.1rem"
   },
   button: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit
+  },
+  logoImage: {
+    width: 36,
+    height: 36
   }
 });
 
@@ -59,4 +64,4 @@ Appbar.propTypes = {
   user: PropTypes.object
 };
 
-export default withStyles(styles)(Appbar);
+export default withRouter(withStyles(styles)(Appbar));

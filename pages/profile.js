@@ -9,19 +9,63 @@ function Profile(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <Grid container direction="column" justify="center" alignItems="center">
-        <Grid item xs={12}>
-          {props.user && (
-            <>
-              <Avatar alt={props.user.displayName} src={props.user.photoURL} className={classes.avatar} />
-              <Typography>{props.user.displayName}</Typography>
-              <Typography>{props.user.email}</Typography>
-              <Typography>{props.user.metadata.creationTime}</Typography>
-              <Typography>{props.user.metadata.lastSignInTime}</Typography>
-            </>
-          )}
+      {props.user && (
+        <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
+          <Grid item xs={12}>
+            <Avatar alt={props.user.displayName} src={props.user.photoURL} className={classes.avatar} />
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item sm={6} xs={12}>
+                <Typography color="textSecondary">name</Typography>
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <Typography>{props.user.displayName}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item sm={6} xs={12}>
+                <Typography color="textPrimary">email</Typography>
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <Typography>{props.user.email}</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item sm={6} xs={12}>
+                <Typography color="textSecondary">essays posted</Typography>
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <Typography>x</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item sm={6} xs={12}>
+                <Typography color="textSecondary">essays reviewed</Typography>
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <Typography>x</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item sm={6} xs={12}>
+                <Typography color="textSecondary">reviews</Typography>
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <Typography>x</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </div>
   );
 }
@@ -30,9 +74,17 @@ Profile.propTypes = {
   user: PropTypes.object
 };
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     flexGrow: 1
+  },
+  avatar: {
+    margin: theme.spacing.unit,
+    width: 120,
+    height: 120,
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto"
   }
 });
 

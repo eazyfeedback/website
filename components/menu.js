@@ -10,6 +10,7 @@ import MenuList from "@material-ui/core/MenuList";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import MaterialLink from "@material-ui/core/Link";
+import NextLink from "next/link";
 
 function MenuProfile({ handleLogout, user, classes }) {
   const [open, setOpen] = useState(false);
@@ -33,9 +34,11 @@ function MenuProfile({ handleLogout, user, classes }) {
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList>
                   <MenuItem className={classes.menuItem} onClick={handleClose}>
-                    <MaterialLink href="/profile" underline="none" color="inherit">
-                      Profile
-                    </MaterialLink>
+                    <NextLink href="/profile" prefetch passHref>
+                      <MaterialLink underline="none" color="inherit">
+                        Profile
+                      </MaterialLink>
+                    </NextLink>
                   </MenuItem>
                   <MenuItem className={classes.menuItem} onClick={handleLogout}>
                     Logout

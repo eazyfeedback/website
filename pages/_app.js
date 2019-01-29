@@ -96,7 +96,7 @@ class MyApp extends App {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server-side. */}
-            <div style={{ height: "100vh" }}>
+            <div style={{ minHeight: "100vh" }}>
               <Appbar handleLogin={this.handleLogin} handleLogout={this.handleLogout} user={user} />
               <Layout>
                 <Component user={user} pageContext={this.pageContext} {...pageProps} />

@@ -8,9 +8,9 @@ import Link from "next/link";
 
 const Index = ({ classes }) => (
   <div className={classes.root}>
-    <Grid container style={{ height: `calc(100vh - 96px)` }} justify="space-around" alignItems="center" direction="column">
+    <Grid container style={{ minHeight: `calc(100vh - 96px)` }} justify="space-around" alignItems="center" direction="column">
       <Grid item>
-        <Typography align="center" variant="h4">
+        <Typography align="center" variant="h4" gutterBottom>
           Get feedback for your essay - for Free!
         </Typography>
       </Grid>
@@ -48,9 +48,16 @@ const Index = ({ classes }) => (
           </Grid>
         </Grid>
       </Grid>
-
-      <Grid item>
-        <Typography align="justify" variant="caption">
+      <Grid item className={classes.marginTop}>
+        <Typography align="center" variant="h6" gutterBottom>
+          Your essay is private and protected
+        </Typography>
+        <Typography align="center" gutterBottom>
+          We use sharing links from Google docs to protect your work. Your essay is only shared with reviewers.
+        </Typography>
+      </Grid>
+      <Grid item className={classes.marginTop}>
+        <Typography align="justify" variant="caption" gutterBottom>
           "Essayfeedback is what I wish I had during my college applications" - Samuel, co-founder.
         </Typography>
       </Grid>
@@ -75,12 +82,16 @@ const styles = theme => ({
   },
   finePrint: {
     fontSize: "0.8rem"
+  },
+  marginTop: {
+    marginTop: theme.spacing.unit * 3
   }
 });
 
 Index.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  width: PropTypes.string
 };
 
 export default withStyles(styles)(Index);

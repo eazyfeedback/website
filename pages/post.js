@@ -93,7 +93,7 @@ function Post({ classes }) {
   };
   return (
     <div className={classes.root}>
-      <Typography gutterBottom>These details will help your reviewer give you the feedback you want.</Typography>
+      <Typography gutterBottom>These details will help your reviewer give you feedback you want.</Typography>
       <Grid container justify="center" alignItems="center" direction="column">
         <Grid item xs={12} className={classes.stepper}>
           <Stepper activeStep={activeStep} orientation="vertical">

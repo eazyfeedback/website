@@ -12,7 +12,8 @@ import Router from "next/router";
 import axios from "axios";
 import getConfig from "next/config";
 import Grid from "@material-ui/core/Grid";
-import { Stages, Areas, Doc, SignInFirst } from "../components/post";
+import { Stages, Areas, Doc } from "../components/post";
+import { SignInFirst } from "../components/shared";
 
 function getSteps() {
   return ["What stage are you in?", "What areas do you want feedback on?", "Post Google docs link"];
@@ -140,7 +141,7 @@ function Post({ classes, user, handleLogin = () => {} }) {
           </Grid>
         </>
       ) : (
-        <SignInFirst handleLogin={handleLogin} />
+        <SignInFirst handleLogin={handleLogin} message="You need to sign in to post for feedback" />
       )}
     </div>
   );

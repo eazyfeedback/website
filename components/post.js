@@ -72,17 +72,4 @@ Doc.propTypes = {
   setLink: PropTypes.func.isRequired
 };
 
-const SignInFirst = ({ handleLogin }) => (
-  <div>
-    <Typography gutterBottom>You need to sign in to proceed</Typography>
-    <Button onClick={handleLogin} color="primary" variant="outlined">
-      sign in with google
-    </Button>
-  </div>
-);
-
-SignInFirst.propTypes = {
-  handleLogin: PropTypes.func.isRequired
-};
-
-export { Areas, Stages, Doc, SignInFirst };
+export { Areas, Stages, Doc };

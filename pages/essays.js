@@ -4,9 +4,11 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import Essay from "../components/essay";
 import getConfig from "next/config";
+import { SignInFirst } from "../components/shared";
 
-const Essays = ({ essays, classes }) => (
+const Essays = ({ essays, classes, user, handleLogin }) => (
   <div className={classes.root}>
+    {!user && <SignInFirst handleLogin={handleLogin} message="You need to sign in to review an essay" />}
     <Grid container spacing={16}>
       {essays.map(({ stage, areas, question, link }, idx) => (
         <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>

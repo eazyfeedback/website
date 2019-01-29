@@ -11,9 +11,9 @@ import { getAreas } from "../pages/post";
 const areasList = getAreas();
 const formatAreas = checked => checked.map((bool, idx) => (bool ? areasList[idx] : "")).filter(elem => elem !== "");
 
-const getAreasLength = areas => areas.reduce((acc, curr, idx) => (curr ? acc + curr : acc), 0);
+const getAreasLength = areas => areas.reduce((acc, curr) => (curr ? acc + curr : acc), 0);
 
-const Essay = ({ stage, areas, question, link, classes }) => (
+const Essay = ({ stage, areas, question, link, classes, user }) => (
   <Card className={classes.card} style={{ height: "100%" }}>
     <CardContent>
       <Typography color="textSecondary" gutterBottom>
@@ -37,11 +37,13 @@ const Essay = ({ stage, areas, question, link, classes }) => (
         </Fragment>
       )}
     </CardContent>
-    <CardActions className={classes.actions}>
-      <Button href={link} target="_blank" rel="noreferrer" color="secondary">
-        review
-      </Button>
-    </CardActions>
+    {user && (
+      <CardActions className={classes.actions}>
+        <Button href={link} target="_blank" rel="noreferrer" color="secondary">
+          review
+        </Button>
+      </CardActions>
+    )}
   </Card>
 );
 
@@ -59,7 +61,8 @@ Essay.propTypes = {
   stage: PropTypes.string.isRequired,
   areas: PropTypes.arrayOf(PropTypes.bool).isRequired,
   link: PropTypes.string.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  user: PropTypes.object
 };
 
 export default withStyles(styles)(Essay);

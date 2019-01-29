@@ -32,7 +32,7 @@ export function getAreas() {
   ];
 }
 
-function Post({ classes, user, handleLogin = () => {} }) {
+function Post({ classes, user, handleLogin }) {
   const [activeStep, setActiveStep] = useState(0);
   const steps = getSteps();
   const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -92,7 +92,6 @@ function Post({ classes, user, handleLogin = () => {} }) {
         return isStage();
     }
   };
-
   return (
     <div className={classes.root}>
       {user ? (
@@ -168,7 +167,8 @@ const styles = theme => ({
 
 Post.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  handleLogin: PropTypes.func
 };
 
 export default withStyles(styles)(Post);

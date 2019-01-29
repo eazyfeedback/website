@@ -42,6 +42,15 @@ const Essay = ({ stage, areas, question, link, classes, user }) => (
         <Button href={link} target="_blank" rel="noreferrer" color="secondary">
           review
         </Button>
+        <Button href={link} target="_blank" rel="noreferrer" color="primary">
+          remove
+        </Button>
+        <Button href={link} target="_blank" rel="noreferrer" color="inherit">
+          check off
+        </Button>
+        <Button href={link} target="_blank" rel="noreferrer" color="inherit">
+          mark as complete
+        </Button>
       </CardActions>
     )}
   </Card>

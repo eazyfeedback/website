@@ -40,7 +40,7 @@ const Index = ({ classes }) => (
                 Choose an essay to give feedback
               </Typography>
               <Link href="/essays" passHref prefetch>
-                <Button color="secondary" className={classes.button}>
+                <Button color="secondary" variant="outlined" className={classes.button}>
                   go to essays
                 </Button>
               </Link>

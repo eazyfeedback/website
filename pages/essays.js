@@ -12,7 +12,7 @@ const Essays = ({ essays, classes, user, handleLogin }) => (
     <Grid container spacing={16}>
       {essays.map(({ stage, areas, question, link }, idx) => (
         <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
-          <Essay stage={stage} areas={areas} question={question} link={link} />
+          <Essay stage={stage} areas={areas} question={question} link={link} user={user} />
         </Grid>
       ))}
     </Grid>
@@ -43,7 +43,8 @@ Essays.propTypes = {
     })
   ),
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  handleLogin: PropTypes.func
 };
 
 export default withStyles(styles)(Essays);

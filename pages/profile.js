@@ -6,34 +6,34 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
+import { SignInFirst } from "../components/shared";
 
-function Profile(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      {props.user && (
-        <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
-          <Grid item xs={12}>
-            <Avatar alt={props.user.displayName} src={props.user.photoURL} className={classes.avatar} />
-            <List>
-              <ListItem style={{ textAlign: "center" }}>
-                <ListItemText primary={props.user.displayName} secondary={props.user.email} />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary="# posted" />
-                <ListItemText primary="3" />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary="# reviewed" />
-                <ListItemText primary="0" />
-              </ListItem>
-            </List>
-          </Grid>
+const Profile = ({ user, classes, handleLogin }) => (
+  <div className={classes.root}>
+    {user ? (
+      <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
+        <Grid item xs={12}>
+          <Avatar alt={user.displayName} src={user.photoURL} className={classes.avatar} />
+          <List>
+            <ListItem style={{ textAlign: "center" }}>
+              <ListItemText primary={user.displayName} secondary={user.email} />
+            </ListItem>
+            <ListItem>
+              <ListItemText secondary="essays posted for feedback" />
+              <ListItemText primary="0" />
+            </ListItem>
+            <ListItem>
+              <ListItemText secondary="essays reviewed" />
+              <ListItemText primary="0" />
+            </ListItem>
+          </List>
         </Grid>
-      )}
-    </div>
-  );
-}
+      </Grid>
+    ) : (
+      <SignInFirst message="You need to signin to access your profile" handleLogin={handleLogin} />
+    )}
+  </div>
+);
 
 Profile.propTypes = {
   user: PropTypes.object
@@ -50,7 +50,9 @@ const styles = theme => ({
     display: "block",
     marginLeft: "auto",
     marginRight: "auto"
-  }
+  },
+  user: PropTypes.object,
+  handleLogin: PropTypes.func
 });
 
 export default withStyles(styles)(Profile);

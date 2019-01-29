@@ -34,7 +34,7 @@ NavButton.propTypes = {
   route: PropTypes.string.isRequired,
   href: PropTypes.string.isRequired,
   children: PropTypes.func.isRequired,
-  buttonClass: PropTypes.object.isRequired
+  buttonClass: PropTypes.string.isRequired
 };
 
 const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } }) => (
@@ -53,7 +53,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
           children={navClass => (
             <>
               <CreateIconIcon className={classNames(classes.icon, navClass)} />
-              <Hidden smDown className={navClass}>
+              <Hidden smDown className={classNames(navClass)}>
                 post
               </Hidden>
             </>
@@ -66,7 +66,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
           children={navClass => (
             <>
               <FolderIcon className={classNames(classes.icon, navClass)} />
-              <Hidden smDown className={navClass}>
+              <Hidden smDown className={classNames(navClass)}>
                 essays
               </Hidden>
             </>

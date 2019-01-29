@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,56 +15,19 @@ function Profile(props) {
         <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
           <Grid item xs={12}>
             <Avatar alt={props.user.displayName} src={props.user.photoURL} className={classes.avatar} />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item sm={6} xs={12}>
-                <Typography color="textSecondary">name</Typography>
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <Typography>{props.user.displayName}</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item sm={6} xs={12}>
-                <Typography color="textPrimary">email</Typography>
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <Typography>{props.user.email}</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item sm={6} xs={12}>
-                <Typography color="textSecondary">essays posted</Typography>
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <Typography>x</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item sm={6} xs={12}>
-                <Typography color="textSecondary">essays reviewed</Typography>
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <Typography>x</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item sm={6} xs={12}>
-                <Typography color="textSecondary">reviews</Typography>
-              </Grid>
-              <Grid item sm={6} xs={12}>
-                <Typography>x</Typography>
-              </Grid>
-            </Grid>
+            <List>
+              <ListItem style={{ textAlign: "center" }}>
+                <ListItemText primary={props.user.displayName} secondary={props.user.email} />
+              </ListItem>
+              <ListItem>
+                <ListItemText secondary="# posted" />
+                <ListItemText primary="3" />
+              </ListItem>
+              <ListItem>
+                <ListItemText secondary="# reviewed" />
+                <ListItemText primary="0" />
+              </ListItem>
+            </List>
           </Grid>
         </Grid>
       )}

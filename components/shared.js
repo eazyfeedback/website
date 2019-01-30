@@ -22,11 +22,11 @@ SignInFirst.propTypes = {
 
 function getBackgroundColor(user, essay) {
   if (user && essay) {
-    switch (user.UID) {
+    switch (user.uid) {
       case essay.reviewerUID:
-        return "#3f51b5";
-      case essay.ownerID:
         return "#e91e63";
+      case essay.ownerUID:
+        return "#3f51b5";
       default:
         return "#fff";
     }
@@ -54,7 +54,7 @@ function Actions({ user, essay, postReview, classes }) {
               </Button>
             </>
           )}
-          {!essay.reviewerUID && (
+          {!essay.reviewerUID && user.uid !== essay.ownerUID && (
             <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
               review
             </Button>
@@ -89,6 +89,14 @@ let Essay = ({ essay, user, classes, postReview }) => (
           {`${idx + 1}. ${area}`}
         </Typography>
       ))}
+      {postReview && (
+        <>
+          <Typography color="textSecondary">Link</Typography>
+          <Typography variant="body1" gutterBottom>
+            {essay.link}
+          </Typography>
+        </>
+      )}
       {essay.question.length > 0 && (
         <>
           <Typography color="textSecondary">Question</Typography>

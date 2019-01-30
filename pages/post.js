@@ -8,7 +8,7 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Router from "next/router";
+import NextLink from "next/link";
 import axios from "axios";
 import getConfig from "next/config";
 import Grid from "@material-ui/core/Grid";
@@ -21,7 +21,7 @@ export const getSelectedAreas = selectedAreas => selectedAreas.map((bool, idx) =
 export const getSelectedStage = selectedStage => stages[selectedStage];
 
 function getStepsHeadings() {
-  return ["Stage", "Areas", "Essay", "Review"];
+  return ["Stage", "Areas", "Link", "Review"];
 }
 
 export function getStages() {
@@ -112,7 +112,10 @@ function Post({ classes, user, handleLogin }) {
         ownerUID,
         status: false
       })
-      .then(() => Router.push("/essays"));
+      .then(() => {
+        console.log("essay posted");
+        handleNext();
+      });
   }
   return (
     <>
@@ -137,11 +140,11 @@ function Post({ classes, user, handleLogin }) {
                           <Button
                             variant="contained"
                             color="primary"
-                            onClick={handleNext}
+                            onClick={activeStep === steps.length - 1 ? handleFinish : handleNext}
                             className={classes.button}
                             disabled={!canGoNext(activeStep)}
                           >
-                            {activeStep === steps.length - 1 ? "finish" : "Next"}
+                            {activeStep === steps.length - 1 ? "Post" : "Next"}
                           </Button>
                         </div>
                       </div>
@@ -155,9 +158,11 @@ function Post({ classes, user, handleLogin }) {
                   <Button onClick={handleReset} className={classes.button}>
                     Reset
                   </Button>
-                  <Button variant="contained" color="secondary" className={classes.button} onClick={handleFinish}>
-                    go to essays
-                  </Button>
+                  <NextLink href="/essays" prefetch passHref>
+                    <Button variant="contained" color="secondary" className={classes.button}>
+                      go to essays
+                    </Button>
+                  </NextLink>
                 </Paper>
               )}
             </Grid>

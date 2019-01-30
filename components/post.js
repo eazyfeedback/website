@@ -65,7 +65,7 @@ Areas.propTypes = {
 const Link = ({ link, setLink }) => (
   <div>
     <Typography gutterBottom color="textSecondary" variant="body1">
-      Post your essay's Google docs link
+      Enter your essay's Google docs link
     </Typography>
     <TextField
       label="Paste Google docs link"
@@ -90,7 +90,7 @@ const Review = ({ essay, user }) => {
       <Typography gutterBottom color="textSecondary" variant="body1">
         Review your feedback request
       </Typography>
-      <div style={{ marginBottom: 10 }}>
+      <div style={{ marginBottom: 10, maxWidth: 320 }}>
         <Essay essay={essay} user={user} postReview />
       </div>
     </div>

@@ -18,7 +18,7 @@ const formatEssays = essays =>
 const Essays = ({ essays, user, handleLogin }) => (
   <>
     {!user && <SignInFirst handleLogin={handleLogin} message="You need to sign in to review an essay" />}
-    <Grid container spacing={16}>
+    <Grid container spacing={16} style={{ paddingTop: 8, paddingBottom: 8 }}>
       {essays.map((essay, idx) => (
         <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
           <Essay essay={essay} user={user} />

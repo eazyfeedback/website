@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
@@ -14,6 +14,11 @@ import getConfig from "next/config";
 import Grid from "@material-ui/core/Grid";
 import { Stages, Areas, Link, Review } from "../components/post";
 import { SignInFirst } from "../components/shared";
+
+const stages = getStages();
+const areas = getAreas();
+export const getSelectedAreas = selectedAreas => selectedAreas.map((bool, idx) => (bool ? areas[idx] : "")).filter(area => area !== "");
+export const getSelectedStage = selectedStage => stages[selectedStage];
 
 function getStepsHeadings() {
   return ["Stage", "Areas", "Essay", "Review"];
@@ -33,23 +38,23 @@ export function getAreas() {
 }
 
 function Post({ classes, user, handleLogin }) {
-  const [activeStep, setActiveStep] = useState(0);
-  const areas = getAreas();
   const steps = getStepsHeadings();
-  const stages = getStages();
   const initialSelectedAreas = Array.from(Array(areas.length), () => false);
-  const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
-  const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
+  const [ownerUID, setOwnerUID] = useState("");
+  useEffect(() => {
+    if (user) setOwnerUID(user.uid);
+  });
+  const [activeStep, setActiveStep] = useState(0);
   const [question, setQuestion] = useState("");
   const [selectedAreas, setSelectedAreas] = useState(initialSelectedAreas);
-  const handleCheck = (e, idx) => setSelectedAreas(selectedAreas.map((bool, i) => (i === idx ? e.target.checked : bool)));
   const [selectedStage, setSelectedStage] = useState(-1);
   const [link, setLink] = useState("");
+  const handleCheck = (e, idx) => setSelectedAreas(selectedAreas.map((bool, i) => (i === idx ? e.target.checked : bool)));
+  const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
+  const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
   const isAreasComplete = () => selectedAreas.some(bool => bool === true) || question.length > 0;
   const isLinkComplete = () => link.length > 0 && link.includes("docs.google.com");
   const isStageComplete = () => selectedStage > -1;
-  const getSelectedAreas = () => selectedAreas.map((bool, idx) => (bool ? areas[idx] : "")).filter(area => area !== "");
-  const getSelectedStage = () => stages[selectedStage];
   function getStepContent(step) {
     switch (step) {
       case 1:
@@ -58,9 +63,21 @@ function Post({ classes, user, handleLogin }) {
         return <Stages stages={stages} selectedIndex={selectedStage} setSelectedIndex={setSelectedStage} />;
       case 2:
         return <Link link={link} setLink={setLink} />;
-      default:
       case 3:
-        return <Review areas={getSelectedAreas()} question={question} stage={getSelectedStage()} link={link} />;
+        return (
+          <Review
+            essay={{
+              areas: getSelectedAreas(selectedAreas),
+              stage: getSelectedStage(selectedStage),
+              link,
+              question,
+              ownerUID
+            }}
+            user={user}
+          />
+        );
+      default:
+        return <Typography>Nothing to show</Typography>;
     }
   }
   function canGoNext(step) {
@@ -91,7 +108,9 @@ function Post({ classes, user, handleLogin }) {
         selectedAreas,
         question,
         selectedStage,
-        link
+        link,
+        ownerUID,
+        status: false
       })
       .then(() => Router.push("/essays"));
   }
@@ -153,7 +172,7 @@ function Post({ classes, user, handleLogin }) {
 
 const styles = theme => ({
   stepper: {
-    width: "100vw"
+    width: "100%"
   },
   button: {
     marginTop: theme.spacing.unit,

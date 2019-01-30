@@ -79,9 +79,7 @@ const styles = theme => ({
 });
 
 Index.propTypes = {
-  classes: PropTypes.object.isRequired,
-  user: PropTypes.object,
-  width: PropTypes.string
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Index);

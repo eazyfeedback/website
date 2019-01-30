@@ -36,7 +36,8 @@ const Profile = ({ user, classes, handleLogin }) => (
 
 Profile.propTypes = {
   user: PropTypes.object,
-  handleLogin: PropTypes.func
+  handleLogin: PropTypes.func,
+  classes: PropTypes.object.isRequired
 };
 
 const styles = theme => ({

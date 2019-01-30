@@ -28,13 +28,51 @@ function getBackgroundColor(user, essay) {
       case essay.ownerID:
         return "#e91e63";
       default:
-        return "#000";
+        return "#fff";
     }
   }
-  return "#000";
+  return "#fff";
 }
 
-let Essay = ({ essay, user, classes }) => (
+function Actions({ user, essay, postReview, classes }) {
+  return (
+    <>
+      {user && !postReview && (
+        <CardActions className={classes.actions}>
+          {user.uid === essay.ownerUID && (
+            <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
+              remove
+            </Button>
+          )}
+          {user.uid === essay.reviewerUID && (
+            <>
+              <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
+                check off
+              </Button>
+              <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
+                mark as complete
+              </Button>
+            </>
+          )}
+          {!essay.reviewerUID && (
+            <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
+              review
+            </Button>
+          )}
+        </CardActions>
+      )}
+    </>
+  );
+}
+
+Actions.propTypes = {
+  user: PropTypes.object,
+  essay: PropTypes.object.isRequired,
+  postReview: PropTypes.bool,
+  classes: PropTypes.object.isRequired
+};
+
+let Essay = ({ essay, user, classes, postReview }) => (
   <Card className={classes.card} style={{ height: "100%", backgroundColor: getBackgroundColor(user, essay) }}>
     <CardContent>
       <Typography color="textSecondary" gutterBottom>
@@ -47,33 +85,18 @@ let Essay = ({ essay, user, classes }) => (
         Areas
       </Typography>
       {essay.areas.map((area, idx) => (
-        <Typography key={idx} variant="body1" gutterBottom={idx === areas.length - 1}>
+        <Typography key={idx} variant="body1" gutterBottom={idx === essay.areas.length - 1}>
           {`${idx + 1}. ${area}`}
         </Typography>
       ))}
-      {essay.question && (
+      {essay.question.length > 0 && (
         <>
           <Typography color="textSecondary">Question</Typography>
           <Typography variant="body1">{essay.question}</Typography>
         </>
       )}
     </CardContent>
-    {user && (
-      <CardActions className={classes.actions}>
-        <Button href={essay.link} target="_blank" rel="noreferrer" color="secondary">
-          review
-        </Button>
-        <Button href={essay.link} target="_blank" rel="noreferrer" color="primary">
-          remove
-        </Button>
-        <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
-          check off
-        </Button>
-        <Button href={essay.link} target="_blank" rel="noreferrer" color="default">
-          mark as complete
-        </Button>
-      </CardActions>
-    )}
+    <Actions user={user} essay={essay} postReview={postReview} classes={classes} />
   </Card>
 );
 
@@ -88,15 +111,16 @@ const essayStyles = () => ({
 
 Essay.propTypes = {
   essay: PropTypes.shape({
-    question: PropTypes.string.isRequired,
+    question: PropTypes.string,
     stage: PropTypes.string.isRequired,
     areas: PropTypes.arrayOf(PropTypes.string).isRequired,
     link: PropTypes.string.isRequired,
-    reviewerUID: PropTypes.string.isRequired,
+    reviewerUID: PropTypes.string,
     ownerUID: PropTypes.string.isRequired
   }).isRequired,
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  postReview: PropTypes.bool
 };
 
 Essay = withStyles(essayStyles)(Essay);

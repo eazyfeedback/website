@@ -3,16 +3,12 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import getConfig from "next/config";
 import { SignInFirst, Essay } from "../components/shared";
-import { getAreas, getStages } from "../pages/post";
+import { getSelectedAreas, getSelectedStage } from "../pages/post";
 
-const areas = getAreas();
-const stages = getStages();
-const formatAreas = selectedAreas => selectedAreas.map((bool, idx) => (bool ? areas[idx] : "")).filter(elem => elem !== "");
-const formatStage = selectedIndex => stages[selectedIndex];
 const formatEssays = essays =>
-  essays.map(({ selectedStage, selectedAreas, question, link }) => ({
-    areas: formatAreas(selectedAreas),
-    stage: formatStage(selectedStage),
+  essays.map(({ selectedStage, selectedAreas, question, link, ownerUID, reviewerUID }) => ({
+    areas: getSelectedAreas(selectedAreas),
+    stage: getSelectedStage(selectedStage),
     question,
     link,
     ownerUID,
@@ -48,10 +44,9 @@ Essays.propTypes = {
       areas: PropTypes.arrayOf(PropTypes.string).isRequired,
       link: PropTypes.string.isRequired,
       ownerUID: PropTypes.string.isRequired,
-      reviewerUID: PropTypes.string.isRequired
+      reviewerUID: PropTypes.string
     })
-  ),
-  classes: PropTypes.object.isRequired,
+  ).isRequired,
   user: PropTypes.object,
   handleLogin: PropTypes.func
 };

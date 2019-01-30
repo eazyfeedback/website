@@ -68,7 +68,7 @@ const Link = ({ link, setLink }) => (
       Post your essay's Google docs link
     </Typography>
     <TextField
-      label="Enter Google docs link"
+      label="Paste Google docs link"
       margin="normal"
       onChange={e => setLink(e.target.value)}
       value={link}
@@ -84,24 +84,28 @@ Link.propTypes = {
   setLink: PropTypes.func.isRequired
 };
 
-const Review = ({ stage, areas, question, link }) => {
+const Review = ({ essay, user }) => {
   return (
     <div>
       <Typography gutterBottom color="textSecondary" variant="body1">
         Review your feedback request
       </Typography>
       <div style={{ marginBottom: 10 }}>
-        <Essay stage={stage} areas={areas} question={question} link={link} />
+        <Essay essay={essay} user={user} postReview />
       </div>
     </div>
   );
 };
 
 Review.propTypes = {
-  areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-  stage: PropTypes.string,
-  question: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired
+  essay: PropTypes.shape({
+    question: PropTypes.string,
+    stage: PropTypes.string,
+    areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+    link: PropTypes.string.isRequired,
+    ownerUID: PropTypes.string.isRequired
+  }).isRequired,
+  user: PropTypes.object
 };
 
 export { Areas, Stages, Link, Review };

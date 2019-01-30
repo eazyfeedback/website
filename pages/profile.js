@@ -9,7 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { SignInFirst } from "../components/shared";
 
 const Profile = ({ user, classes, handleLogin }) => (
-  <div className={classes.root}>
+  <>
     {user ? (
       <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
         <Grid item xs={12}>
@@ -32,17 +32,15 @@ const Profile = ({ user, classes, handleLogin }) => (
     ) : (
       <SignInFirst message="You need to signin to access your profile" handleLogin={handleLogin} />
     )}
-  </div>
+  </>
 );
 
 Profile.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  handleLogin: PropTypes.func
 };
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1
-  },
   avatar: {
     margin: theme.spacing.unit,
     width: 120,
@@ -50,9 +48,7 @@ const styles = theme => ({
     display: "block",
     marginLeft: "auto",
     marginRight: "auto"
-  },
-  user: PropTypes.object,
-  handleLogin: PropTypes.func
+  }
 });
 
 export default withStyles(styles)(Profile);

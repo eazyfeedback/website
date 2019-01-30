@@ -1,4 +1,3 @@
-import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
@@ -6,8 +5,8 @@ import Essay from "../components/essay";
 import getConfig from "next/config";
 import { SignInFirst } from "../components/shared";
 
-const Essays = ({ essays, classes, user, handleLogin }) => (
-  <div className={classes.root}>
+const Essays = ({ essays, user, handleLogin }) => (
+  <>
     {!user && <SignInFirst handleLogin={handleLogin} message="You need to sign in to review an essay" />}
     <Grid container spacing={16}>
       {essays.map(({ stage, areas, question, link }, idx) => (
@@ -16,7 +15,7 @@ const Essays = ({ essays, classes, user, handleLogin }) => (
         </Grid>
       ))}
     </Grid>
-  </div>
+  </>
 );
 
 Essays.getInitialProps = async () => {
@@ -26,12 +25,6 @@ Essays.getInitialProps = async () => {
   const { data } = await axios.get(APIEndpoint);
   return { essays: data };
 };
-
-const styles = () => ({
-  root: {
-    flexGrow: 1
-  }
-});
 
 Essays.propTypes = {
   essays: PropTypes.arrayOf(
@@ -47,4 +40,4 @@ Essays.propTypes = {
   handleLogin: PropTypes.func
 };
 
-export default withStyles(styles)(Essays);
+export default Essays;

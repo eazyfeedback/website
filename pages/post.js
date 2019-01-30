@@ -12,11 +12,15 @@ import Router from "next/router";
 import axios from "axios";
 import getConfig from "next/config";
 import Grid from "@material-ui/core/Grid";
-import { Stages, Areas, Doc } from "../components/post";
+import { Stages, Areas, Link, Review } from "../components/post";
 import { SignInFirst } from "../components/shared";
 
+function getStepsHeadings() {
+  return ["Stage", "Areas", "Essay", "Review"];
+}
+
 function getSteps() {
-  return ["What stage are you in?", "What areas do you want feedback on?", "Post Google docs link"];
+  return ["What stage are you in?", "What areas do you want feedback on?", "Post your essay's Google docs link", "Review your feedback request"];
 }
 
 function getStages() {
@@ -75,8 +79,10 @@ function Post({ classes, user, handleLogin }) {
       case 0:
         return <Stages stages={stages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />;
       case 2:
-        return <Doc link={link} setLink={setLink} />;
+        return <Link link={link} setLink={setLink} />;
       default:
+      case 3:
+        <Review areas={areas} checked={checked} question={question} stages={stages} selectedIndex={selectedIndex} link={link} />;
         return "Unknown step";
     }
   }
@@ -89,7 +95,7 @@ function Post({ classes, user, handleLogin }) {
       case 2:
         return isLink();
       default:
-        return isStage();
+        return true;
     }
   };
   return (
@@ -149,9 +155,6 @@ function Post({ classes, user, handleLogin }) {
 const styles = theme => ({
   stepper: {
     width: "100vw"
-  },
-  root: {
-    flexGrow: 1
   },
   button: {
     marginTop: theme.spacing.unit,

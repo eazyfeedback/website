@@ -3,7 +3,6 @@ import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
-import Button from "@material-ui/core/Button";
 
 const Areas = ({ areas, checked, handleCheck, question, setQuestion }) => (
   <div>
@@ -53,7 +52,7 @@ Stages.propTypes = {
   setSelectedIndex: PropTypes.func.isRequired
 };
 
-const Doc = ({ link, setLink }) => (
+const Link = ({ link, setLink }) => (
   <div>
     <TextField
       label="Enter Google docs link"
@@ -67,9 +66,22 @@ const Doc = ({ link, setLink }) => (
   </div>
 );
 
-Doc.propTypes = {
+Link.propTypes = {
   link: PropTypes.string.isRequired,
   setLink: PropTypes.func.isRequired
 };
 
-export { Areas, Stages, Doc };
+const Review = props => {
+  return (
+    <div>
+      review
+      <p>reviw</p>
+    </div>
+  );
+};
+
+Review.propTypes = {};
+
+export default Review;
+
+export { Areas, Stages, Link, Review };

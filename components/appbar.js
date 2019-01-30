@@ -38,51 +38,49 @@ NavButton.propTypes = {
 };
 
 const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } }) => (
-  <div className={classes.root}>
-    <AppBar position="static">
-      <Toolbar>
-        <NextLink href="/" prefetch passHref>
-          <MaterialLink variant="body1" color="inherit" className={classes.logo}>
-            essayfeedback
-          </MaterialLink>
-        </NextLink>
-        <NavButton
-          href="/post"
-          route={route}
-          buttonClass={classes.button}
-          children={navClass => (
-            <>
-              <CreateIconIcon className={classNames(classes.icon, navClass)} />
-              <Hidden smDown className={classNames(navClass)}>
-                post
-              </Hidden>
-            </>
-          )}
-        />
-        <NavButton
-          href="/essays"
-          route={route}
-          buttonClass={classes.button}
-          children={navClass => (
-            <>
-              <FolderIcon className={classNames(classes.icon, navClass)} />
-              <Hidden smDown className={classNames(navClass)}>
-                essays
-              </Hidden>
-            </>
-          )}
-        />
-        {user ? (
-          <Menu handleLogout={handleLogout} user={user} />
-        ) : (
-          <Button onClick={handleLogin} className={classes.button} color="inherit" variant="outlined">
-            <AccountCircleIcon className={classes.icon} />
-            <Hidden smDown>sign in</Hidden>
-          </Button>
+  <AppBar position="static">
+    <Toolbar>
+      <NextLink href="/" prefetch passHref>
+        <MaterialLink variant="body1" color="inherit" className={classes.logo}>
+          essayfeedback
+        </MaterialLink>
+      </NextLink>
+      <NavButton
+        href="/post"
+        route={route}
+        buttonClass={classes.button}
+        children={navClass => (
+          <>
+            <CreateIconIcon className={classNames(classes.icon, navClass)} />
+            <Hidden smDown className={classNames(navClass)}>
+              post
+            </Hidden>
+          </>
         )}
-      </Toolbar>
-    </AppBar>
-  </div>
+      />
+      <NavButton
+        href="/essays"
+        route={route}
+        buttonClass={classes.button}
+        children={navClass => (
+          <>
+            <FolderIcon className={classNames(classes.icon, navClass)} />
+            <Hidden smDown className={classNames(navClass)}>
+              essays
+            </Hidden>
+          </>
+        )}
+      />
+      {user ? (
+        <Menu handleLogout={handleLogout} user={user} />
+      ) : (
+        <Button onClick={handleLogin} className={classes.button} color="inherit" variant="outlined">
+          <AccountCircleIcon className={classes.icon} />
+          <Hidden smDown>sign in</Hidden>
+        </Button>
+      )}
+    </Toolbar>
+  </AppBar>
 );
 
 const styles = theme => ({

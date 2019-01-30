@@ -19,11 +19,7 @@ function getStepsHeadings() {
   return ["Stage", "Areas", "Essay", "Review"];
 }
 
-function getSteps() {
-  return ["What stage are you in?", "What areas do you want feedback on?", "Post your essay's Google docs link", "Review your feedback request"];
-}
-
-function getStages() {
+export function getStages() {
   return ["Early draft", "Revised draft", "Late draft"];
 }
 
@@ -38,71 +34,74 @@ export function getAreas() {
 
 function Post({ classes, user, handleLogin }) {
   const [activeStep, setActiveStep] = useState(0);
-  const steps = getSteps();
+  const areas = getAreas();
+  const steps = getStepsHeadings();
+  const stages = getStages();
+  const initialSelectedAreas = Array.from(Array(areas.length), () => false);
   const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
   const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
-  const areas = getAreas();
   const [question, setQuestion] = useState("");
-  const initialChecked = Array.from(Array(areas.length), () => false);
-  const [checked, setChecked] = useState(initialChecked);
-  const handleCheck = (e, idx) => setChecked(checked.map((bool, i) => (i === idx ? e.target.checked : bool)));
-  const stages = getStages();
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedAreas, setSelectedAreas] = useState(initialSelectedAreas);
+  const handleCheck = (e, idx) => setSelectedAreas(selectedAreas.map((bool, i) => (i === idx ? e.target.checked : bool)));
+  const [selectedStage, setSelectedStage] = useState(-1);
   const [link, setLink] = useState("");
-  const handleReset = () => {
+  const isAreasComplete = () => selectedAreas.some(bool => bool === true) || question.length > 0;
+  const isLinkComplete = () => link.length > 0 && link.includes("docs.google.com");
+  const isStageComplete = () => selectedStage > -1;
+  const getSelectedAreas = () => selectedAreas.map((bool, idx) => (bool ? areas[idx] : "")).filter(area => area !== "");
+  const getSelectedStage = () => stages[selectedStage];
+  function getStepContent(step) {
+    switch (step) {
+      case 1:
+        return <Areas areas={areas} checked={selectedAreas} handleCheck={handleCheck} question={question} setQuestion={setQuestion} />;
+      case 0:
+        return <Stages stages={stages} selectedIndex={selectedStage} setSelectedIndex={setSelectedStage} />;
+      case 2:
+        return <Link link={link} setLink={setLink} />;
+      default:
+      case 3:
+        return <Review areas={getSelectedAreas()} question={question} stage={getSelectedStage()} link={link} />;
+    }
+  }
+  function canGoNext(step) {
+    switch (step) {
+      case 1:
+        return isAreasComplete();
+      case 0:
+        return isStageComplete();
+      case 2:
+        return isLinkComplete();
+      default:
+        return true;
+    }
+  }
+  function handleReset() {
     setActiveStep(0);
     setQuestion("");
-    setChecked(initialChecked);
-    setSelectedIndex(-1);
+    setSelectedAreas(initialSelectedAreas);
+    setSelectedStage(-1);
     setLink("");
-  };
-  const handleFinish = () => {
+  }
+  function handleFinish() {
     const {
       publicRuntimeConfig: { APIEndpoint }
     } = getConfig();
     axios
       .post(APIEndpoint, {
-        areas: checked,
+        selectedAreas,
         question,
-        stage: stages[selectedIndex],
+        selectedStage,
         link
       })
       .then(() => Router.push("/essays"));
-  };
-  const isAreas = () => checked.some(bool => bool === true);
-  const isLink = () => link.length > 0 && link.includes("docs.google.com");
-  const isStage = () => selectedIndex > -1;
-  function getStepContent(step) {
-    switch (step) {
-      case 1:
-        return <Areas areas={areas} checked={checked} handleCheck={handleCheck} question={question} setQuestion={setQuestion} />;
-      case 0:
-        return <Stages stages={stages} selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />;
-      case 2:
-        return <Link link={link} setLink={setLink} />;
-      default:
-      case 3:
-        <Review areas={areas} checked={checked} question={question} stages={stages} selectedIndex={selectedIndex} link={link} />;
-        return "Unknown step";
-    }
   }
-  const canGoNext = step => {
-    switch (step) {
-      case 1:
-        return isAreas();
-      case 0:
-        return isStage();
-      case 2:
-        return isLink();
-      default:
-        return true;
-    }
-  };
   return (
-    <div className={classes.root}>
+    <>
       {user ? (
-        <>
-          <Typography gutterBottom>These details will help your reviewer give you feedback you want.</Typography>
+        <div className={classes.layout}>
+          <Typography className={classes.text} variant="subtitle1">
+            These details will help your reviewer give you the feedback you want.
+          </Typography>
           <Grid container justify="center" alignItems="center" direction="column">
             <Grid item xs={12} className={classes.stepper}>
               <Stepper activeStep={activeStep} orientation="vertical">
@@ -111,7 +110,7 @@ function Post({ classes, user, handleLogin }) {
                     <StepLabel>{label}</StepLabel>
                     <StepContent>
                       <div>{getStepContent(index)}</div>
-                      <div className={classes.actionsContainer}>
+                      <div className={classes.actions}>
                         <div>
                           <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
                             Back
@@ -123,7 +122,7 @@ function Post({ classes, user, handleLogin }) {
                             className={classes.button}
                             disabled={!canGoNext(activeStep)}
                           >
-                            {activeStep === steps.length - 1 ? "Complete" : "Next"}
+                            {activeStep === steps.length - 1 ? "finish" : "Next"}
                           </Button>
                         </div>
                       </div>
@@ -132,8 +131,8 @@ function Post({ classes, user, handleLogin }) {
                 ))}
               </Stepper>
               {activeStep === steps.length && (
-                <Paper square elevation={0} className={classes.resetContainer}>
-                  <Typography>All steps completed - your essay in now awaiting a reviewer in the essay pool</Typography>
+                <Paper square elevation={0} className={classes.reset}>
+                  <Typography>All steps completed - your essay in now awaiting a reviewer to give feedback</Typography>
                   <Button onClick={handleReset} className={classes.button}>
                     Reset
                   </Button>
@@ -144,11 +143,11 @@ function Post({ classes, user, handleLogin }) {
               )}
             </Grid>
           </Grid>
-        </>
+        </div>
       ) : (
         <SignInFirst handleLogin={handleLogin} message="You need to sign in to post for feedback" />
       )}
-    </div>
+    </>
   );
 }
 
@@ -160,11 +159,23 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     marginRight: theme.spacing.unit
   },
-  actionsContainer: {
+  actions: {
     marginBottom: theme.spacing.unit * 2
   },
-  resetContainer: {
+  reset: {
     padding: theme.spacing.unit * 3
+  },
+  layout: {
+    width: "auto",
+    [theme.breakpoints.up(600)]: {
+      width: 600,
+      marginLeft: "auto",
+      marginRight: "auto"
+    }
+  },
+  text: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2
   }
 });
 

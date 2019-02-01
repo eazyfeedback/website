@@ -34,13 +34,21 @@ function getBackgroundColor(user, essay) {
   return "#fff";
 }
 
+function handleReview() {}
+
+function handleRemove() {}
+
+function handleCheckOff() {}
+
+function handleComplete() {}
+
 function Actions({ user, essay, postReview, classes }) {
   return (
     <>
       {user && !postReview && (
         <CardActions className={classes.actions}>
           {user.uid === essay.ownerUID && (
-            <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
+            <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={handleRemove}>
               remove
             </Button>
           )}
@@ -55,7 +63,7 @@ function Actions({ user, essay, postReview, classes }) {
             </>
           )}
           {!essay.reviewerUID && user.uid !== essay.ownerUID && (
-            <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
+            <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={handleReview}>
               review
             </Button>
           )}

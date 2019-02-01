@@ -113,7 +113,6 @@ function Post({ classes, user, handleLogin }) {
         status: false
       })
       .then(() => {
-        console.log("essay posted");
         handleNext();
       });
   }

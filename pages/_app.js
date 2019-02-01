@@ -10,14 +10,40 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import axios from "axios";
+import getConfig from "next/config";
 import Appbar from "../components/appbar";
 import secrets from "../secrets";
+
+const {
+  publicRuntimeConfig: { APIEndpoint }
+} = getConfig();
+
+function selectUser(user) {
+  return {
+    uid: user.uid,
+    name: user.displayName,
+    email: user.email,
+    photoURL: user.photoURL
+  };
+}
+
+function createUser(user) {
+  return axios.post(APIEndpoint + "/users", user).then(res => res.data.user);
+}
+
+function fetchUser(user) {
+  return axios.get(user.id).catch(err => {
+    console.error(`_app.js fetchUser > status ${response.status}`);
+    return createUser(selectUser(user));
+  });
+}
 
 class MyApp extends App {
   static async getInitialProps({ Component, ctx, req }) {
     let pageProps = {};
     if (Component.getInitialProps) pageProps = await Component.getInitialProps(ctx);
-    const user = req && req.session ? req.session.decodedToken : null;
+    let user = req && req.session ? req.session.decodedToken : null;
+    console.info("_app.js getInitialProps > user", user);
     return { pageProps, user };
   }
 
@@ -39,10 +65,7 @@ class MyApp extends App {
 
   handleAuth = user => {
     if (user) {
-      this.setState({
-        user: user
-      });
-      return user
+      user
         .getIdToken()
         .then(token => {
           return axios("/auth/login", {
@@ -56,13 +79,13 @@ class MyApp extends App {
             })
           });
         })
-        .then(() => console.log("login successful", user));
+        .then(user => fetchUser(user))
+        .then(user => this.setState({ user }));
     } else {
-      this.setState({ user: null });
       axios("/auth/logout", {
         method: "POST",
         credentials: "same-origin"
-      }).then(() => console.log("logout successful"));
+      }).then(() => this.setState({ user: null }));
     }
   };
 

@@ -37,6 +37,8 @@ NavButton.propTypes = {
   buttonClass: PropTypes.string.isRequired
 };
 
+const isActive = () => {};
+
 const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } }) => (
   <AppBar position="static">
     <Toolbar>

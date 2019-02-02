@@ -36,19 +36,17 @@ function getUser(uid) {
 }
 
 class MyApp extends App {
-  static async getInitialProps({ Component, ctx, req }) {
+  static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
     if (Component.getInitialProps) pageProps = await Component.getInitialProps(ctx);
-    let user = req && req.session ? req.session.decodedToken : null;
-    console.info("_app.js getInitialProps > user", user);
-    return { pageProps, user };
+    return { pageProps };
   }
 
   constructor(props) {
     super(props);
     this.pageContext = getPageContext();
     this.state = {
-      user: this.props.user
+      user: null
     };
   }
 
@@ -94,13 +92,13 @@ class MyApp extends App {
   };
 
   componentDidMount() {
+    firebase.initializeApp(secrets.firebase.client);
+    firebase.auth().onAuthStateChanged(this.handleAuth);
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
-    firebase.initializeApp(secrets.firebase.client);
-    firebase.auth().onAuthStateChanged(this.handleAuth);
   }
 
   render() {

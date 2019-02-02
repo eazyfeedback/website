@@ -28,12 +28,15 @@ function selectUser(user) {
 }
 
 function createUser(user) {
-  return axios.post(APIEndpoint + "/users", user).then(res => res.data.user);
+  return axios.post(`${APIEndpoint}/users`, user).then(res => {
+    console.info("_app.js createUser > user", res.data.user);
+    return res.data.user;
+  });
 }
 
 function fetchUser(user) {
-  return axios.get(user.id).catch(err => {
-    console.error(`_app.js fetchUser > status ${response.status}`);
+  return axios.get(`${APIEndpoint}/users/${user.uid}`).catch(err => {
+    console.error(`_app.js fetchUser > status ${err.response.status}`);
     return createUser(selectUser(user));
   });
 }
@@ -65,10 +68,11 @@ class MyApp extends App {
 
   handleAuth = user => {
     if (user) {
+      console.info("_app.js handleAuth > user", user);
       user
         .getIdToken()
-        .then(token => {
-          return axios("/auth/login", {
+        .then(token =>
+          axios("/auth/login", {
             method: "POST",
             headers: new Headers({
               "Content-Type": "application/json"
@@ -77,10 +81,13 @@ class MyApp extends App {
             body: JSON.stringify({
               token
             })
-          });
-        })
-        .then(user => fetchUser(user))
-        .then(user => this.setState({ user }));
+          })
+        )
+        .then(() => fetchUser(user))
+        .then(({ data }) => {
+          console.info("_app.js fetchuser > user", data);
+          this.setState({ user: data });
+        });
     } else {
       axios("/auth/logout", {
         method: "POST",
@@ -95,11 +102,8 @@ class MyApp extends App {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
-
-    if (!firebase.apps.length) {
-      firebase.initializeApp(secrets.firebase.client);
-      firebase.auth().onAuthStateChanged(this.handleAuth);
-    }
+    firebase.initializeApp(secrets.firebase.client);
+    firebase.auth().onAuthStateChanged(this.handleAuth);
   }
 
   render() {

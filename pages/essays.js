@@ -32,7 +32,7 @@ Essays.getInitialProps = async () => {
   const {
     publicRuntimeConfig: { APIEndpoint }
   } = getConfig();
-  const { data } = await axios.get(APIEndpoint);
+  const { data } = await axios.get(`${APIEndpoint}/essays`);
   return { essays: formatEssays(data) };
 };
 

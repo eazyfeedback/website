@@ -28,17 +28,11 @@ function selectUser(user) {
 }
 
 function createUser(user) {
-  return axios.post(`${APIEndpoint}/users`, user).then(res => {
-    console.info("_app.js createUser > user", res.data.user);
-    return res.data.user;
-  });
+  return axios.post(`${APIEndpoint}/users`, user);
 }
 
-function fetchUser(user) {
-  return axios.get(`${APIEndpoint}/users/${user.uid}`).catch(err => {
-    console.error(`_app.js fetchUser > status ${err.response.status}`);
-    return createUser(selectUser(user));
-  });
+function getUser(uid) {
+  return axios.get(`${APIEndpoint}/users/${uid}`);
 }
 
 class MyApp extends App {
@@ -83,10 +77,13 @@ class MyApp extends App {
             })
           })
         )
-        .then(() => fetchUser(user))
-        .then(({ data }) => {
-          console.info("_app.js fetchuser > user", data);
-          this.setState({ user: data });
+        .then(() => getUser(user.uid))
+        .catch(err => {
+          return createUser(selectUser(user));
+        })
+        .then(res => {
+          console.info("_app.js getUser/createUser > user", res.data.user);
+          this.setState({ user: res.data.user });
         });
     } else {
       axios("/auth/logout", {

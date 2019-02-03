@@ -6,8 +6,8 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
-const SignInFirst = ({ handleLogin, message }) => (
-  <div style={{ marginBottom: 12 }}>
+const SignIn = ({ handleLogin, message }) => (
+  <div style={{ margin: 20 }}>
     <Typography gutterBottom>{message}</Typography>
     <Button onClick={handleLogin} color="primary" variant="outlined">
       sign in with google
@@ -15,7 +15,7 @@ const SignInFirst = ({ handleLogin, message }) => (
   </div>
 );
 
-SignInFirst.propTypes = {
+SignIn.propTypes = {
   handleLogin: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired
 };
@@ -43,16 +43,19 @@ function handleCheckOff() {}
 function handleComplete() {}
 
 function Actions({ user, essay, postReview, classes }) {
+  const isVisible = user && !postReview;
+  const completeCondition = user.uid === essay.reviewerUID;
+  const reviewCondition = !essay.reviewerUID && user.uid !== essay.ownerUID;
   return (
     <>
-      {user && !postReview && (
+      {isVisible && (
         <CardActions className={classes.actions}>
           {user.uid === essay.ownerUID && (
             <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={handleRemove}>
               remove
             </Button>
           )}
-          {user.uid === essay.reviewerUID && (
+          {completeCondition && (
             <>
               <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
                 check off
@@ -62,7 +65,7 @@ function Actions({ user, essay, postReview, classes }) {
               </Button>
             </>
           )}
-          {!essay.reviewerUID && user.uid !== essay.ownerUID && (
+          {reviewCondition && (
             <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={handleReview}>
               review
             </Button>
@@ -141,4 +144,4 @@ Essay.propTypes = {
 
 Essay = withStyles(essayStyles)(Essay);
 
-export { SignInFirst, Essay };
+export { SignIn, Essay };

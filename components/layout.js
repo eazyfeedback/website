@@ -1,15 +1,19 @@
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Appbar from "../components/appbar";
-import { SignInFirst } from "../components/shared";
+import { SignIn } from "../components/shared";
 
-const Layout = ({ children, classes, handleLogin, handleLogout, user, signInRequired, signInVisible }) => (
-  <div style={{ minHeight: "100vh" }}>
-    <Appbar handleLogin={handleLogin} handleLogout={handleLogout} user={user} />
-    {signInVisible && !user && <SignInFirst handleLogin={handleLogin} message={message} />}
-    {(!signInRequired || (signInRequired && user)) && <div className={classes.root}>{children}</div>}
-  </div>
-);
+const Layout = ({ children, classes, handleLogin, handleLogout, user, signInRequired, signInVisible, message }) => {
+  const signinCondition = signInVisible && !user;
+  const childrenCondition = !signInRequired || (signInRequired && user);
+  return (
+    <div style={{ minHeight: "100vh" }}>
+      <Appbar handleLogin={handleLogin} handleLogout={handleLogout} user={user} />
+      {signinCondition && <SignIn handleLogin={handleLogin} message={message} />}
+      {childrenCondition && <div className={classes.root}>{children}</div>}
+    </div>
+  );
+};
 
 const styles = theme => ({
   root: {
@@ -21,7 +25,7 @@ const styles = theme => ({
 
 Layout.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   handleLogin: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired,
   user: PropTypes.object,

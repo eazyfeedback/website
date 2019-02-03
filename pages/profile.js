@@ -5,8 +5,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
-import { SignInFirst } from "../components/shared";
 import Layout from "../components/layout";
+import withAuth from "../components/auth";
 
 const Profile = ({ user, classes, handleLogin, handleLogout }) => (
   <Layout
@@ -17,24 +17,26 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => (
     signInVisible={true}
     message="You need to signin to access your profile"
   >
-    <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
-      <Grid item xs={12}>
-        <Avatar alt={user.displayName} src={user.photoURL} className={classes.avatar} />
-        <List>
-          <ListItem style={{ textAlign: "center" }}>
-            <ListItemText primary={user.displayName} secondary={user.email} />
-          </ListItem>
-          <ListItem>
-            <ListItemText secondary="essays posted for feedback" />
-            <ListItemText primary="0" />
-          </ListItem>
-          <ListItem>
-            <ListItemText secondary="essays reviewed" />
-            <ListItemText primary="0" />
-          </ListItem>
-        </List>
+    {user && (
+      <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
+        <Grid item xs={12}>
+          <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
+          <List>
+            <ListItem style={{ textAlign: "center" }}>
+              <ListItemText primary={user.name} secondary={user.email} />
+            </ListItem>
+            <ListItem>
+              <ListItemText secondary="essays posted for feedback" />
+              <ListItemText primary="0" />
+            </ListItem>
+            <ListItem>
+              <ListItemText secondary="essays reviewed" />
+              <ListItemText primary="0" />
+            </ListItem>
+          </List>
+        </Grid>
       </Grid>
-    </Grid>
+    )}
   </Layout>
 );
 
@@ -56,4 +58,4 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles)(Profile);
+export default withStyles(styles)(withAuth(Profile));

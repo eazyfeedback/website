@@ -14,6 +14,7 @@ import axios from "axios";
 import getConfig from "next/config";
 import { Stages, Areas, Link, Review } from "../components/post";
 import Layout from "../components/layout";
+import withAuth from "../components/auth";
 
 const stages = getStages();
 const areas = getAreas();
@@ -212,4 +213,4 @@ Post.propTypes = {
   handleLogout: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(Post);
+export default withStyles(styles)(withAuth(Post));

@@ -74,10 +74,14 @@ const withAuth = Page => {
     }
 
     useEffect(() => {
+      let unsubscribe;
       if (!firebase.apps.length) {
         firebase.initializeApp(secrets.firebase.client);
-        firebase.auth().onAuthStateChanged(handleAuth);
+        unsubscribe = firebase.auth().onAuthStateChanged(handleAuth);
       }
+      return () => {
+        if (unsubscribe) unsubscribe();
+      };
     });
 
     return <Page {...props} user={user} handleLogin={handleLogin} handleLogout={handleLogout} />;

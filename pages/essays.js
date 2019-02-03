@@ -4,6 +4,8 @@ import axios from "axios";
 import getConfig from "next/config";
 import { SignInFirst, Essay } from "../components/shared";
 import { getSelectedAreas, getSelectedStage } from "../pages/post";
+import Layout from "../components/layout";
+import withAuth from "../components/auth";
 
 const formatEssays = essays =>
   essays.map(({ selectedStage, selectedAreas, question, link, ownerUID, reviewerUID }) => ({
@@ -15,9 +17,15 @@ const formatEssays = essays =>
     reviewerUID
   }));
 
-const Essays = ({ essays, user, handleLogin }) => (
-  <>
-    {!user && <SignInFirst handleLogin={handleLogin} message="You need to sign in to review an essay" />}
+const Essays = ({ essays, user, handleLogin, handleLogout }) => (
+  <Layout
+    handleLogin={handleLogin}
+    handleLogout={handleLogout}
+    user={user}
+    signInRequired={false}
+    signInVisible={true}
+    message="You need to sign in to review an essay"
+  >
     <Grid container spacing={16} style={{ paddingTop: 8, paddingBottom: 8 }}>
       {essays.map((essay, idx) => (
         <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
@@ -25,15 +33,17 @@ const Essays = ({ essays, user, handleLogin }) => (
         </Grid>
       ))}
     </Grid>
-  </>
+  </Layout>
 );
 
 Essays.getInitialProps = async () => {
   const {
     publicRuntimeConfig: { APIEndpoint }
   } = getConfig();
-  const { data } = await axios.get(`${APIEndpoint}/essays`);
-  return { essays: formatEssays(data) };
+  const {
+    data: { essays }
+  } = await axios.get(`${APIEndpoint}/essays`);
+  return { essays: formatEssays(essays) };
 };
 
 Essays.propTypes = {
@@ -48,7 +58,8 @@ Essays.propTypes = {
     })
   ).isRequired,
   user: PropTypes.object,
-  handleLogin: PropTypes.func
+  handleLogin: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired
 };
 
-export default Essays;
+export default withAuth(Essays);

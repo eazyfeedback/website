@@ -6,37 +6,42 @@ import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import { SignInFirst } from "../components/shared";
+import Layout from "../components/layout";
 
-const Profile = ({ user, classes, handleLogin }) => (
-  <>
-    {user ? (
-      <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
-        <Grid item xs={12}>
-          <Avatar alt={user.displayName} src={user.photoURL} className={classes.avatar} />
-          <List>
-            <ListItem style={{ textAlign: "center" }}>
-              <ListItemText primary={user.displayName} secondary={user.email} />
-            </ListItem>
-            <ListItem>
-              <ListItemText secondary="essays posted for feedback" />
-              <ListItemText primary="0" />
-            </ListItem>
-            <ListItem>
-              <ListItemText secondary="essays reviewed" />
-              <ListItemText primary="0" />
-            </ListItem>
-          </List>
-        </Grid>
+const Profile = ({ user, classes, handleLogin, handleLogout }) => (
+  <Layout
+    handleLogin={handleLogin}
+    handleLogout={handleLogout}
+    user={user}
+    signInRequired={true}
+    signInVisible={true}
+    message="You need to signin to access your profile"
+  >
+    <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
+      <Grid item xs={12}>
+        <Avatar alt={user.displayName} src={user.photoURL} className={classes.avatar} />
+        <List>
+          <ListItem style={{ textAlign: "center" }}>
+            <ListItemText primary={user.displayName} secondary={user.email} />
+          </ListItem>
+          <ListItem>
+            <ListItemText secondary="essays posted for feedback" />
+            <ListItemText primary="0" />
+          </ListItem>
+          <ListItem>
+            <ListItemText secondary="essays reviewed" />
+            <ListItemText primary="0" />
+          </ListItem>
+        </List>
       </Grid>
-    ) : (
-      <SignInFirst message="You need to signin to access your profile" handleLogin={handleLogin} />
-    )}
-  </>
+    </Grid>
+  </Layout>
 );
 
 Profile.propTypes = {
   user: PropTypes.object,
-  handleLogin: PropTypes.func,
+  handleLogin: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired
 };
 

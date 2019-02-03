@@ -8,12 +8,12 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 import NextLink from "next/link";
 import axios from "axios";
 import getConfig from "next/config";
-import Grid from "@material-ui/core/Grid";
 import { Stages, Areas, Link, Review } from "../components/post";
-import { SignInFirst } from "../components/shared";
+import Layout from "../components/layout";
 
 const stages = getStages();
 const areas = getAreas();
@@ -37,7 +37,7 @@ export function getAreas() {
   ];
 }
 
-function Post({ classes, user, handleLogin }) {
+function Post({ classes, user, handleLogin, handleLogout }) {
   const steps = getStepsHeadings();
   const initialSelectedAreas = Array.from(Array(areas.length), () => false);
   const [ownerUID, setOwnerUID] = useState("");
@@ -117,60 +117,63 @@ function Post({ classes, user, handleLogin }) {
       });
   }
   return (
-    <>
-      {user ? (
-        <div className={classes.layout}>
-          <Typography className={classes.text} variant="subtitle1">
-            These details will help your reviewer give you the feedback you want.
-          </Typography>
-          <Grid container justify="center" alignItems="center" direction="column">
-            <Grid item xs={12} className={classes.stepper}>
-              <Stepper activeStep={activeStep} orientation="vertical">
-                {steps.map((label, index) => (
-                  <Step key={label}>
-                    <StepLabel>{label}</StepLabel>
-                    <StepContent>
-                      <div>{getStepContent(index)}</div>
-                      <div className={classes.actions}>
-                        <div>
-                          <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                            Back
-                          </Button>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={activeStep === steps.length - 1 ? handleFinish : handleNext}
-                            className={classes.button}
-                            disabled={!canGoNext(activeStep)}
-                          >
-                            {activeStep === steps.length - 1 ? "Post" : "Next"}
-                          </Button>
-                        </div>
+    <Layout
+      handleLogin={handleLogin}
+      handleLogout={handleLogout}
+      user={user}
+      signInRequired={true}
+      signInVisible={true}
+      message="You need to sign in to post for feedback"
+    >
+      <div className={classes.layout}>
+        <Typography className={classes.text} variant="subtitle1">
+          These details will help your reviewer give you the feedback you want.
+        </Typography>
+        <Grid container justify="center" alignItems="center" direction="column">
+          <Grid item xs={12} className={classes.stepper}>
+            <Stepper activeStep={activeStep} orientation="vertical">
+              {steps.map((label, index) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                  <StepContent>
+                    <div>{getStepContent(index)}</div>
+                    <div className={classes.actions}>
+                      <div>
+                        <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                          Back
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={activeStep === steps.length - 1 ? handleFinish : handleNext}
+                          className={classes.button}
+                          disabled={!canGoNext(activeStep)}
+                        >
+                          {activeStep === steps.length - 1 ? "Post" : "Next"}
+                        </Button>
                       </div>
-                    </StepContent>
-                  </Step>
-                ))}
-              </Stepper>
-              {activeStep === steps.length && (
-                <Paper square elevation={0} className={classes.reset}>
-                  <Typography>All steps completed - your essay in now awaiting a reviewer to give feedback</Typography>
-                  <Button onClick={handleReset} className={classes.button}>
-                    Reset
+                    </div>
+                  </StepContent>
+                </Step>
+              ))}
+            </Stepper>
+            {activeStep === steps.length && (
+              <Paper square elevation={0} className={classes.reset}>
+                <Typography>All steps completed - your essay in now awaiting a reviewer to give feedback</Typography>
+                <Button onClick={handleReset} className={classes.button}>
+                  Reset
+                </Button>
+                <NextLink href="/essays" prefetch passHref>
+                  <Button variant="contained" color="secondary" className={classes.button}>
+                    go to essays
                   </Button>
-                  <NextLink href="/essays" prefetch passHref>
-                    <Button variant="contained" color="secondary" className={classes.button}>
-                      go to essays
-                    </Button>
-                  </NextLink>
-                </Paper>
-              )}
-            </Grid>
+                </NextLink>
+              </Paper>
+            )}
           </Grid>
-        </div>
-      ) : (
-        <SignInFirst handleLogin={handleLogin} message="You need to sign in to post for feedback" />
-      )}
-    </>
+        </Grid>
+      </div>
+    </Layout>
   );
 }
 
@@ -205,7 +208,8 @@ const styles = theme => ({
 Post.propTypes = {
   classes: PropTypes.object.isRequired,
   user: PropTypes.object,
-  handleLogin: PropTypes.func
+  handleLogin: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Post);

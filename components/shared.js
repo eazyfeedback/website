@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
@@ -5,6 +6,12 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import getConfig from "next/config";
+import axios from "axios";
+
+const {
+  publicRuntimeConfig: { APIEndpoint }
+} = getConfig();
 
 const SignIn = ({ handleLogin, message }) => (
   <div style={{ margin: 20 }}>
@@ -34,38 +41,51 @@ function getBackgroundColor(user, essay) {
   return "#fff";
 }
 
-function handleReview() {}
+function handleReview(user, essay) {
+  return axios.patch(`${APIEndpoint}/essays/${essay.id}`, {
+    reviewerUID: user.uid
+  });
+}
 
-function handleRemove() {}
+function handleRemove(essay) {
+  return axios.delete(`${APIEndpoint}/essays${essay.id}`);
+}
 
-function handleCheckOff() {}
+function handleComplete(essay) {
+  return axios.patch(`${APIEndpoint}/essays/${essay.id}`, {
+    isReviewComplete: true
+  });
+}
 
-function handleComplete() {}
-
-function Actions({ user, essay, postReview, classes }) {
-  const isVisible = user && !postReview;
-  const completeCondition = user && user.uid === essay.reviewerUID;
-  const reviewCondition = !essay.reviewerUID && user && user.uid !== essay.ownerUID;
+function Actions({ user, essay, classes, checkoffInProgress, startCheckoff, endCheckoff }) {
+  const showActions = user;
+  const canRemove = user && user.uid === essay.ownerUID;
+  let canComplete = user && user.uid === essay.reviewerUID;
+  const canReview = !essay.reviewerUID && user && user.uid !== essay.ownerUID;
+  const finishCheckoff = () => {
+    endCheckoff();
+    handleComplete(essay);
+  };
   return (
     <>
-      {isVisible && (
+      {showActions && (
         <CardActions className={classes.actions}>
-          {user.uid === essay.ownerUID && (
+          {canRemove && (
             <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={handleRemove}>
               remove
             </Button>
           )}
-          {completeCondition && (
-            <>
-              <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
-                check off
-              </Button>
-              <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit">
+          {canComplete &&
+            (checkoffInProgress ? (
+              <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={finishCheckoff}>
                 mark as complete
               </Button>
-            </>
-          )}
-          {reviewCondition && (
+            ) : (
+              <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={startCheckoff}>
+                check off
+              </Button>
+            ))}
+          {canReview && (
             <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={handleReview}>
               review
             </Button>
@@ -79,45 +99,62 @@ function Actions({ user, essay, postReview, classes }) {
 Actions.propTypes = {
   user: PropTypes.object,
   essay: PropTypes.object.isRequired,
-  postReview: PropTypes.bool,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  checkoffInProgress: PropTypes.bool,
+  startCheckoff: PropTypes.func.isRequired,
+  endCheckoff: PropTypes.func.isRequired
 };
 
-let Essay = ({ essay, user, classes, postReview }) => (
-  <Card className={classes.card} style={{ height: "100%", backgroundColor: getBackgroundColor(user, essay) }}>
-    <CardContent>
-      <Typography color="textSecondary" gutterBottom>
-        Stage
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        {essay.stage}
-      </Typography>
-      <Typography color="textSecondary" gutterBottom>
-        Areas
-      </Typography>
-      {essay.areas.map((area, idx) => (
-        <Typography key={idx} variant="body1" gutterBottom={idx === essay.areas.length - 1}>
-          {`${idx + 1}. ${area}`}
+let Essay = ({ essay, user, classes }) => {
+  const [checkoffInProgress, setCheckoff] = useState(false);
+  const startCheckoff = () => setCheckoff(true);
+  const endCheckoff = () => endCheckoff(false);
+  const showQuestion = essay.question.length > 0;
+  const showLink = user;
+
+  return (
+    <Card className={classes.card} style={{ height: "100%", backgroundColor: getBackgroundColor(user, essay) }}>
+      <CardContent>
+        <Typography color="textSecondary" gutterBottom>
+          Stage
         </Typography>
-      ))}
-      {postReview && (
-        <>
-          <Typography color="textSecondary">Link</Typography>
-          <Typography variant="body1" gutterBottom>
-            {essay.link}
+        <Typography variant="body1" gutterBottom>
+          {essay.stage}
+        </Typography>
+        <Typography color="textSecondary" gutterBottom>
+          Areas
+        </Typography>
+        {essay.areas.map((area, idx) => (
+          <Typography key={idx} variant="body1" gutterBottom={idx === essay.areas.length - 1}>
+            {`${idx + 1}. ${area}`}
           </Typography>
-        </>
-      )}
-      {essay.question.length > 0 && (
-        <>
-          <Typography color="textSecondary">Question</Typography>
-          <Typography variant="body1">{essay.question}</Typography>
-        </>
-      )}
-    </CardContent>
-    <Actions user={user} essay={essay} postReview={postReview} classes={classes} />
-  </Card>
-);
+        ))}
+        {showLink && (
+          <>
+            <Typography color="textSecondary">Link</Typography>
+            <Typography variant="body1" gutterBottom>
+              {essay.link}
+            </Typography>
+          </>
+        )}
+        {showQuestion && (
+          <>
+            <Typography color="textSecondary">Question</Typography>
+            <Typography variant="body1">{essay.question}</Typography>
+          </>
+        )}
+      </CardContent>
+      <Actions
+        user={user}
+        essay={essay}
+        classes={classes}
+        checkoffInProgress={checkoffInProgress}
+        startCheckoff={startCheckoff}
+        endCheckoff={endCheckoff}
+      />
+    </Card>
+  );
+};
 
 const essayStyles = () => ({
   card: {
@@ -138,8 +175,7 @@ Essay.propTypes = {
     ownerUID: PropTypes.string.isRequired
   }).isRequired,
   classes: PropTypes.object.isRequired,
-  user: PropTypes.object,
-  postReview: PropTypes.bool
+  user: PropTypes.object
 };
 
 Essay = withStyles(essayStyles)(Essay);

@@ -89,7 +89,7 @@ const Review = ({ essay, user }) => {
         Review your feedback request
       </Typography>
       <div style={{ marginBottom: 10, maxWidth: 320 }}>
-        <Essay essay={essay} user={user} postReview />
+        <Essay essay={essay} user={user} />
       </div>
     </div>
   );

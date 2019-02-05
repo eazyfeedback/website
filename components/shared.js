@@ -27,20 +27,6 @@ SignIn.propTypes = {
   message: PropTypes.string.isRequired
 };
 
-function getBackgroundColor(user, essay) {
-  if (user && essay) {
-    switch (user.uid) {
-      case essay.reviewerUID:
-        return "#e91e63";
-      case essay.ownerUID:
-        return "#3f51b5";
-      default:
-        return "#fff";
-    }
-  }
-  return "#fff";
-}
-
 function handleReview(user, essay) {
   return axios.patch(`${APIEndpoint}/essays/${essay.id}`, {
     reviewerUID: user.uid
@@ -105,6 +91,20 @@ Actions.propTypes = {
   endCheckoff: PropTypes.func.isRequired
 };
 
+function getBackgroundColor(user, essay) {
+  if (user && essay) {
+    switch (user.uid) {
+      case essay.reviewerUID:
+        return "#e91e63";
+      case essay.ownerUID:
+        return "#3f51b5";
+      default:
+        return "#fff";
+    }
+  }
+  return "#fff";
+}
+
 let Essay = ({ essay, user, classes }) => {
   const [checkoffInProgress, setCheckoff] = useState(false);
   const startCheckoff = () => setCheckoff(true);
@@ -118,14 +118,14 @@ let Essay = ({ essay, user, classes }) => {
         <Typography color="textSecondary" gutterBottom>
           Stage
         </Typography>
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1" color="secondary" gutterBottom>
           {essay.stage}
         </Typography>
         <Typography color="textSecondary" gutterBottom>
           Areas
         </Typography>
         {essay.areas.map((area, idx) => (
-          <Typography key={idx} variant="body1" gutterBottom={idx === essay.areas.length - 1}>
+          <Typography key={idx} variant="body1" gutterBottom>
             {`${idx + 1}. ${area}`}
           </Typography>
         ))}

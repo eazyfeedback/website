@@ -41,7 +41,6 @@ const withAuth = Page => {
 
     function handleAuth(user) {
       if (user) {
-        console.info("auth.js handleAuth > user", user);
         user
           .getIdToken()
           .then(token =>
@@ -57,11 +56,8 @@ const withAuth = Page => {
             })
           )
           .then(() => getUser(user.uid))
-          .catch(err => {
-            return createUser(selectUser(user));
-          })
+          .catch(err => createUser(selectUser(user)))
           .then(res => {
-            console.info("auth.js getUser/createUser > user", res.data.user);
             setUser(res.data.user);
           });
       } else {

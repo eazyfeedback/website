@@ -33,7 +33,9 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
         >
           <Hidden mdUp>
             <Tooltip title="Home">
-              <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
+              <div className={classes.logoImageContainer}>
+                <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
+              </div>
             </Tooltip>
           </Hidden>
           <Hidden smDown>
@@ -133,8 +135,15 @@ const styles = theme => ({
     fontSize: "1.1rem"
   },
   logoImage: {
+    position: "absolute",
     width: "2rem",
-    height: "2rem"
+    height: "2rem",
+    marginTop: "-1rem",
+    marginLeft: "-1rem"
+  },
+  logoImageContainer: {
+    padding: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   button: {
     [theme.breakpoints.up("sm")]: {

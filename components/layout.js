@@ -4,13 +4,13 @@ import Appbar from "../components/appbar";
 import { SignIn } from "../components/shared";
 
 const Layout = ({ children, classes, handleLogin, handleLogout, user, signInRequired, signInVisible, message }) => {
-  const signinCondition = signInVisible && !user;
-  const childrenCondition = !signInRequired || (signInRequired && user);
+  const showSignin = signInVisible && !user;
+  const showChildren = !signInRequired || (signInRequired && user);
   return (
     <div style={{ minHeight: "100vh" }}>
       <Appbar handleLogin={handleLogin} handleLogout={handleLogout} user={user} />
-      {signinCondition && <SignIn handleLogin={handleLogin} message={message} />}
-      {childrenCondition && <div className={classes.root}>{children}</div>}
+      {showSignin && <SignIn handleLogin={handleLogin} message={message} />}
+      {showChildren && <div className={classes.root}>{children}</div>}
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase/app";
 import "firebase/auth";
-import "firebase/firestore";
 import axios from "axios";
 import getConfig from "next/config";
 import secrets from "../secrets";
@@ -38,7 +37,7 @@ function handleLogout() {
 
 const withAuth = Page => {
   const WithAuth = props => {
-    const [user, setUser] = useState(props.user);
+    const [user, setUser] = useState(null);
 
     function handleAuth(user) {
       if (user) {
@@ -69,30 +68,23 @@ const withAuth = Page => {
         axios("/auth/logout", {
           method: "POST",
           credentials: "same-origin"
-        }).then(() => setUser(user));
+        }).then(() => setUser(null));
       }
     }
 
     useEffect(() => {
       let unsubscribe;
-      if (!firebase.apps.length) {
-        firebase.initializeApp(secrets.firebase.client);
-        unsubscribe = firebase.auth().onAuthStateChanged(handleAuth);
-      }
-      return () => {
-        if (unsubscribe) unsubscribe();
-      };
-    });
+      if (!firebase.apps.length) firebase.initializeApp(secrets.firebase.client);
+      if (!unsubscribe) unsubscribe = firebase.auth().onAuthStateChanged(handleAuth);
+      return () => unsubscribe();
+    }, []);
 
     return <Page {...props} user={user} handleLogin={handleLogin} handleLogout={handleLogout} />;
   };
 
   WithAuth.getInitialProps = async function(context) {
-    const user = context.req && context.req.session ? context.req.session.decodedToken : null;
-    console.info("auth.js getInitialProps > user", user);
     return {
-      ...(Page.getInitialProps ? await Page.getInitialProps(context) : {}),
-      user
+      ...(Page.getInitialProps ? await Page.getInitialProps(context) : {})
     };
   };
 

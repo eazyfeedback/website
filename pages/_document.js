@@ -8,7 +8,8 @@ class MyDocument extends Document {
       <html lang="en" dir="ltr">
         <Head>
           <meta charSet="utf-8" />
-          <link rel="shortcut icon" type="image/png" href="/static/favicon.png" />
+          <link rel="shortcut icon" href="/static/favicon.ico" />
+          <link rel="apple-touch-icon" href="/static/favicon.ico" />
           {/* Use minimum-scale=1 to enable GPU rasterization */}
           <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" />

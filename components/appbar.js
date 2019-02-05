@@ -9,8 +9,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import FolderIcon from "@material-ui/icons/Folder";
 import CreateIcon from "@material-ui/icons/Create";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import LockOpenIcon from "@material-ui/icons/LockOpen";
-import LockIcon from "@material-ui/icons/Lock";
+import Tooltip from "@material-ui/core/Tooltip";
 import withWidth from "@material-ui/core/withWidth";
 import { withRouter } from "next/router";
 import Hidden from "@material-ui/core/Hidden";
@@ -30,72 +29,94 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
           className={classNames(classes.logo, {
             [classes.activeNav]: isActive(route, "/")
           })}
+          underline={isActive(route, "/") ? "always" : "hover"}
         >
-          essayfeedback
+          <Hidden smUp>
+            <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
+          </Hidden>
+          <Hidden smDown>
+            <span
+              className={classNames({
+                [classes.activeNav]: isActive(route, "/")
+              })}
+            >
+              essayfeedback
+            </span>
+          </Hidden>
         </MaterialLink>
       </NextLink>
 
       <NextLink href="/post" prefetch>
-        <Button className={classes.buttonClass}>
-          <CreateIcon
-            className={classNames(classes.icon, {
-              [classes.activeNav]: isActive(route, "/post")
-            })}
-          />
-          <Hidden
-            smDown
-            className={classNames({
-              [classes.activeNav]: isActive(route, "/post")
-            })}
-          >
-            post
-          </Hidden>
-        </Button>
+        <Tooltip title="Post essay for feedback">
+          <Button className={classes.buttonClass}>
+            <CreateIcon
+              className={classNames(classes.icon, {
+                [classes.activeNav]: isActive(route, "/post")
+              })}
+            />
+            <Hidden smDown>
+              <span
+                className={classNames(classes.navText, {
+                  [classes.activeNav]: isActive(route, "/post")
+                })}
+              >
+                post
+              </span>
+            </Hidden>
+          </Button>
+        </Tooltip>
       </NextLink>
 
       <NextLink href="/essays" prefetch>
-        <Button className={classes.buttonClass}>
-          <FolderIcon
-            className={classNames(classes.icon, {
-              [classes.activeNav]: isActive(route, "/essays")
-            })}
-          />
-          <Hidden
-            smDown
-            className={classNames({
-              [classes.activeNav]: isActive(route, "/essays")
-            })}
-          >
-            post
-          </Hidden>
-        </Button>
+        <Tooltip title="Essays awaiting review">
+          <Button className={classes.buttonClass}>
+            <FolderIcon
+              className={classNames(classes.icon, {
+                [classes.activeNav]: isActive(route, "/essays")
+              })}
+            />
+            <Hidden smDown>
+              <span
+                className={classNames(classes.navText, {
+                  [classes.activeNav]: isActive(route, "/essays")
+                })}
+              >
+                essays
+              </span>
+            </Hidden>
+          </Button>
+        </Tooltip>
       </NextLink>
 
-      <NextLink href="/profile" prefetch>
-        <Button className={classes.buttonClass}>
-          <AccountCircleIcon
-            className={classNames(classes.icon, {
-              [classes.activeNav]: isActive(route, "/profile")
-            })}
-          />
-          <Hidden
-            smDown
-            className={classNames({
-              [classes.activeNav]: isActive(route, "/profile")
-            })}
-          >
-            post
-          </Hidden>
-        </Button>
-      </NextLink>
+      <Hidden smDown>
+        <NextLink href="/profile" prefetch>
+          <Tooltip title="My Profile">
+            <Button className={classes.buttonClass}>
+              <AccountCircleIcon
+                className={classNames(classes.icon, {
+                  [classes.activeNav]: isActive(route, "/profile")
+                })}
+              />
+              <span
+                className={classNames(classes.navText, {
+                  [classes.activeNav]: isActive(route, "/profile")
+                })}
+              >
+                profile
+              </span>
+            </Button>
+          </Tooltip>
+        </NextLink>
+      </Hidden>
 
       {user ? (
         <Menu handleLogout={handleLogout} user={user} />
       ) : (
-        <Button onClick={handleLogin} className={classes.button} variant="outlined">
-          <LockOpenIcon className={classes.icon} />
-          <Hidden smDown>sign in</Hidden>
-        </Button>
+        <Tooltip title="Login / Sign up">
+          <Button onClick={handleLogin} className={classes.button} variant="outlined">
+            <ExitToAppIcon className={classes.icon} />
+          </Button>
+        </Tooltip>
       )}
     </Toolbar>
   </AppBar>
@@ -106,6 +127,10 @@ const styles = theme => ({
     flexGrow: 1,
     fontSize: "1.1rem"
   },
+  logoImage: {
+    width: "2rem",
+    height: "2rem"
+  },
   button: {
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing.unit,
@@ -114,15 +139,15 @@ const styles = theme => ({
   },
   icon: {
     fontSize: 24,
-    [theme.breakpoints.up("sm")]: {
-      marginRight: 0
-    },
     root: {
       flexGrow: 1
     }
   },
   activeNav: {
     color: theme.palette.common.white
+  },
+  navText: {
+    marginLeft: theme.spacing.unit
   }
 });
 

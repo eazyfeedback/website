@@ -44,8 +44,8 @@ function handleComplete() {}
 
 function Actions({ user, essay, postReview, classes }) {
   const isVisible = user && !postReview;
-  const completeCondition = user.uid === essay.reviewerUID;
-  const reviewCondition = !essay.reviewerUID && user.uid !== essay.ownerUID;
+  const completeCondition = user && user.uid === essay.reviewerUID;
+  const reviewCondition = !essay.reviewerUID && user && user.uid !== essay.ownerUID;
   return (
     <>
       {isVisible && (

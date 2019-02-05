@@ -31,17 +31,21 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
           })}
           underline={isActive(route, "/") ? "always" : "hover"}
         >
-          <Hidden smUp>
-            <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
+          <Hidden mdUp>
+            <Tooltip title="Home">
+              <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
+            </Tooltip>
           </Hidden>
           <Hidden smDown>
-            <span
-              className={classNames({
-                [classes.activeNav]: isActive(route, "/")
-              })}
-            >
-              essayfeedback
-            </span>
+            <Tooltip title="Home">
+              <span
+                className={classNames({
+                  [classes.activeNav]: isActive(route, "/")
+                })}
+              >
+                essayfeedback
+              </span>
+            </Tooltip>
           </Hidden>
         </MaterialLink>
       </NextLink>
@@ -115,6 +119,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
         <Tooltip title="Login / Sign up">
           <Button onClick={handleLogin} className={classes.button} variant="outlined">
             <ExitToAppIcon className={classes.icon} />
+            <span className={classes.navText}>sign in</span>
           </Button>
         </Tooltip>
       )}

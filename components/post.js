@@ -39,7 +39,6 @@ const Areas = ({ areas, checked, handleCheck, question, setQuestion }) => (
     <TextField
       label="Details for the reviewer..."
       fullWidth
-      margin="normal"
       onChange={e => setQuestion(e.target.value)}
       value={question}
       helperText="Example: Does the third paragraph make sense?"
@@ -69,7 +68,6 @@ const Link = ({ link, setLink }) => (
     </Typography>
     <TextField
       label="Paste Google docs link"
-      margin="normal"
       onChange={e => setLink(e.target.value)}
       value={link}
       helperText={`ensure "Anyone with link can comment" sharing permission`}

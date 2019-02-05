@@ -36,7 +36,7 @@ const Essays = ({ essays, user, handleLogin, handleLogout }) => (
   </Layout>
 );
 
-Essays.getInitialProps = async ctx => {
+Essays.getInitialProps = async () => {
   const {
     publicRuntimeConfig: { APIEndpoint }
   } = getConfig();

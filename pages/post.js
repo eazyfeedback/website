@@ -105,7 +105,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
       publicRuntimeConfig: { APIEndpoint }
     } = getConfig();
     axios
-      .post(APIEndpoint, {
+      .post(`${APIEndpoint}/essays`, {
         selectedAreas,
         question,
         selectedStage,
@@ -124,7 +124,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
       user={user}
       signInRequired={true}
       signInVisible={true}
-      message="You need to sign in to post for feedback"
+      message="You need to sign in to post your essay for feedback"
     >
       <div className={classes.layout}>
         <Typography className={classes.text} variant="subtitle1">
@@ -160,7 +160,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
             </Stepper>
             {activeStep === steps.length && (
               <Paper square elevation={0} className={classes.reset}>
-                <Typography>All steps completed - your essay in now awaiting a reviewer to give feedback</Typography>
+                <Typography>All steps completed. Your essay in now awaiting a reviewer to give feedback</Typography>
                 <Button onClick={handleReset} className={classes.button}>
                   Reset
                 </Button>

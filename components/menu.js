@@ -30,7 +30,7 @@ function MenuProfile({ handleLogout, user, classes }) {
           <Grow {...TransitionProps} style={{ transformOrigin: placement === "bottom" ? "center top" : "center bottom" }}>
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
-                <MenuList>
+                <MenuList className={classes.menuList}>
                   <MenuItem className={classes.menuItem} onClick={handleLogout}>
                     Logout
                   </MenuItem>
@@ -50,9 +50,13 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit
   },
+  menuList: {
+    paddingTop: 0,
+    paddingBottom: 0
+  },
   menuItem: {
-    paddingLeft: theme.spacing.unit * 4,
-    paddingRight: theme.spacing.unit * 4
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2
   },
   avatar: {
     width: 30,

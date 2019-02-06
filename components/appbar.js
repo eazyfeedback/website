@@ -32,11 +32,11 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
           underline={isActive(route, "/") ? "always" : "hover"}
         >
           <Hidden mdUp>
-            <Tooltip title="Home">
-              <div className={classes.logoImageContainer}>
+            <div className={classes.logoImageContainer}>
+              <Tooltip title="Home">
                 <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
-              </div>
-            </Tooltip>
+              </Tooltip>
+            </div>
           </Hidden>
           <Hidden smDown>
             <Tooltip title="Home">

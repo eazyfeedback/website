@@ -3,7 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
-import { Essay } from "./shared";
+import Essay from "./essay";
 
 const Stages = ({ stages, selectedIndex, setSelectedIndex }) => (
   <div>

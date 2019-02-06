@@ -13,20 +13,6 @@ const {
   publicRuntimeConfig: { APIEndpoint }
 } = getConfig();
 
-const SignIn = ({ handleLogin, message }) => (
-  <div style={{ margin: 20 }}>
-    <Typography gutterBottom>{message}</Typography>
-    <Button onClick={handleLogin} color="primary" variant="outlined">
-      sign in with google
-    </Button>
-  </div>
-);
-
-SignIn.propTypes = {
-  handleLogin: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired
-};
-
 function handleReview(user, essay) {
   return axios.patch(`${APIEndpoint}/essays/${essay.id}`, {
     reviewerUID: user.uid
@@ -91,21 +77,7 @@ Actions.propTypes = {
   endCheckoff: PropTypes.func.isRequired
 };
 
-function getBackgroundColor(user, essay) {
-  if (user && essay) {
-    switch (user.uid) {
-      case essay.reviewerUID:
-        return "#e91e63";
-      case essay.ownerUID:
-        return "#3f51b5";
-      default:
-        return "#fff";
-    }
-  }
-  return "#fff";
-}
-
-let Essay = ({ essay, user, classes }) => {
+const Essay = ({ essay, user, classes }) => {
   const [checkoffInProgress, setCheckoff] = useState(false);
   const startCheckoff = () => setCheckoff(true);
   const endCheckoff = () => endCheckoff(false);
@@ -113,12 +85,12 @@ let Essay = ({ essay, user, classes }) => {
   const showLink = user;
 
   return (
-    <Card className={classes.card} style={{ height: "100%", backgroundColor: getBackgroundColor(user, essay) }}>
+    <Card className={classes.card} style={{ height: "100%" }}>
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
           Stage
         </Typography>
-        <Typography variant="body1" color="secondary" gutterBottom>
+        <Typography variant="body1" gutterBottom>
           {essay.stage}
         </Typography>
         <Typography color="textSecondary" gutterBottom>
@@ -156,13 +128,38 @@ let Essay = ({ essay, user, classes }) => {
   );
 };
 
-const essayStyles = () => ({
+const styledBy = (property, mapping) => props => mapping[props[property]];
+
+function getBackgroundColor(user, essay) {
+  if (user && essay) {
+    switch (user.uid) {
+      case essay.reviewerUID:
+        return "red";
+      case essay.ownerUID:
+        return "blue";
+      default:
+        return "white";
+    }
+  }
+}
+
+const essayStyles = theme => ({
   card: {
     minWidth: 120
   },
   actions: {
     display: "flex"
-  }
+  },
+  backgroundColor: styledBy("color", {
+    red: theme.palette.secondary.main,
+    blue: theme.palette.primary.main,
+    white: theme.palette.background.paper
+  }),
+  color: styledBy("color", {
+    red: theme.palette.common.white,
+    blue: theme.palette.common.white,
+    white: theme.palette.text.primary
+  })
 });
 
 Essay.propTypes = {
@@ -178,6 +175,4 @@ Essay.propTypes = {
   user: PropTypes.object
 };
 
-Essay = withStyles(essayStyles)(Essay);
-
-export { SignIn, Essay };
+export default withStyles(essayStyles)(Essay);

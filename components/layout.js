@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Appbar from "../components/appbar";
-import { SignIn } from "../components/shared";
+import Appbar from "./appbar";
+import Signin from "./signin";
 
 const Layout = ({ children, classes, handleLogin, handleLogout, user, signInRequired, signInVisible, message }) => {
   const showSignin = signInVisible && !user;
@@ -9,7 +9,7 @@ const Layout = ({ children, classes, handleLogin, handleLogout, user, signInRequ
   return (
     <div style={{ minHeight: "100vh" }}>
       <Appbar handleLogin={handleLogin} handleLogout={handleLogout} user={user} />
-      {showSignin && <SignIn handleLogin={handleLogin} message={message} />}
+      {showSignin && <Signin handleLogin={handleLogin} message={message} />}
       {showChildren && <div className={classes.root}>{children}</div>}
     </div>
   );

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import getConfig from "next/config";
-import { Essay } from "../components/shared";
+import Essay from "../components/essay";
 import { getSelectedAreas, getSelectedStage } from "../pages/post";
 import Layout from "../components/layout";
 import withAuth from "../components/auth";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { func } from "prop-types";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -83,28 +83,27 @@ const Essay = ({ essay, user, classes }) => {
   const endCheckoff = () => endCheckoff(false);
   const showQuestion = essay.question.length > 0;
   const showLink = user;
-
   return (
     <Card className={classes.card} style={{ height: "100%" }}>
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
           Stage
         </Typography>
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1" className={classes.text} gutterBottom>
           {essay.stage}
         </Typography>
         <Typography color="textSecondary" gutterBottom>
           Areas
         </Typography>
         {essay.areas.map((area, idx) => (
-          <Typography key={idx} variant="body1" gutterBottom>
+          <Typography key={idx} variant="body1" className={classes.text} gutterBottom>
             {`${idx + 1}. ${area}`}
           </Typography>
         ))}
         {showLink && (
           <>
             <Typography color="textSecondary">Link</Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="body1" className={classes.text} gutterBottom>
               {essay.link}
             </Typography>
           </>
@@ -112,7 +111,9 @@ const Essay = ({ essay, user, classes }) => {
         {showQuestion && (
           <>
             <Typography color="textSecondary">Question</Typography>
-            <Typography variant="body1">{essay.question}</Typography>
+            <Typography variant="body1" className={classes.text}>
+              {essay.question}
+            </Typography>
           </>
         )}
       </CardContent>
@@ -130,7 +131,41 @@ const Essay = ({ essay, user, classes }) => {
 
 const styledBy = (property, mapping) => props => mapping[props[property]];
 
-function getBackgroundColor(user, essay) {
+const styles = theme => ({
+  card: {
+    minWidth: 120,
+    backgroundColor: styledBy("color", {
+      red: theme.palette.secondary.main,
+      blue: theme.palette.primary.main,
+      white: theme.palette.background.paper
+    })
+  },
+  actions: {
+    display: "flex"
+  },
+  text: {
+    color: styledBy("color", {
+      red: theme.palette.common.white,
+      blue: theme.palette.common.white,
+      white: theme.palette.text.primary
+    })
+  }
+});
+
+Essay.propTypes = {
+  classes: PropTypes.object.isRequired,
+  essay: PropTypes.shape({
+    question: PropTypes.string,
+    stage: PropTypes.string.isRequired,
+    areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+    link: PropTypes.string.isRequired,
+    reviewerUID: PropTypes.string,
+    ownerUID: PropTypes.string.isRequired
+  }).isRequired,
+  user: PropTypes.object
+};
+
+function getColors(user, essay) {
   if (user && essay) {
     switch (user.uid) {
       case essay.reviewerUID:
@@ -141,38 +176,12 @@ function getBackgroundColor(user, essay) {
         return "white";
     }
   }
+  return "white";
 }
 
-const essayStyles = theme => ({
-  card: {
-    minWidth: 120
-  },
-  actions: {
-    display: "flex"
-  },
-  backgroundColor: styledBy("color", {
-    red: theme.palette.secondary.main,
-    blue: theme.palette.primary.main,
-    white: theme.palette.background.paper
-  }),
-  color: styledBy("color", {
-    red: theme.palette.common.white,
-    blue: theme.palette.common.white,
-    white: theme.palette.text.primary
-  })
-});
-
-Essay.propTypes = {
-  essay: PropTypes.shape({
-    question: PropTypes.string,
-    stage: PropTypes.string.isRequired,
-    areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-    link: PropTypes.string.isRequired,
-    reviewerUID: PropTypes.string,
-    ownerUID: PropTypes.string.isRequired
-  }).isRequired,
-  classes: PropTypes.object.isRequired,
-  user: PropTypes.object
+const withColorProps = EssayStyled => ({ user, essay }) => {
+  const color = getColors(user, essay);
+  return <EssayStyled color={color} user={user} essay={essay} />;
 };
 
-export default withStyles(essayStyles)(Essay);
+export default withColorProps(withStyles(styles)(Essay));

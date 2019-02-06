@@ -54,7 +54,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
   const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
   const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
   const isAreasComplete = () => selectedAreas.some(bool => bool === true) || question.length > 0;
-  const isLinkComplete = () => link.length > 0 && link.includes("docs.google.com");
+  const isLinkComplete = () => link.length > 0 && link.startsWith("https://docs.google.com/document/d/");
   const isStageComplete = () => selectedStage > -1;
   function getStepContent(step) {
     switch (step) {

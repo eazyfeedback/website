@@ -1,6 +1,6 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -14,50 +14,51 @@ const {
 } = getConfig();
 
 function Actions({ user, essay, classes, buttonColor }) {
-  const showActions = user;
   const canRemove = user && user.uid === essay.ownerUID;
   let canComplete = user && user.uid === essay.reviewerUID;
-  const canReview = !essay.reviewerUID && user && user.uid !== essay.ownerUID;
-  const [showLink, setShowLink] = useState(false);
+  const canReview = user && !essay.reviewerUID && user.uid !== essay.ownerUID;
 
-  function handleReview(user, essay) {
-    setShowLink(true);
-    return axios.patch(`${APIEndpoint}/essays/${essay._id}`, {
-      reviewerUID: user.uid
-    });
+  function pageRefresh() {
+    Router.push("/essays");
   }
 
-  function handleRemove(essay) {
-    return axios.delete(`${APIEndpoint}/essays/${essay._id}`);
+  function handleReview() {
+    return axios
+      .patch(`${APIEndpoint}/essays/${essay.id}`, {
+        reviewerUID: user.uid
+      })
+      .then(() => pageRefresh());
   }
 
-  function handleComplete(essay) {
-    return axios.patch(`${APIEndpoint}/essays/${essay._id}`, {
-      isReviewComplete: true
-    });
+  function handleRemove() {
+    return axios.delete(`${APIEndpoint}/essays/${essay.id}`).then(() => pageRefresh());
+  }
+
+  function handleComplete() {
+    return axios
+      .patch(`${APIEndpoint}/essays/${essay.id}`, {
+        isReviewComplete: true
+      })
+      .then(() => pageRefresh());
   }
   return (
-    <>
-      {showActions && (
-        <CardActions className={classes.actions}>
-          {canRemove && (
-            <Button onClick={handleRemove} style={{ color: buttonColor }}>
-              remove
-            </Button>
-          )}
-          {canComplete && (
-            <Button onClick={handleComplete} style={{ color: buttonColor }}>
-              mark as complete
-            </Button>
-          )}
-          {canReview && (
-            <Button href={showLink ? "#" : essay.link} target="_blank" rel="noreferrer" onClick={handleReview} style={{ color: buttonColor }}>
-              {showLink ? "go to essay" : "review"}
-            </Button>
-          )}
-        </CardActions>
+    <CardActions className={classes.actions}>
+      {canRemove && (
+        <Button onClick={handleRemove} style={{ color: buttonColor }}>
+          remove
+        </Button>
       )}
-    </>
+      {canComplete && (
+        <Button onClick={handleComplete} style={{ color: buttonColor }}>
+          mark as complete
+        </Button>
+      )}
+      {canReview && (
+        <Button href={essay.link} target="_blank" rel="noreferrer" onClick={handleReview} style={{ color: buttonColor }}>
+          review
+        </Button>
+      )}
+    </CardActions>
   );
 }
 
@@ -70,6 +71,7 @@ Actions.propTypes = {
 
 const Essay = ({ essay, user, classes, theme, review }) => {
   const showQuestion = essay.question.length > 0;
+  const showActions = user && !review;
   const { body, title, background, button } = getColors(user, essay, theme);
   return (
     <Card className={classes.card} style={{ height: "100%", backgroundColor: background }}>
@@ -77,35 +79,39 @@ const Essay = ({ essay, user, classes, theme, review }) => {
         <Typography style={{ color: title }} gutterBottom>
           Stage
         </Typography>
-        <Typography variant="body1" style={{ color: body }} gutterBottom>
+        <Typography style={{ color: body }} gutterBottom>
           {essay.stage}
         </Typography>
         <Typography style={{ color: title }} gutterBottom>
           Areas
         </Typography>
         {essay.areas.map((area, idx) => (
-          <Typography key={idx} variant="body1" style={{ color: body }} gutterBottom>
+          <Typography key={idx} style={{ color: body }} gutterBottom>
             {`${idx + 1}. ${area}`}
           </Typography>
         ))}
         {showQuestion && (
           <>
-            <Typography style={{ color: title }}>Question</Typography>
-            <Typography variant="body1" style={{ color: body }}>
+            <Typography style={{ color: title }} gutterBottom>
+              Question
+            </Typography>
+            <Typography style={{ color: body }} gutterBottom>
               {essay.question}
             </Typography>
           </>
         )}
         {review && (
           <>
-            <Typography style={{ color: title }}>Link</Typography>
-            <Typography variant="body1" style={{ color: body }} gutterBottom>
-              {essay.link}
+            <Typography style={{ color: title }} gutterBottom>
+              Link
             </Typography>
+            <Link href={essay.link} target="_blank" rel="noreferrer" style={{ color: body }} gutterBottom variant="body2">
+              {essay.link}
+            </Link>
           </>
         )}
       </CardContent>
-      <Actions user={user} essay={essay} classes={classes} buttonColor={button} />
+      {showActions && <Actions user={user} essay={essay} classes={classes} buttonColor={button} />}
     </Card>
   );
 };
@@ -118,7 +124,8 @@ Essay.propTypes = {
     areas: PropTypes.arrayOf(PropTypes.string).isRequired,
     link: PropTypes.string.isRequired,
     reviewerUID: PropTypes.string,
-    ownerUID: PropTypes.string.isRequired
+    ownerUID: PropTypes.string.isRequired,
+    id: PropTypes.string
   }).isRequired,
   user: PropTypes.object,
   review: PropTypes.bool,

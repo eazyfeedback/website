@@ -35,10 +35,9 @@ function handleLogout() {
   firebase.auth().signOut();
 }
 
-const withAuth = Page => {
-  const WithAuth = props => {
+function withAuth(Page) {
+  function WithAuth(props) {
     const [user, setUser] = useState(null);
-
     function handleAuth(user) {
       if (user) {
         user
@@ -67,25 +66,21 @@ const withAuth = Page => {
         }).then(() => setUser(null));
       }
     }
-
     useEffect(() => {
       let unsubscribe;
       if (!firebase.apps.length) firebase.initializeApp(secrets.firebase.client);
       if (!unsubscribe) unsubscribe = firebase.auth().onAuthStateChanged(handleAuth);
       return () => unsubscribe();
     }, []);
-
     return <Page {...props} user={user} handleLogin={handleLogin} handleLogout={handleLogout} />;
-  };
+  }
 
-  WithAuth.getInitialProps = async function(context) {
-    return {
-      ...(Page.getInitialProps ? await Page.getInitialProps(context) : {})
-    };
-  };
+  WithAuth.getInitialProps = async context => ({
+    ...(Page.getInitialProps ? await Page.getInitialProps(context) : {})
+  });
 
   return WithAuth;
-};
+}
 
 withAuth.propTypes = {
   pageContext: PropTypes.object.isRequired

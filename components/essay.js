@@ -29,36 +29,36 @@ function handleComplete(essay) {
   });
 }
 
-function Actions({ user, essay, classes, checkoffInProgress, startCheckoff, endCheckoff }) {
+function Actions({ user, essay, classes, checkoffInProgress, startCheckoff, endCheckoff, buttonColor }) {
   const showActions = user;
   const canRemove = user && user.uid === essay.ownerUID;
   let canComplete = user && user.uid === essay.reviewerUID;
   const canReview = !essay.reviewerUID && user && user.uid !== essay.ownerUID;
-  const finishCheckoff = () => {
+  function finishCheckoff() {
     endCheckoff();
     handleComplete(essay);
-  };
+  }
   return (
     <>
       {showActions && (
         <CardActions className={classes.actions}>
           {canRemove && (
-            <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={handleRemove}>
+            <Button href={essay.link} target="_blank" rel="noreferrer" onClick={handleRemove} style={{ color: buttonColor }}>
               remove
             </Button>
           )}
           {canComplete &&
             (checkoffInProgress ? (
-              <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={finishCheckoff}>
+              <Button href={essay.link} target="_blank" rel="noreferrer" onClick={finishCheckoff} style={{ color: buttonColor }}>
                 mark as complete
               </Button>
             ) : (
-              <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={startCheckoff}>
+              <Button href={essay.link} target="_blank" rel="noreferrer" onClick={startCheckoff} style={{ color: buttonColor }}>
                 check off
               </Button>
             ))}
           {canReview && (
-            <Button href={essay.link} target="_blank" rel="noreferrer" color="inherit" onClick={handleReview}>
+            <Button href={essay.link} target="_blank" rel="noreferrer" onClick={handleReview} style={{ color: buttonColor }}>
               review
             </Button>
           )}
@@ -74,7 +74,8 @@ Actions.propTypes = {
   classes: PropTypes.object.isRequired,
   checkoffInProgress: PropTypes.bool,
   startCheckoff: PropTypes.func.isRequired,
-  endCheckoff: PropTypes.func.isRequired
+  endCheckoff: PropTypes.func.isRequired,
+  buttonColor: PropTypes.string.isRequired
 };
 
 const Essay = ({ essay, user, classes, theme }) => {
@@ -83,36 +84,36 @@ const Essay = ({ essay, user, classes, theme }) => {
   const endCheckoff = () => endCheckoff(false);
   const showQuestion = essay.question.length > 0;
   const showLink = user;
-  const color = getColor(user, essay);
+  const { body, title, background } = getColors(user, essay, theme);
   return (
-    <Card className={classes.card} style={({ height: "100%" }, { backgroundColor: getBackgroundColor(color, theme) })}>
+    <Card className={classes.card} style={{ height: "100%", backgroundColor: background }}>
       <CardContent>
-        <Typography color="textSecondary" gutterBottom>
+        <Typography style={{ color: title }} gutterBottom>
           Stage
         </Typography>
-        <Typography variant="body1" style={{ color: getTextColor(color, theme) }} gutterBottom>
+        <Typography variant="body1" style={{ color: body }} gutterBottom>
           {essay.stage}
         </Typography>
-        <Typography color="textSecondary" gutterBottom>
+        <Typography style={{ color: title }} gutterBottom>
           Areas
         </Typography>
         {essay.areas.map((area, idx) => (
-          <Typography key={idx} variant="body1" style={{ color: getTextColor(color, theme) }} gutterBottom>
+          <Typography key={idx} variant="body1" style={{ color: body }} gutterBottom>
             {`${idx + 1}. ${area}`}
           </Typography>
         ))}
         {showLink && (
           <>
-            <Typography color="textSecondary">Link</Typography>
-            <Typography variant="body1" style={{ color: getTextColor(color, theme) }} gutterBottom>
+            <Typography style={{ color: title }}>Link</Typography>
+            <Typography variant="body1" style={{ color: body }} gutterBottom>
               {essay.link}
             </Typography>
           </>
         )}
         {showQuestion && (
           <>
-            <Typography color="textSecondary">Question</Typography>
-            <Typography variant="body1" style={{ color: getTextColor(color, theme) }}>
+            <Typography style={{ color: title }}>Question</Typography>
+            <Typography variant="body1" style={{ color: body }}>
               {essay.question}
             </Typography>
           </>
@@ -125,6 +126,7 @@ const Essay = ({ essay, user, classes, theme }) => {
         checkoffInProgress={checkoffInProgress}
         startCheckoff={startCheckoff}
         endCheckoff={endCheckoff}
+        buttonColor={title}
       />
     </Card>
   );
@@ -144,19 +146,30 @@ function getColor(user, essay) {
   return "white";
 }
 
-const styledBy = mapping => (color, theme) => mapping(theme)[color];
+const styledBy = mappingFunc => (color, theme) => mappingFunc(theme)[color];
 
-const getBackgroundColor = styledBy(theme => ({
+const getBackground = styledBy(theme => ({
   red: theme.palette.secondary.main,
   blue: theme.palette.primary.main,
   white: theme.palette.background.paper
 }));
 
-const getTextColor = styledBy(theme => ({
+const getBody = styledBy(theme => ({
   red: theme.palette.common.white,
   blue: theme.palette.common.white,
   white: theme.palette.text.primary
 }));
+
+const getTitle = styledBy(theme => ({
+  red: theme.palette.tertiary.main,
+  blue: theme.palette.tertiary.main,
+  white: theme.palette.text.secondary
+}));
+
+function getColors(user, essay, theme) {
+  const color = getColor(user, essay);
+  return { body: getBody(color, theme), title: getTitle(color, theme), background: getBackground(color, theme) };
+}
 
 const styles = () => ({
   card: {

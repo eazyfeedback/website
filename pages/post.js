@@ -113,9 +113,8 @@ function Post({ classes, user, handleLogin, handleLogout }) {
         ownerUID,
         status: false
       })
-      .then(() => {
-        handleNext();
-      });
+      .then(() => handleNext())
+      .catch(() => handleNext());
   }
   return (
     <Layout

@@ -13,53 +13,46 @@ const {
   publicRuntimeConfig: { APIEndpoint }
 } = getConfig();
 
-function handleReview(user, essay) {
-  return axios.patch(`${APIEndpoint}/essays/${essay.id}`, {
-    reviewerUID: user.uid
-  });
-}
-
-function handleRemove(essay) {
-  return axios.delete(`${APIEndpoint}/essays${essay.id}`);
-}
-
-function handleComplete(essay) {
-  return axios.patch(`${APIEndpoint}/essays/${essay.id}`, {
-    isReviewComplete: true
-  });
-}
-
-function Actions({ user, essay, classes, checkoffInProgress, startCheckoff, endCheckoff, buttonColor }) {
+function Actions({ user, essay, classes, buttonColor }) {
   const showActions = user;
   const canRemove = user && user.uid === essay.ownerUID;
   let canComplete = user && user.uid === essay.reviewerUID;
   const canReview = !essay.reviewerUID && user && user.uid !== essay.ownerUID;
-  function finishCheckoff() {
-    endCheckoff();
-    handleComplete(essay);
+  const [showLink, setShowLink] = useState(false);
+
+  function handleReview(user, essay) {
+    setShowLink(true);
+    return axios.patch(`${APIEndpoint}/essays/${essay._id}`, {
+      reviewerUID: user.uid
+    });
+  }
+
+  function handleRemove(essay) {
+    return axios.delete(`${APIEndpoint}/essays/${essay._id}`);
+  }
+
+  function handleComplete(essay) {
+    return axios.patch(`${APIEndpoint}/essays/${essay._id}`, {
+      isReviewComplete: true
+    });
   }
   return (
     <>
       {showActions && (
         <CardActions className={classes.actions}>
           {canRemove && (
-            <Button href={essay.link} target="_blank" rel="noreferrer" onClick={handleRemove} style={{ color: buttonColor }}>
+            <Button onClick={handleRemove} style={{ color: buttonColor }}>
               remove
             </Button>
           )}
-          {canComplete &&
-            (checkoffInProgress ? (
-              <Button href={essay.link} target="_blank" rel="noreferrer" onClick={finishCheckoff} style={{ color: buttonColor }}>
-                mark as complete
-              </Button>
-            ) : (
-              <Button href={essay.link} target="_blank" rel="noreferrer" onClick={startCheckoff} style={{ color: buttonColor }}>
-                check off
-              </Button>
-            ))}
+          {canComplete && (
+            <Button onClick={handleComplete} style={{ color: buttonColor }}>
+              mark as complete
+            </Button>
+          )}
           {canReview && (
-            <Button href={essay.link} target="_blank" rel="noreferrer" onClick={handleReview} style={{ color: buttonColor }}>
-              review
+            <Button href={showLink ? "#" : essay.link} target="_blank" rel="noreferrer" onClick={handleReview} style={{ color: buttonColor }}>
+              {showLink ? "go to essay" : "review"}
             </Button>
           )}
         </CardActions>
@@ -72,19 +65,12 @@ Actions.propTypes = {
   user: PropTypes.object,
   essay: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  checkoffInProgress: PropTypes.bool,
-  startCheckoff: PropTypes.func.isRequired,
-  endCheckoff: PropTypes.func.isRequired,
   buttonColor: PropTypes.string.isRequired
 };
 
-const Essay = ({ essay, user, classes, theme }) => {
-  const [checkoffInProgress, setCheckoff] = useState(false);
-  const startCheckoff = () => setCheckoff(true);
-  const endCheckoff = () => endCheckoff(false);
+const Essay = ({ essay, user, classes, theme, review }) => {
   const showQuestion = essay.question.length > 0;
-  const showLink = user;
-  const { body, title, background } = getColors(user, essay, theme);
+  const { body, title, background, button } = getColors(user, essay, theme);
   return (
     <Card className={classes.card} style={{ height: "100%", backgroundColor: background }}>
       <CardContent>
@@ -102,14 +88,6 @@ const Essay = ({ essay, user, classes, theme }) => {
             {`${idx + 1}. ${area}`}
           </Typography>
         ))}
-        {showLink && (
-          <>
-            <Typography style={{ color: title }}>Link</Typography>
-            <Typography variant="body1" style={{ color: body }} gutterBottom>
-              {essay.link}
-            </Typography>
-          </>
-        )}
         {showQuestion && (
           <>
             <Typography style={{ color: title }}>Question</Typography>
@@ -118,18 +96,33 @@ const Essay = ({ essay, user, classes, theme }) => {
             </Typography>
           </>
         )}
+        {review && (
+          <>
+            <Typography style={{ color: title }}>Link</Typography>
+            <Typography variant="body1" style={{ color: body }} gutterBottom>
+              {essay.link}
+            </Typography>
+          </>
+        )}
       </CardContent>
-      <Actions
-        user={user}
-        essay={essay}
-        classes={classes}
-        checkoffInProgress={checkoffInProgress}
-        startCheckoff={startCheckoff}
-        endCheckoff={endCheckoff}
-        buttonColor={title}
-      />
+      <Actions user={user} essay={essay} classes={classes} buttonColor={button} />
     </Card>
   );
+};
+
+Essay.propTypes = {
+  classes: PropTypes.object.isRequired,
+  essay: PropTypes.shape({
+    question: PropTypes.string,
+    stage: PropTypes.string.isRequired,
+    areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+    link: PropTypes.string.isRequired,
+    reviewerUID: PropTypes.string,
+    ownerUID: PropTypes.string.isRequired
+  }).isRequired,
+  user: PropTypes.object,
+  review: PropTypes.bool,
+  theme: PropTypes.object.isRequired
 };
 
 function getColor(user, essay) {
@@ -166,9 +159,15 @@ const getTitle = styledBy(theme => ({
   white: theme.palette.text.secondary
 }));
 
+const getButton = styledBy(theme => ({
+  red: theme.palette.tertiary.main,
+  blue: theme.palette.tertiary.main,
+  white: theme.palette.secondary.main
+}));
+
 function getColors(user, essay, theme) {
   const color = getColor(user, essay);
-  return { body: getBody(color, theme), title: getTitle(color, theme), background: getBackground(color, theme) };
+  return { body: getBody(color, theme), title: getTitle(color, theme), background: getBackground(color, theme), button: getButton(color, theme) };
 }
 
 const styles = () => ({
@@ -179,18 +178,5 @@ const styles = () => ({
     display: "flex"
   }
 });
-
-Essay.propTypes = {
-  classes: PropTypes.object.isRequired,
-  essay: PropTypes.shape({
-    question: PropTypes.string,
-    stage: PropTypes.string.isRequired,
-    areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-    link: PropTypes.string.isRequired,
-    reviewerUID: PropTypes.string,
-    ownerUID: PropTypes.string.isRequired
-  }).isRequired,
-  user: PropTypes.object
-};
 
 export default withStyles(styles, { withTheme: true })(Essay);

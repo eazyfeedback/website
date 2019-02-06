@@ -18,6 +18,16 @@ const formatEssays = essays =>
     id: _id
   }));
 
+Essays.getInitialProps = async function() {
+  const {
+    publicRuntimeConfig: { APIEndpoint }
+  } = getConfig();
+  const {
+    data: { essays }
+  } = await axios.get(`${APIEndpoint}/essays`);
+  return { essays: formatEssays(essays) };
+};
+
 const Essays = ({ essays, user, handleLogin, handleLogout }) => (
   <Layout
     handleLogin={handleLogin}
@@ -36,16 +46,6 @@ const Essays = ({ essays, user, handleLogin, handleLogout }) => (
     </Grid>
   </Layout>
 );
-
-Essays.getInitialProps = async function() {
-  const {
-    publicRuntimeConfig: { APIEndpoint }
-  } = getConfig();
-  const {
-    data: { essays }
-  } = await axios.get(`${APIEndpoint}/essays`);
-  return { essays: formatEssays(essays) };
-};
 
 Essays.propTypes = {
   essays: PropTypes.arrayOf(

@@ -139,8 +139,12 @@ function Post({ classes, user, handleLogin, handleLogout }) {
                     <div>{getStepContent(index)}</div>
                     <div className={classes.actions}>
                       <div>
-                        <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                          Back
+                        <Button
+                          disabled={activeStep === 0}
+                          onClick={activeStep === steps.length - 1 ? handleReset : handleBack}
+                          className={classes.button}
+                        >
+                          {activeStep === steps.length - 1 ? "reset" : "back"}
                         </Button>
                         <Button
                           variant="contained"
@@ -160,9 +164,6 @@ function Post({ classes, user, handleLogin, handleLogout }) {
             {activeStep === steps.length && (
               <Paper square elevation={0} className={classes.reset}>
                 <Typography>All steps completed. Your essay in now awaiting a reviewer to give feedback</Typography>
-                <Button onClick={handleReset} className={classes.button}>
-                  Reset
-                </Button>
                 <NextLink href="/essays" prefetch passHref>
                   <Button variant="contained" color="secondary" className={classes.button}>
                     go to essays

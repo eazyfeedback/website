@@ -13,6 +13,8 @@ import Link from "@material-ui/core/Link";
 import NextLink from "next/link";
 import Avatar from "@material-ui/core/Avatar";
 
+const Wire = ({ children }) => children();
+
 function MenuProfile({ handleLogout, user, classes }) {
   const [open, setOpen] = useState(false);
   const anchorEl = useRef(null);
@@ -34,15 +36,19 @@ function MenuProfile({ handleLogout, user, classes }) {
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList className={classes.menuList}>
-                  <Hidden mdUp>
-                    <MenuItem className={classes.menuItem} onClick={handleClose}>
-                      <NextLink href="/profile" passHref prefetch>
-                        <Link color="textPrimary" underline="none">
-                          Profile
-                        </Link>
-                      </NextLink>
-                    </MenuItem>
-                  </Hidden>
+                  <Wire>
+                    {() => (
+                      <Hidden mdUp>
+                        <MenuItem className={classes.menuItem} onClick={handleClose}>
+                          <NextLink href="/profile" passHref prefetch>
+                            <Link color="textPrimary" underline="none">
+                              Profile
+                            </Link>
+                          </NextLink>
+                        </MenuItem>
+                      </Hidden>
+                    )}
+                  </Wire>
                   <MenuItem className={classes.menuItem} onClick={handleLogout}>
                     Logout
                   </MenuItem>

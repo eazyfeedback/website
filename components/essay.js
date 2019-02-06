@@ -16,7 +16,7 @@ const {
 
 function Actions({ user, essay, classes, buttonColor }) {
   const canRemove = user && user.uid === essay.ownerUID;
-  let canComplete = user && user.uid === essay.reviewerUID;
+  const canComplete = user && user.uid === essay.reviewerUID;
   const canReview = user && !essay.reviewerUID && user.uid !== essay.ownerUID;
 
   function pageRefresh() {
@@ -31,10 +31,6 @@ function Actions({ user, essay, classes, buttonColor }) {
       .then(() => pageRefresh());
   }
 
-  function handleRemove() {
-    return axios.delete(`${APIEndpoint}/essays/${essay.id}`).then(() => pageRefresh());
-  }
-
   function handleComplete() {
     return axios
       .patch(`${APIEndpoint}/essays/${essay.id}`, {
@@ -42,6 +38,11 @@ function Actions({ user, essay, classes, buttonColor }) {
       })
       .then(() => pageRefresh());
   }
+
+  function handleRemove() {
+    return axios.delete(`${APIEndpoint}/essays/${essay.id}`).then(() => pageRefresh());
+  }
+
   return (
     <CardActions className={classes.actions}>
       {canRemove && (
@@ -51,14 +52,17 @@ function Actions({ user, essay, classes, buttonColor }) {
       )}
       {canComplete && (
         <Button onClick={handleComplete} style={{ color: buttonColor }}>
-          mark as complete
+          complete
         </Button>
       )}
       {canReview && (
-        <Button href={essay.link} target="_blank" rel="noreferrer" onClick={handleReview} style={{ color: buttonColor }}>
+        <Button onClick={handleReview} style={{ color: buttonColor }}>
           review
         </Button>
       )}
+      <Button href={essay.link} target="_blank" rel="noreferrer" style={{ color: buttonColor }} variant="outlined">
+        open
+      </Button>
     </CardActions>
   );
 }

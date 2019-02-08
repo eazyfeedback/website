@@ -18,7 +18,7 @@ const {
 } = getConfig();
 
 const Profile = ({ user, classes, handleLogin, handleLogout }) => {
-  const [profile, setProfile] = useState([0, 0, 0, []]);
+  const [profile, setProfile] = useState(null);
   function fetchCounts() {
     const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
     axios.get(endpoint).then(res => setProfile(res.data.profile));
@@ -35,7 +35,7 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
       signInVisible={true}
       message="You need to signin to access your profile"
     >
-      {user && (
+      {user && profile && (
         <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
           <Grid item xs={12}>
             <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
@@ -54,27 +54,36 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
 
                 <Grid item xs={12} sm={4}>
                   <Typography color="textSecondary"># posted</Typography>
-                  <Typography variant="h4">{profile[0]}</Typography>
+                  <Typography variant="h4">{profile.essaysPosted.length}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <Typography color="textSecondary"># reviewed</Typography>
-                  <Typography variant="h4">{profile[1]}</Typography>
+                  <Typography variant="h4">{profile.essaysReviewedCount}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <Typography color="textSecondary">rating</Typography>
-                  <Typography variant="h4">{profile[2]}</Typography>
+                  <Typography variant="h4">{profile.rating}</Typography>
                 </Grid>
               </Grid>
             </Paper>
           </Grid>
-          <Grid item>
-            <Grid container spacing={16}>
+          {profile.essaysReviewing.length > 0 && (
+            <Grid item>
+              <Typography variant="subtitle1" color="textSecondary">
+                Essays reviewing
+              </Typography>
+              <Essays user={user} essays={profile.essaysReviewing} />
+            </Grid>
+          )}
+
+          {profile.essaysPosted.length > 0 && (
+            <Grid item>
               <Typography variant="subtitle1" color="textSecondary">
                 My Essays
               </Typography>
-              <Essays user={user} essays={profile[3]} />
+              <Essays user={user} essays={profile.essaysPosted} />
             </Grid>
-          </Grid>
+          )}
         </Grid>
       )}
     </Layout>

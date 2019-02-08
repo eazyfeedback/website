@@ -3,5 +3,9 @@
   "builds": [{
     "src": "next.config.js",
     "use": "@now/next"
+  }],
+  "routes": [{
+    "src": "/auth/(.*)",
+    "dest": "/auth/$1"
   }]
 }

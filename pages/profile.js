@@ -10,29 +10,21 @@ import Layout from "../components/layout";
 import withAuth from "../components/auth";
 import getConfig from "next/config";
 import { useEffect } from "react";
+import axios from "axios";
 
 const {
   publicRuntimeConfig: { APIEndpoint }
 } = getConfig();
 
-async function fetch(url) {
-  const {
-    data: { count }
-  } = await axios.get(url);
-  return count;
-}
-
 const Profile = ({ user, classes, handleLogin, handleLogout }) => {
   const [counts, setCounts] = useState([0, 0]);
   function fetchCounts() {
-    const endpoint = path => `${APIEndpoint}/users/${user.uid}/${path}/count`;
-    const postedURL = endpoint("posted");
-    const reviewedURL = endpoint("reviewed");
-    Promise.all([fetch(postedURL), fetch(reviewedURL)]).then(cts => setCounts(cts));
+    const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
+    axios.get(endpoint).then(res => setCounts(res.data.profile));
   }
   useEffect(() => {
     if (user) fetchCounts();
-  }, []);
+  }, [user]);
   return (
     <Layout
       handleLogin={handleLogin}
@@ -57,6 +49,10 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
               <ListItem>
                 <ListItemText secondary="# reviewed" />
                 <ListItemText primary={counts[1]} />
+              </ListItem>
+              <ListItem>
+                <ListItemText secondary="rating" />
+                <ListItemText primary={counts[2]} />
               </ListItem>
             </List>
           </Grid>

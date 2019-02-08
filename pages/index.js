@@ -54,10 +54,10 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => (
         <Typography align="center" variant="h6" gutterBottom>
           Your work is private and protected
         </Typography>
-        <Typography align="center">We use sharing links from Google docs to protect your essay. Your essay is only shared with reviewers.</Typography>
-      </Grid>
-      <Grid item className={classes.marginTop}>
-        <Typography align="justify" variant="caption">
+        <Typography align="center" gutterBottom>
+          We use sharing links from Google docs to protect your essay. Your essay is only shared with reviewers.
+        </Typography>
+        <Typography align="center" variant="caption">
           "Essayfeedback is what I wish I had during my college applications" - Samuel, co-founder.
         </Typography>
       </Grid>
@@ -71,8 +71,7 @@ const styles = theme => ({
   },
   paper: {
     padding: theme.spacing.unit * 3,
-    textAlign: "center",
-    color: theme.palette.text.secondary
+    textAlign: "center"
   },
   button: {
     margin: theme.spacing.unit

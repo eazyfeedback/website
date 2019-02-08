@@ -1,12 +1,12 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
+import Paper from "@material-ui/core/Paper";
 import Layout from "../components/layout";
+import Typography from "@material-ui/core/Typography";
 import withAuth from "../components/auth";
 import getConfig from "next/config";
 import { useEffect } from "react";
@@ -38,23 +38,31 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
         <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
           <Grid item xs={12}>
             <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
-            <List>
-              <ListItem style={{ textAlign: "center" }}>
-                <ListItemText primary={user.name} secondary={user.email} />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary="# posted" />
-                <ListItemText primary={counts[0]} />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary="# reviewed" />
-                <ListItemText primary={counts[1]} />
-              </ListItem>
-              <ListItem>
-                <ListItemText secondary="rating" />
-                <ListItemText primary={counts[2]} />
-              </ListItem>
-            </List>
+            <Paper className={classes.paper}>
+              <Grid container spacing={16}>
+                <Grid item xs={12}>
+                  <Typography variant="subtitle1">{user.name}</Typography>
+                  <Typography variant="title">{user.email}</Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Divider variant="middle" />
+                </Grid>
+
+                <Grid item xs={12} sm={4}>
+                  <Typography color="textSecondary"># posted</Typography>
+                  <Typography variant="h4">{counts[0]}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Typography color="textSecondary"># reviewed</Typography>
+                  <Typography variant="h4">{counts[1]}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Typography color="textSecondary">rating</Typography>
+                  <Typography variant="h4">{counts[2]}</Typography>
+                </Grid>
+              </Grid>
+            </Paper>
           </Grid>
         </Grid>
       )}
@@ -77,6 +85,10 @@ const styles = theme => ({
     display: "block",
     marginLeft: "auto",
     marginRight: "auto"
+  },
+  paper: {
+    padding: theme.spacing.unit,
+    textAlign: "center"
   }
 });
 

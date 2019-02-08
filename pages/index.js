@@ -7,6 +7,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Link from "next/link";
 import withAuth from "../components/auth";
 import Layout from "../components/layout";
+import Avatar from "@material-ui/core/Avatar";
 
 const Index = ({ classes, handleLogin, handleLogout, user }) => (
   <Layout handleLogin={handleLogin} handleLogout={handleLogout} user={user} signInRequired={false} signInVisible={false} message="">
@@ -16,6 +17,26 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => (
           Get feedback for your essay - for Free!
         </Typography>
       </Grid>
+
+      {user && (
+        <Grid item className={classes.marginTop}>
+          <Paper className={classes.welcomePaper}>
+            <Grid container>
+              <Grid item xs={4}>
+                <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
+              </Grid>
+              <Grid item xs={8}>
+                <Typography variant="body2" color="textSecondary">
+                  Welcome back
+                </Typography>
+                <Typography variant="subtitle1">{user.name}</Typography>
+                <Typography variant="h6">15 points</Typography>
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+      )}
+
       <Grid item className={classes.marginTop}>
         <Grid container spacing={16} alignItems="center" justify="center">
           <Grid item>
@@ -50,6 +71,7 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => (
           </Grid>
         </Grid>
       </Grid>
+
       <Grid item className={classes.marginTop}>
         <Typography align="center" variant="h6" gutterBottom>
           Your work is private and protected
@@ -69,6 +91,10 @@ const styles = theme => ({
   uppercase: {
     textTransform: "uppercase"
   },
+  welcomePaper: {
+    padding: theme.spacing.unit * 3,
+    width: "100%"
+  },
   paper: {
     padding: theme.spacing.unit * 3,
     textAlign: "center"
@@ -78,7 +104,8 @@ const styles = theme => ({
   },
   marginTop: {
     marginTop: theme.spacing.unit * 3
-  }
+  },
+  avatar: {}
 });
 
 Index.propTypes = {

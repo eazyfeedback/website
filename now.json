@@ -5,7 +5,7 @@
     "use": "@now/next"
   }],
   "routes": [{
-    "src": "/auth/(.*)",
-    "dest": "/auth/$1"
+    "src": "/(.*)",
+    "dest": "/$1"
   }]
 }

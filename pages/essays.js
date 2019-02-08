@@ -18,7 +18,31 @@ const formatEssays = essays =>
     id: _id
   }));
 
-const Essays = ({ essays, user, handleLogin, handleLogout }) => (
+export const Essays = ({ essays, user }) => (
+  <Grid container spacing={16} style={{ paddingTop: 8, paddingBottom: 8 }}>
+    {formatEssays(essays).map((essay, idx) => (
+      <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
+        <Essay essay={essay} user={user} />
+      </Grid>
+    ))}
+  </Grid>
+);
+
+Essays.propTypes = {
+  essays: PropTypes.arrayOf(
+    PropTypes.shape({
+      question: PropTypes.string,
+      stage: PropTypes.string.isRequired,
+      areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+      link: PropTypes.string.isRequired,
+      ownerUID: PropTypes.string.isRequired,
+      reviewerUID: PropTypes.string
+    })
+  ).isRequired,
+  user: PropTypes.object
+};
+
+const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout }) => (
   <Layout
     handleLogin={handleLogin}
     handleLogout={handleLogout}
@@ -27,27 +51,21 @@ const Essays = ({ essays, user, handleLogin, handleLogout }) => (
     signInVisible={true}
     message="You need to sign in to review an essay"
   >
-    <Grid container spacing={16} style={{ paddingTop: 8, paddingBottom: 8 }}>
-      {essays.map((essay, idx) => (
-        <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
-          <Essay essay={essay} user={user} />
-        </Grid>
-      ))}
-    </Grid>
+    <Essays essays={essays} user={user} />
   </Layout>
 );
 
-Essays.getInitialProps = async function getInitialProps() {
+EssaysWithLayout.getInitialProps = async function getInitialProps() {
   const {
     publicRuntimeConfig: { APIEndpoint }
   } = getConfig();
   const {
     data: { essays }
   } = await axios.get(`${APIEndpoint}/essays`);
-  return { essays: formatEssays(essays) };
+  return { essays };
 };
 
-Essays.propTypes = {
+EssaysWithLayout.propTypes = {
   essays: PropTypes.arrayOf(
     PropTypes.shape({
       question: PropTypes.string,
@@ -63,4 +81,4 @@ Essays.propTypes = {
   handleLogout: PropTypes.func.isRequired
 };
 
-export default withAuth(Essays);
+export default withAuth(EssaysWithLayout);

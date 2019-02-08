@@ -11,16 +11,17 @@ import withAuth from "../components/auth";
 import getConfig from "next/config";
 import { useEffect } from "react";
 import axios from "axios";
+import { Essays } from "./essays";
 
 const {
   publicRuntimeConfig: { APIEndpoint }
 } = getConfig();
 
 const Profile = ({ user, classes, handleLogin, handleLogout }) => {
-  const [counts, setCounts] = useState([0, 0]);
+  const [profile, setProfile] = useState([0, 0, 0, []]);
   function fetchCounts() {
     const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
-    axios.get(endpoint).then(res => setCounts(res.data.profile));
+    axios.get(endpoint).then(res => setProfile(res.data.profile));
   }
   useEffect(() => {
     if (user) fetchCounts();
@@ -42,7 +43,9 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
               <Grid container spacing={16}>
                 <Grid item xs={12}>
                   <Typography variant="subtitle1">{user.name}</Typography>
-                  <Typography variant="title">{user.email}</Typography>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    {user.email}
+                  </Typography>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -51,18 +54,26 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
 
                 <Grid item xs={12} sm={4}>
                   <Typography color="textSecondary"># posted</Typography>
-                  <Typography variant="h4">{counts[0]}</Typography>
+                  <Typography variant="h4">{profile[0]}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <Typography color="textSecondary"># reviewed</Typography>
-                  <Typography variant="h4">{counts[1]}</Typography>
+                  <Typography variant="h4">{profile[1]}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <Typography color="textSecondary">rating</Typography>
-                  <Typography variant="h4">{counts[2]}</Typography>
+                  <Typography variant="h4">{profile[2]}</Typography>
                 </Grid>
               </Grid>
             </Paper>
+          </Grid>
+          <Grid item>
+            <Grid container spacing={16}>
+              <Typography variant="subtitle1" color="textSecondary">
+                My Essays
+              </Typography>
+              <Essays user={user} essays={profile[3]} />
+            </Grid>
           </Grid>
         </Grid>
       )}

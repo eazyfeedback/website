@@ -19,18 +19,18 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => (
       </Grid>
 
       {user && (
-        <Grid item className={classes.marginTop}>
-          <Paper className={classes.welcomePaper}>
+        <Grid item className={classes.marginTop} style={{ minWidth: 240 }}>
+          <Paper className={classes.paper2}>
             <Grid container>
               <Grid item xs={4}>
-                <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
+                <Avatar alt={user.name} src={user.photoURL} />
               </Grid>
               <Grid item xs={8}>
-                <Typography variant="body2" color="textSecondary">
-                  Welcome back
+                <Typography>{user.name}</Typography>
+                <Typography variant="body2">
+                  <span style={{ fontWeight: 700 }}>15 </span>
+                  points
                 </Typography>
-                <Typography variant="subtitle1">{user.name}</Typography>
-                <Typography variant="h6">15 points</Typography>
               </Grid>
             </Grid>
           </Paper>
@@ -39,7 +39,7 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => (
 
       <Grid item className={classes.marginTop}>
         <Grid container spacing={16} alignItems="center" justify="center">
-          <Grid item>
+          <Grid item style={{ minWidth: 320 }}>
             <Paper className={classes.paper}>
               <Typography variant="h6" gutterBottom className={classes.uppercase}>
                 writer
@@ -54,7 +54,7 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => (
               </Link>
             </Paper>
           </Grid>
-          <Grid item>
+          <Grid item style={{ minWidth: 320 }}>
             <Paper className={classes.paper}>
               <Typography variant="h6" gutterBottom className={classes.uppercase}>
                 reviewer
@@ -79,7 +79,7 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => (
         <Typography align="center" gutterBottom>
           We use sharing links from Google docs to protect your essay. Your essay is only shared with reviewers.
         </Typography>
-        <Typography align="center" variant="caption">
+        <Typography align="center" variant="caption" gutterBottom>
           "Essayfeedback is what I wish I had during my college applications" - Samuel, co-founder.
         </Typography>
       </Grid>
@@ -91,9 +91,8 @@ const styles = theme => ({
   uppercase: {
     textTransform: "uppercase"
   },
-  welcomePaper: {
-    padding: theme.spacing.unit * 3,
-    width: "100%"
+  paper2: {
+    padding: theme.spacing.unit * 2
   },
   paper: {
     padding: theme.spacing.unit * 3,
@@ -104,8 +103,7 @@ const styles = theme => ({
   },
   marginTop: {
     marginTop: theme.spacing.unit * 3
-  },
-  avatar: {}
+  }
 });
 
 Index.propTypes = {

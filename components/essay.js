@@ -8,7 +8,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import getConfig from "next/config";
 import axios from "axios";
-import Router from "next/router";
 
 const {
   publicRuntimeConfig: { APIEndpoint }
@@ -20,7 +19,7 @@ function Actions({ user, essay, classes, buttonColor }) {
   const canReview = user && !essay.reviewerUID && user.uid !== essay.ownerUID;
 
   function pageRefresh() {
-    Router.push("/essays");
+    location.reload();
   }
 
   function handleReview() {

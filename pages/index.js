@@ -48,7 +48,7 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
                   <Typography>{user.name}</Typography>
                   <Typography variant="body2">
                     <span style={{ fontWeight: 700 }}>{`${points} `}</span>
-                    points
+                    points <span style={{ fontSize: "1rem", verticalAlign: "middle" }}>✨</span>
                   </Typography>
                 </Grid>
               </Grid>

@@ -49,6 +49,11 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
                   <Typography variant="subtitle2" color="textSecondary">
                     {user.email}
                   </Typography>
+                  {profile.rating > 0 && (
+                    <Typography variant="body2" color="textSecondary">
+                      {profile.rating}⭐
+                    </Typography>
+                  )}
                 </Grid>
 
                 <Grid item xs={12}>
@@ -64,8 +69,8 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
                   <Typography variant="h4">{profile.essaysReviewedCount}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                  <Typography color="textSecondary">rating</Typography>
-                  <Typography variant="h4">{profile.rating}</Typography>
+                  <Typography color="textSecondary"># points</Typography>
+                  <Typography variant="h4">{profile.points}</Typography>
                 </Grid>
               </Grid>
             </Paper>

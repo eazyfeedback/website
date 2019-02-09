@@ -8,13 +8,14 @@ import Layout from "../components/layout";
 import withAuth from "../components/auth";
 
 const formatEssays = essays =>
-  essays.map(({ selectedStage, selectedAreas, question, link, ownerUID, reviewerUID, _id }) => ({
+  essays.map(({ selectedStage, selectedAreas, question, link, ownerUID, reviewerUID, isReviewComplete, _id }) => ({
     areas: getSelectedAreas(selectedAreas),
     stage: getSelectedStage(selectedStage),
     question,
     link,
     ownerUID,
     reviewerUID,
+    isReviewComplete,
     id: _id
   }));
 

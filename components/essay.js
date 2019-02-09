@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import getConfig from "next/config";
 import axios from "axios";
@@ -79,43 +80,47 @@ const Essay = ({ essay, user, classes, theme, review }) => {
   const { body, title, background, button } = getColors(user, essay, theme);
   return (
     <Card className={classes.card} style={{ height: "100%", backgroundColor: background }}>
-      <CardContent>
-        <Typography style={{ color: title }} gutterBottom>
-          Stage
-        </Typography>
-        <Typography style={{ color: body }} gutterBottom>
-          {essay.stage}
-        </Typography>
-        <Typography style={{ color: title }} gutterBottom>
-          Areas
-        </Typography>
-        {essay.areas.map((area, idx) => (
-          <Typography key={idx} style={{ color: body }} gutterBottom>
-            {`${idx + 1}. ${area}`}
-          </Typography>
-        ))}
-        {showQuestion && (
-          <>
+      <Grid container direction="column" alignItems="center" justify="space-between">
+        <Grid item>
+          <CardContent>
             <Typography style={{ color: title }} gutterBottom>
-              Question
+              Stage
             </Typography>
             <Typography style={{ color: body }} gutterBottom>
-              {essay.question}
+              {essay.stage}
             </Typography>
-          </>
-        )}
-        {review && (
-          <>
             <Typography style={{ color: title }} gutterBottom>
-              Link
+              Areas
             </Typography>
-            <Link href={essay.link} target="_blank" rel="noreferrer" style={{ color: body }} gutterBottom variant="body2">
-              {essay.link}
-            </Link>
-          </>
-        )}
-      </CardContent>
-      {showActions && <Actions user={user} essay={essay} classes={classes} buttonColor={button} />}
+            {essay.areas.map((area, idx) => (
+              <Typography key={idx} style={{ color: body }} gutterBottom>
+                {`${idx + 1}. ${area}`}
+              </Typography>
+            ))}
+            {showQuestion && (
+              <>
+                <Typography style={{ color: title }} gutterBottom>
+                  Question
+                </Typography>
+                <Typography style={{ color: body }} gutterBottom>
+                  {essay.question}
+                </Typography>
+              </>
+            )}
+            {review && (
+              <>
+                <Typography style={{ color: title }} gutterBottom>
+                  Link
+                </Typography>
+                <Link href={essay.link} target="_blank" rel="noreferrer" style={{ color: body }} gutterBottom variant="body2">
+                  {essay.link}
+                </Link>
+              </>
+            )}
+          </CardContent>
+        </Grid>
+        <Grid item>{showActions && <Actions user={user} essay={essay} classes={classes} buttonColor={button} />}</Grid>
+      </Grid>
     </Card>
   );
 };

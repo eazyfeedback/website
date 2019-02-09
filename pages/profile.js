@@ -19,13 +19,16 @@ const {
 
 const Profile = ({ user, classes, handleLogin, handleLogout }) => {
   const [profile, setProfile] = useState(null);
-  function fetchCounts() {
+
+  function fetchProfile() {
     const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
     axios.get(endpoint).then(res => setProfile(res.data.profile));
   }
+
   useEffect(() => {
-    if (user) fetchCounts();
+    if (user) fetchProfile();
   }, [user]);
+
   return (
     <Layout
       handleLogin={handleLogin}

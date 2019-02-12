@@ -4,12 +4,12 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import NextLink from "next/link";
-import MaterialLink from "@material-ui/core/Link";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import FolderIcon from "@material-ui/icons/Folder";
 import Avatar from "@material-ui/core/Avatar";
 import CreateIcon from "@material-ui/icons/Create";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 import withWidth from "@material-ui/core/withWidth";
 import { withRouter } from "next/router";
@@ -21,141 +21,121 @@ const isActive = (route, href) => route === href;
 
 const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } }) => (
   <AppBar position="sticky">
-    <Toolbar>
-      <NextLink href="/" prefetch>
-        <MaterialLink
-          href="/"
-          color="textPrimary"
-          variant="body1"
-          className={classNames(classes.logo, {
-            [classes.activeNav]: isActive(route, "/")
-          })}
-          underline="none"
-        >
-          <Hidden mdUp>
-            <div className={classes.logoImageContainer}>
-              <Tooltip title="Home">
-                <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
-              </Tooltip>
-            </div>
-          </Hidden>
-          <Hidden smDown>
-            <Tooltip title="Home">
-              <span
-                className={classNames({
-                  [classes.activeNav]: isActive(route, "/")
-                })}
-              >
-                essayfeedback
-              </span>
-            </Tooltip>
-          </Hidden>
-        </MaterialLink>
-      </NextLink>
-
-      <NextLink href="/post" prefetch>
-        <Tooltip title="Post essay for feedback">
-          <Button className={classes.buttonClass} href="/post">
-            <CreateIcon
-              className={classNames(classes.icon, {
-                [classes.activeNav]: isActive(route, "/post")
-              })}
-            />
-            <Hidden smDown>
-              <span
-                className={classNames(classes.navText, {
-                  [classes.activeNav]: isActive(route, "/post")
-                })}
-              >
-                post
-              </span>
-            </Hidden>
-          </Button>
-        </Tooltip>
-      </NextLink>
-
-      <NextLink href="/essays" prefetch>
-        <Tooltip title="Essays awaiting review">
-          <Button className={classes.buttonClass} href="/essays">
-            <FolderIcon
-              className={classNames(classes.icon, {
-                [classes.activeNav]: isActive(route, "/essays")
-              })}
-            />
-            <Hidden smDown>
-              <span
-                className={classNames(classes.navText, {
-                  [classes.activeNav]: isActive(route, "/essays")
-                })}
-              >
-                essays
-              </span>
-            </Hidden>
-          </Button>
-        </Tooltip>
-      </NextLink>
-
-      <Hidden smDown>
-        <NextLink href="/profile" prefetch>
-          <Tooltip title="My Profile">
-            <Button className={classes.buttonClass} href="/profile">
-              <AccountCircleIcon
-                className={classNames(classes.icon, {
-                  [classes.activeNav]: isActive(route, "/profile")
-                })}
-              />
-              <span
-                className={classNames(classes.navText, {
-                  [classes.activeNav]: isActive(route, "/profile")
-                })}
-              >
-                profile
-              </span>
+    <Toolbar variant="dense" disableGutters>
+      <Grid container alignItems="center" justify="space-between">
+        <Grid item>
+          <NextLink href="/" prefetch>
+            <Button href="/">
+              <Hidden mdUp>
+                <Tooltip title="Home">
+                  <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
+                </Tooltip>
+              </Hidden>
+              <Hidden smDown>
+                <Tooltip title="Home">
+                  <span
+                    className={classNames(classes.nav, {
+                      [classes.active]: isActive(route, "/")
+                    })}
+                  >
+                    essayfeedback
+                  </span>
+                </Tooltip>
+              </Hidden>
             </Button>
-          </Tooltip>
-        </NextLink>
-      </Hidden>
+          </NextLink>
+        </Grid>
 
-      <Button onClick={user ? handleLogout : handleLogin} className={classes.button} variant="outlined">
-        {user ? <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} /> : <ExitToAppIcon className={classes.icon} />}
-        <span className={classes.navText}>{user ? "logout" : "sign in"}</span>
-      </Button>
+        <Grid item>
+          <NextLink href="/post" prefetch>
+            <Tooltip title="Post essay for feedback">
+              <Button href="/post">
+                <CreateIcon
+                  className={classNames(classes.icon, {
+                    [classes.active]: isActive(route, "/post")
+                  })}
+                />
+                <Hidden smDown>
+                  <span
+                    className={classNames(classes.nav, classes.navItem, {
+                      [classes.active]: isActive(route, "/post")
+                    })}
+                  >
+                    post
+                  </span>
+                </Hidden>
+              </Button>
+            </Tooltip>
+          </NextLink>
+
+          <NextLink href="/essays" prefetch>
+            <Tooltip title="Essays awaiting review">
+              <Button href="/essays">
+                <FolderIcon
+                  className={classNames(classes.icon, {
+                    [classes.active]: isActive(route, "/essays")
+                  })}
+                />
+                <Hidden smDown>
+                  <span
+                    className={classNames(classes.nav, classes.navItem, {
+                      [classes.active]: isActive(route, "/essays")
+                    })}
+                  >
+                    essays
+                  </span>
+                </Hidden>
+              </Button>
+            </Tooltip>
+          </NextLink>
+
+          <Hidden smDown>
+            <NextLink href="/profile" prefetch>
+              <Tooltip title="My Profile">
+                <Button href="/profile">
+                  <AccountCircleIcon
+                    className={classNames(classes.icon, {
+                      [classes.active]: isActive(route, "/profile")
+                    })}
+                  />
+                  <span
+                    className={classNames(classes.nav, classes.navItem, {
+                      [classes.active]: isActive(route, "/profile")
+                    })}
+                  >
+                    profile
+                  </span>
+                </Button>
+              </Tooltip>
+            </NextLink>
+          </Hidden>
+
+          <Button onClick={user ? handleLogout : handleLogin} variant="outlined">
+            {user ? <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} /> : <ExitToAppIcon className={classes.icon} />}
+            <span className={classes.nav}>{user ? "logout" : "sign in"}</span>
+          </Button>
+        </Grid>
+      </Grid>
     </Toolbar>
   </AppBar>
 );
 
 const styles = theme => ({
-  logo: {
-    flexGrow: 1,
-    fontSize: "1.175rem"
-  },
   logoImage: {
-    position: "absolute",
     width: "2rem",
-    height: "2rem",
-    marginTop: "-1rem",
-    marginLeft: "-1rem"
-  },
-  logoImageContainer: {
-    padding: theme.spacing.unit,
-    margin: theme.spacing.unit
-  },
-  button: {
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing.unit,
-      marginRight: theme.spacing.unit
-    }
+    height: "2rem"
   },
   icon: {
-    fontSize: 24,
-    root: {
-      flexGrow: 1
-    }
+    fontSize: 24
   },
-  activeNav: {
-    color: theme.palette.common.white
+  active: {
+    color: theme.palette.common.white,
+    fontWeight: 500
   },
-  navText: {
+  nav: {
+    fontWeight: 300
+  },
+  navItem: {
     marginLeft: theme.spacing.unit
   },
   avatar: {

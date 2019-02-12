@@ -133,7 +133,10 @@ const styles = theme => ({
   marginTop: {
     marginTop: theme.spacing.unit * 3
   },
-  avatar: {}
+  avatar: {
+    width: 60,
+    height: 60
+  }
 });
 
 Index.propTypes = {

@@ -7,6 +7,7 @@ import NextLink from "next/link";
 import MaterialLink from "@material-ui/core/Link";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import FolderIcon from "@material-ui/icons/Folder";
+import Avatar from "@material-ui/core/Avatar";
 import CreateIcon from "@material-ui/icons/Create";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -15,12 +16,11 @@ import { withRouter } from "next/router";
 import Hidden from "@material-ui/core/Hidden";
 import compose from "recompose/compose";
 import classNames from "classnames";
-import Menu from "./menu";
 
 const isActive = (route, href) => route === href;
 
 const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } }) => (
-  <AppBar position="sticky" color="secondary">
+  <AppBar position="sticky">
     <Toolbar>
       <NextLink href="/" prefetch>
         <MaterialLink
@@ -30,7 +30,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
           className={classNames(classes.logo, {
             [classes.activeNav]: isActive(route, "/")
           })}
-          underline={isActive(route, "/") ? "always" : "hover"}
+          underline="none"
         >
           <Hidden mdUp>
             <div className={classes.logoImageContainer}>
@@ -116,16 +116,10 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
         </NextLink>
       </Hidden>
 
-      {user ? (
-        <Menu handleLogout={handleLogout} user={user} />
-      ) : (
-        <Tooltip title="Login / Sign up">
-          <Button onClick={handleLogin} className={classes.button} variant="outlined">
-            <ExitToAppIcon className={classes.icon} />
-            <span className={classes.navText}>sign in</span>
-          </Button>
-        </Tooltip>
-      )}
+      <Button onClick={user ? handleLogout : handleLogin} className={classes.button} variant="outlined">
+        {user ? <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} /> : <ExitToAppIcon className={classes.icon} />}
+        <span className={classes.navText}>{user ? "logout" : "sign in"}</span>
+      </Button>
     </Toolbar>
   </AppBar>
 );
@@ -133,7 +127,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
 const styles = theme => ({
   logo: {
     flexGrow: 1,
-    fontSize: "1.1rem"
+    fontSize: "1.175rem"
   },
   logoImage: {
     position: "absolute",
@@ -163,6 +157,10 @@ const styles = theme => ({
   },
   navText: {
     marginLeft: theme.spacing.unit
+  },
+  avatar: {
+    width: 24,
+    height: 24
   }
 });
 

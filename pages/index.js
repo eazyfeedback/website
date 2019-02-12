@@ -38,17 +38,17 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
         </Grid>
 
         {user && (
-          <Grid item className={classes.marginTop} style={{ minWidth: 240 }}>
+          <Grid item className={classes.marginTop} style={{ minWidth: 300 }}>
             <Paper className={classes.paper2}>
               <Grid container>
-                <Grid item xs={4}>
-                  <Avatar alt={user.name} src={user.photoURL} />
+                <Grid item xs={3}>
+                  <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
                 </Grid>
-                <Grid item xs={8}>
-                  <Typography>{user.name}</Typography>
+                <Grid item xs={9}>
+                  <Typography color="textSecondary">Welcome back</Typography>
+                  <Typography variant="body1">{user.name}</Typography>
                   <Typography variant="body2">
-                    <span style={{ fontWeight: 700 }}>{`${points} `}</span>
-                    points <span style={{ fontSize: "1rem", verticalAlign: "middle" }}>✨</span>
+                    <span style={{ fontWeight: 700 }}>{points}</span> points <span className={classes.stars}>✨</span>
                   </Typography>
                 </Grid>
               </Grid>
@@ -116,6 +116,10 @@ const styles = theme => ({
   uppercase: {
     textTransform: "uppercase"
   },
+  stars: {
+    fontSize: "1rem",
+    verticalAlign: "middle"
+  },
   paper2: {
     padding: theme.spacing.unit * 2
   },
@@ -128,7 +132,8 @@ const styles = theme => ({
   },
   marginTop: {
     marginTop: theme.spacing.unit * 3
-  }
+  },
+  avatar: {}
 });
 
 Index.propTypes = {

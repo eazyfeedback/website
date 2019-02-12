@@ -21,7 +21,7 @@ const isActive = (route, href) => route === href;
 
 const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } }) => (
   <AppBar position="sticky">
-    <Toolbar variant="dense" disableGutters>
+    <Toolbar>
       <Grid container alignItems="center" justify="space-between">
         <Grid item>
           <NextLink href="/" prefetch>
@@ -112,7 +112,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
 
           <Button onClick={user ? handleLogout : handleLogin} variant="outlined">
             {user ? <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} /> : <ExitToAppIcon className={classes.icon} />}
-            <span className={classes.nav}>{user ? "logout" : "sign in"}</span>
+            <span className={classNames(classes.nav, classes.navItem)}>{user ? "logout" : "sign in"}</span>
           </Button>
         </Grid>
       </Grid>
@@ -122,18 +122,17 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
 
 const styles = theme => ({
   logoImage: {
-    width: "2rem",
-    height: "2rem"
+    width: 30,
+    height: 30
   },
   icon: {
     fontSize: 24
   },
   active: {
-    color: theme.palette.common.white,
-    fontWeight: 500
+    color: theme.palette.common.white
   },
   nav: {
-    fontWeight: 300
+    fontWeight: 400
   },
   navItem: {
     marginLeft: theme.spacing.unit

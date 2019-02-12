@@ -20,10 +20,11 @@ import Menu from "./menu";
 const isActive = (route, href) => route === href;
 
 const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } }) => (
-  <AppBar position="sticky">
+  <AppBar position="sticky" color="secondary">
     <Toolbar>
-      <NextLink href="/" prefetch passHref>
+      <NextLink href="/" prefetch>
         <MaterialLink
+          href="/"
           color="textPrimary"
           variant="body1"
           className={classNames(classes.logo, {
@@ -54,7 +55,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
 
       <NextLink href="/post" prefetch>
         <Tooltip title="Post essay for feedback">
-          <Button className={classes.buttonClass}>
+          <Button className={classes.buttonClass} href="/post">
             <CreateIcon
               className={classNames(classes.icon, {
                 [classes.activeNav]: isActive(route, "/post")
@@ -75,7 +76,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
 
       <NextLink href="/essays" prefetch>
         <Tooltip title="Essays awaiting review">
-          <Button className={classes.buttonClass}>
+          <Button className={classes.buttonClass} href="/essays">
             <FolderIcon
               className={classNames(classes.icon, {
                 [classes.activeNav]: isActive(route, "/essays")
@@ -97,7 +98,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
       <Hidden smDown>
         <NextLink href="/profile" prefetch>
           <Tooltip title="My Profile">
-            <Button className={classes.buttonClass}>
+            <Button className={classes.buttonClass} href="/profile">
               <AccountCircleIcon
                 className={classNames(classes.icon, {
                   [classes.activeNav]: isActive(route, "/profile")

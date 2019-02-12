@@ -164,8 +164,8 @@ function Post({ classes, user, handleLogin, handleLogout }) {
             {activeStep === steps.length && (
               <Paper square elevation={0} className={classes.reset}>
                 <Typography>All steps completed. Your essay in now awaiting a reviewer to give feedback</Typography>
-                <NextLink href="/essays" prefetch passHref>
-                  <Button variant="contained" color="secondary" className={classes.button}>
+                <NextLink href="/essays" prefetch>
+                  <Button href="/essays" variant="contained" color="secondary" className={classes.button}>
                     go to essays
                   </Button>
                 </NextLink>

@@ -40,8 +40,8 @@ function MenuProfile({ handleLogout, user, classes }) {
                     {() => (
                       <Hidden mdUp>
                         <MenuItem className={classes.menuItem} onClick={handleClose}>
-                          <NextLink href="/profile" passHref prefetch>
-                            <Link color="textPrimary" underline="none">
+                          <NextLink href="/profile" prefetch>
+                            <Link href="/profile" color="textPrimary" underline="none">
                               Profile
                             </Link>
                           </NextLink>

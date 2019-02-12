@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
-import Link from "next/link";
+import NextLink from "next/link";
 import withAuth from "../components/auth";
 import Layout from "../components/layout";
 import getConfig from "next/config";
@@ -66,11 +66,11 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
                 <Typography variant="subtitle1" gutterBottom>
                   Post your essay to get feedback
                 </Typography>
-                <Link href="/post" passHref prefetch>
-                  <Button variant="contained" color="primary" className={classes.button}>
+                <NextLink href="/post" prefetch>
+                  <Button href="/post" variant="contained" color="primary" className={classes.button}>
                     post essay
                   </Button>
-                </Link>
+                </NextLink>
               </Paper>
             </Grid>
             <Grid item style={{ minWidth: 320 }}>
@@ -81,11 +81,11 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
                 <Typography variant="subtitle1" gutterBottom>
                   Choose an essay to give feedback
                 </Typography>
-                <Link href="/essays" passHref prefetch>
-                  <Button color="secondary" variant="outlined" className={classes.button}>
+                <NextLink href="/essays" prefetch>
+                  <Button href="/essays" color="secondary" variant="outlined" className={classes.button}>
                     go to essays
                   </Button>
-                </Link>
+                </NextLink>
               </Paper>
             </Grid>
           </Grid>

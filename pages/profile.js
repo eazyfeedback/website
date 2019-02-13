@@ -24,6 +24,12 @@ function useProfile(user) {
   return profile;
 }
 
+function getStatus({ reviewerUID, isReviewComplete }) {
+  if (isReviewComplete) return "Complete";
+  if (reviewerUID && !isReviewComplete) return "Pending";
+  return "No Reviewer yet";
+}
+
 const Profile = ({ user, classes, handleLogin, handleLogout }) => {
   const profile = useProfile(user);
   return (

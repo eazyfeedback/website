@@ -35,7 +35,7 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
         </Grid>
 
         {user && (
-          <Grid item className={classes.marginTop} style={{ minWidth: 280 }}>
+          <Grid item className={classes.marginTop} style={{ minWidth: 240 }}>
             <Paper className={classes.paper2}>
               <Grid container>
                 <Grid item xs={4}>

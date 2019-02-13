@@ -123,7 +123,10 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
 const styles = theme => ({
   logoImage: {
     width: 30,
-    height: 30
+    height: 30,
+    "&:hover": {
+      content: "url('/static/logoWhite.png')"
+    }
   },
   icon: {
     fontSize: 24

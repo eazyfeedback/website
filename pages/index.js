@@ -16,7 +16,7 @@ const {
   publicRuntimeConfig: { APIEndpoint }
 } = getConfig();
 
-const Index = ({ classes, handleLogin, handleLogout, user }) => {
+function usePoints(user) {
   const [points, setPoints] = useState(0);
 
   function fetchProfile() {
@@ -27,7 +27,11 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
   useEffect(() => {
     if (user) fetchProfile();
   }, [user]);
+  return points;
+}
 
+const Index = ({ classes, handleLogin, handleLogout, user }) => {
+  const points = usePoints(user);
   return (
     <Layout handleLogin={handleLogin} handleLogout={handleLogout} user={user} signInRequired={false} signInVisible={false} message="">
       <Grid container style={{ minHeight: `calc(100vh - 96px)` }} justify="space-around" alignItems="center" direction="column">
@@ -82,7 +86,7 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
                   Choose an essay to give feedback
                 </Typography>
                 <NextLink href="/essays" prefetch>
-                  <Button href="/essays" color="secondary" variant="outlined" className={classes.button}>
+                  <Button href="/essays" color="secondary" variant="contained" className={classes.button}>
                     go to essays
                   </Button>
                 </NextLink>

@@ -97,7 +97,7 @@ const Review = ({ essay, user }) => {
 };
 
 Review.propTypes = {
-  essay: essayPropTypes,
+  essay: Object.assign(essayPropTypes, { areas: PropTypes.arrayOf(PropTypes.string).isRequired, stage: PropTypes.string.isRequired }),
   user: PropTypes.object
 };
 

@@ -117,12 +117,9 @@ const Essay = ({ essay, user, review, classes, theme }) => {
 
 export const essayPropTypes = PropTypes.shape({
   question: PropTypes.string,
-  areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-  stage: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   reviewerUID: PropTypes.string,
-  ownerUID: PropTypes.string.isRequired,
-  id: PropTypes.string
+  ownerUID: PropTypes.string.isRequired
 }).isRequired;
 
 Essay.propTypes = {

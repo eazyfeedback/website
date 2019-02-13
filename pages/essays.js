@@ -7,6 +7,11 @@ import Layout from "../components/layout";
 import withAuth from "../lib/auth";
 import APIEndpoint from "../lib/api";
 
+Object.assign(essayPropTypes, {
+  selectedAreas: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  selectedStage: PropTypes.number.isRequired
+});
+
 const formatEssays = essays =>
   essays.map(({ selectedStage, selectedAreas, question, link, ownerUID, reviewerUID, isReviewComplete, _id }) => ({
     areas: getSelectedAreas(selectedAreas),

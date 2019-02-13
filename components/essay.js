@@ -36,8 +36,16 @@ function Actions({ user, essay }) {
   return (
     <CardActions>
       {canRemove && <Button onClick={handleRemove}>remove</Button>}
-      {canComplete && <Button onClick={handleComplete}>complete</Button>}
-      {canReview && <Button onClick={handleReview}>review</Button>}
+      {canComplete && (
+        <Button onClick={handleComplete} color="secondary">
+          complete
+        </Button>
+      )}
+      {canReview && (
+        <Button onClick={handleReview} color="primary">
+          review
+        </Button>
+      )}
       <Button href={essay.link} target="_blank" rel="noreferrer" variant="outlined">
         open
       </Button>
@@ -51,17 +59,34 @@ Actions.propTypes = {
   buttonColor: PropTypes.string.isRequired
 };
 
+function getColor(user, essay, theme) {
+  if (user && essay) {
+    switch (user.uid) {
+      case essay.reviewerUID:
+        return theme.palette.secondary.main;
+      case essay.ownerUID:
+        return theme.palette.primary.main;
+      default:
+        return theme.palette.background.paper;
+    }
+  }
+}
+
 const Essay = ({ essay, user, review, classes, theme }) => {
   const showQuestion = essay.question.length > 0;
   const showActions = user && !review;
   const color = getColor(user, essay, theme);
-  const border = `2px solid ${color}`;
+  const border = `1px solid ${color}`;
   return (
     <Card className={classes.card} style={{ ...(color && { border }) }}>
       <CardContent>
-        <Typography gutterBottom>Stage</Typography>
+        <Typography gutterBottom color="textSecondary" variant="body2">
+          Stage
+        </Typography>
         <Typography gutterBottom>{essay.stage}</Typography>
-        <Typography gutterBottom>Areas</Typography>
+        <Typography gutterBottom color="textSecondary" variant="body2">
+          Areas
+        </Typography>
         {essay.areas.map((area, idx) => (
           <Typography key={idx} gutterBottom>
             {`${idx + 1}. ${area}`}
@@ -69,14 +94,18 @@ const Essay = ({ essay, user, review, classes, theme }) => {
         ))}
         {showQuestion && (
           <>
-            <Typography gutterBottom>Question</Typography>
+            <Typography gutterBottom color="textSecondary" variant="body2">
+              Question
+            </Typography>
             <Typography gutterBottom>{essay.question}</Typography>
           </>
         )}
         {review && (
           <>
-            <Typography gutterBottom>Link</Typography>
-            <Link href={essay.link} target="_blank" rel="noreferrer" style={{ color: body }} gutterBottom variant="body2">
+            <Typography gutterBottom color="textSecondary" variant="body2">
+              Link
+            </Typography>
+            <Link href={essay.link} target="_blank" rel="noreferrer" gutterBottom variant="body2">
               {essay.link}
             </Link>
           </>
@@ -104,19 +133,6 @@ Essay.propTypes = {
   review: PropTypes.bool,
   theme: PropTypes.object.isRequired
 };
-
-function getColor(user, essay, theme) {
-  if (user && essay) {
-    switch (user.uid) {
-      case essay.reviewerUID:
-        return theme.palette.secondary.main;
-      case essay.ownerUID:
-        return theme.palette.primary.main;
-      default:
-        return theme.palette.background.paper;
-    }
-  }
-}
 
 const styles = () => ({
   card: {

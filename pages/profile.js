@@ -8,6 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Layout from "../components/layout";
 import Typography from "@material-ui/core/Typography";
 import withAuth from "../lib/auth";
+import Tooltip from "@material-ui/core/Tooltip";
 import { useEffect } from "react";
 import axios from "axios";
 import SwipeableViews from "react-swipeable-views";
@@ -18,12 +19,34 @@ import Tab from "@material-ui/core/Tab";
 import { Essays } from "./essays";
 import APIEndpoint from "../lib/api";
 
-const pointsTip =
-  "You earn points based on the number of essays you review and the rating you get after completing. Top reviwers are listed on the home page!";
+function groupBy(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+}
+
+function getStatus({ reviewerUID, isReviewComplete }) {
+  if (isReviewComplete) return "complete";
+  if (reviewerUID && !isReviewComplete) return "notComplete";
+  return "noReviewer";
+}
+
+function splitEssays(essays) {
+  essays.forEach(essay => {
+    essay.status = getStatus(essay);
+  });
+  const { complete, notComplete, noReviewer } = groupBy(essays, "status");
+  return {
+    complete,
+    notComplete,
+    noReviewer
+  };
+}
 
 function TabContainer({ children }) {
   return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
+    <Typography component="div" style={{ padding: 8 * 2 }}>
       {children}
     </Typography>
   );
@@ -34,7 +57,7 @@ TabContainer.propTypes = {
   dir: PropTypes.string.isRequired
 };
 
-function EssayTabs({}) {
+function EssayTabs({ Complete, NotComplete, NoReviewer }) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   function handleChange(event, newValue) {
@@ -47,13 +70,15 @@ function EssayTabs({}) {
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" variant={null}>
-          <Tab label="Pending" />
-          <Tab label="Completed" />
+          <Tab label="Awaiting reviewer" />
+          <Tab label="Not Complete" />
+          <Tab label="Complete" />
         </Tabs>
       </AppBar>
       <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
-        <TabContainer>Item One</TabContainer>
-        <TabContainer>Item Two</TabContainer>
+        <TabContainer>{NoReviewer}</TabContainer>
+        <TabContainer>{NotComplete}</TabContainer>
+        <TabContainer>{Complete}</TabContainer>
       </SwipeableViews>
     </div>
   );
@@ -61,7 +86,7 @@ function EssayTabs({}) {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "white",
     width: 500
   }
 }));
@@ -77,21 +102,12 @@ function useProfile(user) {
   return profile;
 }
 
-function getStatus({ reviewerUID, isReviewComplete }) {
-  if (isReviewComplete) return "Complete";
-  if (reviewerUID && !isReviewComplete) return "Pending";
-  return "No Reviewer yet";
-}
-
-function splitEssays(essays) {
-  return {
-    completed,
-    pending
-  };
-}
-
-const Profile = ({ user, classes, handleLogin, handleLogout }) => {
+function Profile({ user, classes, handleLogin, handleLogout }) {
   const profile = useProfile(user);
+  let complete,
+    notComplete,
+    noReviewer = [];
+  if (profile) ({ complete, notComplete, noReviewer } = splitEssays(profile.essaysPosted));
   return (
     <Layout
       handleLogin={handleLogin}
@@ -102,7 +118,7 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
       message="You need to signin to access your profile"
     >
       <div>
-        {user && profile && (
+        {profile && (
           <>
             <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
               <Grid item xs={12}>
@@ -114,9 +130,11 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
                       <Typography variant="subtitle2" color="textSecondary">
                         {user.email}
                       </Typography>
-                      <Typography variant="body2">
-                        <span style={{ fontWeight: 700 }}>{profile.points}</span> points <span className={classes.stars}>✨</span>
-                      </Typography>
+                      <Tooltip title="You earn points based on the number of essays you review and the ratings you receive. Top reviewers are listed on the home page!">
+                        <Typography variant="body2">
+                          <span style={{ fontWeight: 700 }}>{profile.points}</span> points <span className={classes.stars}>✨</span>
+                        </Typography>
+                      </Tooltip>
                     </Grid>
 
                     <Grid item xs={12}>
@@ -150,7 +168,11 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
                   <Typography variant="subtitle1" color="textSecondary">
                     My Essays
                   </Typography>
-                  <Essays user={user} essays={profile.essaysPosted} />
+                  <EssayTabs
+                    Complete={<Essays user={user} essays={complete} />}
+                    NotComplete={<Essays user={user} essays={notComplete} />}
+                    NoReviewer={<Essays user={user} essays={noReviewer} />}
+                  />
                 </Grid>
               )}
             </Grid>
@@ -159,7 +181,7 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
       </div>
     </Layout>
   );
-};
+}
 
 Profile.propTypes = {
   user: PropTypes.object,

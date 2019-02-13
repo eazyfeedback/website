@@ -81,7 +81,7 @@ function getColor(user, essay, theme) {
   }
 }
 
-const Essay = ({ essay, user, review, classes, theme }) => {
+function Essay({ essay, user, review, classes, theme }) {
   const showQuestion = essay.question.length > 0;
   const showActions = user && !review;
   const color = getColor(user, essay, theme);
@@ -132,7 +132,7 @@ const Essay = ({ essay, user, review, classes, theme }) => {
       )}
     </Card>
   );
-};
+}
 
 export const essayPropTypes = PropTypes.shape({
   question: PropTypes.string,

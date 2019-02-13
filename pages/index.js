@@ -23,7 +23,7 @@ function usePoints(user) {
   return points;
 }
 
-const Index = ({ classes, handleLogin, handleLogout, user }) => {
+function Index({ classes, handleLogin, handleLogout, user }) {
   const points = usePoints(user);
   return (
     <Layout handleLogin={handleLogin} handleLogout={handleLogout} user={user} signInRequired={false} signInVisible={false} message="">
@@ -107,7 +107,7 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
       </Grid>
     </Layout>
   );
-};
+}
 
 const styles = theme => ({
   uppercase: {

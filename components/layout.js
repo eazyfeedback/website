@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Appbar from "./appbar";
 import Signin from "./signin";
 
-const Layout = ({ children, classes, handleLogin, handleLogout, user, signInRequired, signInVisible, message }) => {
+function Layout({ children, classes, handleLogin, handleLogout, user, signInRequired, signInVisible, message }) {
   const showSignin = signInVisible && !user;
   const showChildren = !signInRequired || (signInRequired && user);
   return (
@@ -13,7 +13,7 @@ const Layout = ({ children, classes, handleLogin, handleLogout, user, signInRequ
       {showChildren && <div className={classes.root}>{children}</div>}
     </div>
   );
-};
+}
 
 const styles = theme => ({
   root: {

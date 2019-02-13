@@ -44,7 +44,11 @@ function splitEssays(essays) {
 }
 
 function TabContainer({ essays, user }) {
-  return <Essays essays={essays} user={user} />;
+  return (
+    <div style={{ overflow: "hidden" }}>
+      <Essays essays={essays} user={user} />
+    </div>
+  );
 }
 
 TabContainer.propTypes = {
@@ -66,8 +70,8 @@ function EssayTabs({ user, essays }) {
       <AppBar position="static" color="default">
         <Tabs value={value} onChange={handleChange} textColor="primary" indicatorColor="primary">
           <Tab label="Awaiting reviewer" />
-          <Tab label="Not Yet Complete" />
-          <Tab label="Complete" />
+          <Tab label="Not Yet Completed" />
+          <Tab label="Completed" />
         </Tabs>
       </AppBar>
       <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>

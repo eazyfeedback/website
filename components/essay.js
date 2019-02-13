@@ -151,8 +151,7 @@ Essay.propTypes = {
 
 const styles = theme => ({
   card: {
-    height: "100%",
-    width: "100%"
+    height: "100%"
   },
   icon: {
     marginRight: theme.spacing.unit / 2,

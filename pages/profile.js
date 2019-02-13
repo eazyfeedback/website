@@ -66,9 +66,9 @@ function EssayTabs({ user, essays }) {
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
-        <Tabs value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" variant={null}>
+        <Tabs value={value} onChange={handleChange} textColor="primary" indicatorColor="primary">
           <Tab label="Awaiting reviewer" />
-          <Tab label="Not Complete" />
+          <Tab label="Not Yet Complete" />
           <Tab label="Complete" />
         </Tabs>
       </AppBar>
@@ -83,8 +83,7 @@ function EssayTabs({ user, essays }) {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: "white",
-    width: 500
+    backgroundColor: "white"
   }
 }));
 
@@ -150,7 +149,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
               {profile.essaysReviewing.length > 0 && (
                 <Grid item>
                   <Typography variant="subtitle1" color="textSecondary">
-                    Essays reviewing
+                    Essays Reviewing
                   </Typography>
                   <Essays user={user} essays={profile.essaysReviewing} />
                 </Grid>

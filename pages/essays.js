@@ -33,7 +33,7 @@ Essays.propTypes = {
   essays: PropTypes.arrayOf(
     PropTypes.shape({
       question: PropTypes.string,
-      stage: PropTypes.string.isRequired,
+      stage: PropTypes.string,
       areas: PropTypes.arrayOf(PropTypes.string).isRequired,
       link: PropTypes.string.isRequired,
       ownerUID: PropTypes.string.isRequired,
@@ -70,7 +70,7 @@ EssaysWithLayout.propTypes = {
   essays: PropTypes.arrayOf(
     PropTypes.shape({
       question: PropTypes.string,
-      stage: PropTypes.string.isRequired,
+      stage: PropTypes.string,
       areas: PropTypes.arrayOf(PropTypes.string).isRequired,
       link: PropTypes.string.isRequired,
       ownerUID: PropTypes.string.isRequired,

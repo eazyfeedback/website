@@ -28,7 +28,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
             <Button href="/">
               <Hidden mdUp>
                 <Tooltip title="Home">
-                  <img src={`/static/logo${isActive(route, "/") ? "-white" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
+                  <img src={`/static/logo${isActive(route, "/") ? "White" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
                 </Tooltip>
               </Hidden>
               <Hidden smDown>

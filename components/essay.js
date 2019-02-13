@@ -83,6 +83,7 @@ const Essay = ({ essay, user, classes, theme, review }) => {
   const showQuestion = essay.question.length > 0;
   const showActions = user && !review;
   const { body, title, background, button } = getColors(user, essay, theme);
+
   return (
     <Card className={classes.card} style={{ height: "100%", backgroundColor: background }}>
       <CardContent>

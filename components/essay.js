@@ -12,16 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import APIEndpoint from "../lib/api";
 
-const icon = {
-  marginRight: 4,
-  fontSize: 16
-};
-
-const button = {
-  margin: 8
-};
-
-function Actions({ user, essay }) {
+function Actions({ user, essay, classes: { icon, button } }) {
   const canRemove = user && user.uid === essay.ownerUID;
   const canComplete = user && user.uid === essay.reviewerUID;
   const canReview = user && !essay.reviewerUID && user.uid !== essay.ownerUID;
@@ -48,24 +39,24 @@ function Actions({ user, essay }) {
   return (
     <CardActions>
       {canRemove && (
-        <Button style={button} size="small" onClick={handleRemove}>
-          <DeleteIcon style={icon} />
+        <Button className={button} size="small" onClick={handleRemove}>
+          <DeleteIcon className={icon} />
           remove
         </Button>
       )}
       {canComplete && (
-        <Button style={button} size="small" onClick={handleComplete} color="secondary">
-          <DoneIcon style={icon} />
+        <Button className={button} size="small" onClick={handleComplete} color="secondary" variant="contained">
+          <DoneIcon className={icon} />
           complete
         </Button>
       )}
       {canReview && (
-        <Button style={button} size="small" onClick={handleReview} color="primary" variant="contained">
-          <MoodIcon style={icon} />
+        <Button className={button} size="small" onClick={handleReview} color="primary" variant="contained">
+          <MoodIcon className={icon} />
           review
         </Button>
       )}
-      <Link style={button} href={essay.link} target="_blank" rel="noreferrer" variant="button">
+      <Link className={button} href={essay.link} target="_blank" rel="noreferrer" variant="button">
         open
       </Link>
     </CardActions>
@@ -97,7 +88,7 @@ const Essay = ({ essay, user, review, classes, theme }) => {
   const border = `1px solid ${color}`;
   return (
     <Card className={classes.card} style={{ ...(color && { border }) }}>
-      <CardContent>
+      <CardContent style={{ paddingBottom: 0 }}>
         <Typography gutterBottom color="textSecondary" variant="body2">
           Stage
         </Typography>
@@ -129,7 +120,16 @@ const Essay = ({ essay, user, review, classes, theme }) => {
           </>
         )}
       </CardContent>
-      {showActions && <Actions user={user} essay={essay} />}
+      {showActions && (
+        <Actions
+          user={user}
+          essay={essay}
+          classes={{
+            icon: classes.icon,
+            button: classes.button
+          }}
+        />
+      )}
     </Card>
   );
 };
@@ -149,10 +149,17 @@ Essay.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-const styles = () => ({
+const styles = theme => ({
   card: {
     minWidth: 120,
     height: "100%"
+  },
+  icon: {
+    marginRight: theme.spacing.unit / 2,
+    fontSize: theme.spacing.unit * 2
+  },
+  button: {
+    margin: theme.spacing.unit
   }
 });
 

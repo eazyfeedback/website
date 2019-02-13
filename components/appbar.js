@@ -25,7 +25,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
       <Grid container alignItems="center" justify="space-between">
         <Grid item>
           <NextLink href="/" prefetch>
-            <Button href="/">
+            <Button href="/" className={classes.button}>
               <Hidden mdUp>
                 <Tooltip title="Home">
                   <img src={`/static/logo${isActive(route, "/") ? "White" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
@@ -49,7 +49,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
         <Grid item>
           <NextLink href="/post" prefetch>
             <Tooltip title="Post essay for feedback">
-              <Button href="/post">
+              <Button href="/post" className={classes.button}>
                 <CreateIcon
                   className={classNames(classes.icon, {
                     [classes.active]: isActive(route, "/post")
@@ -70,7 +70,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
 
           <NextLink href="/essays" prefetch>
             <Tooltip title="Essays awaiting review">
-              <Button href="/essays">
+              <Button href="/essays" className={classes.button}>
                 <FolderIcon
                   className={classNames(classes.icon, {
                     [classes.active]: isActive(route, "/essays")
@@ -92,7 +92,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
           <Hidden smDown>
             <NextLink href="/profile" prefetch>
               <Tooltip title="My Profile">
-                <Button href="/profile">
+                <Button href="/profile" className={classes.button}>
                   <AccountCircleIcon
                     className={classNames(classes.icon, {
                       [classes.active]: isActive(route, "/profile")
@@ -110,7 +110,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
             </NextLink>
           </Hidden>
 
-          <Button onClick={user ? handleLogout : handleLogin} variant="outlined">
+          <Button onClick={user ? handleLogout : handleLogin} variant="outlined" className={classes.button}>
             {user ? <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} /> : <ExitToAppIcon className={classes.icon} />}
             <span className={classNames(classes.nav, classes.navItem)}>{user ? "logout" : "sign in"}</span>
           </Button>
@@ -127,6 +127,11 @@ const styles = theme => ({
   },
   icon: {
     fontSize: 24
+  },
+  button: {
+    "&:hover": {
+      color: theme.palette.common.white
+    }
   },
   active: {
     color: theme.palette.common.white

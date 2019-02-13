@@ -15,12 +15,11 @@ import APIEndpoint from "../lib/api";
 
 function useProfile(user) {
   const [profile, setProfile] = useState(null);
-  function fetchProfile() {
-    const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
-    axios.get(endpoint).then(res => setProfile(res.data.profile));
-  }
   useEffect(() => {
-    if (user) fetchProfile();
+    if (user) {
+      const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
+      axios.get(endpoint).then(res => setProfile(res.data.profile));
+    }
   }, [user]);
   return profile;
 }

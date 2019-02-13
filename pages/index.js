@@ -14,14 +14,11 @@ import APIEndpoint from "../lib/api";
 
 function usePoints(user) {
   const [points, setPoints] = useState(0);
-
-  function fetchProfile() {
-    const endpoint = `${APIEndpoint}/users/${user.uid}/points`;
-    axios.get(endpoint).then(res => setPoints(res.data.points));
-  }
-
   useEffect(() => {
-    if (user) fetchProfile();
+    if (user) {
+      const endpoint = `${APIEndpoint}/users/${user.uid}/points`;
+      axios.get(endpoint).then(res => setPoints(res.data.points));
+    }
   }, [user]);
   return points;
 }
@@ -38,13 +35,13 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
         </Grid>
 
         {user && (
-          <Grid item className={classes.marginTop} style={{ minWidth: 300 }}>
+          <Grid item className={classes.marginTop} style={{ minWidth: 280 }}>
             <Paper className={classes.paper2}>
               <Grid container>
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                   <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={8}>
                   <Typography color="textSecondary">Welcome back</Typography>
                   <Typography variant="body1">{user.name}</Typography>
                   <Typography variant="body2">

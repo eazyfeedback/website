@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import APIEndpoint from "../lib/api";
 
-function Actions({ user, essay, classes, buttonColor }) {
+function Actions({ user, essay, classes }) {
   const canRemove = user && user.uid === essay.ownerUID;
   const canComplete = user && user.uid === essay.reviewerUID;
   const canReview = user && !essay.reviewerUID && user.uid !== essay.ownerUID;
@@ -35,22 +35,10 @@ function Actions({ user, essay, classes, buttonColor }) {
   }
   return (
     <CardActions className={classes.actions}>
-      {canRemove && (
-        <Button onClick={handleRemove} style={{ color: buttonColor }}>
-          remove
-        </Button>
-      )}
-      {canComplete && (
-        <Button onClick={handleComplete} style={{ color: buttonColor }}>
-          complete
-        </Button>
-      )}
-      {canReview && (
-        <Button onClick={handleReview} style={{ color: buttonColor }}>
-          review
-        </Button>
-      )}
-      <Button href={essay.link} target="_blank" rel="noreferrer" style={{ color: buttonColor }} variant="outlined">
+      {canRemove && <Button onClick={handleRemove}>remove</Button>}
+      {canComplete && <Button onClick={handleComplete}>complete</Button>}
+      {canReview && <Button onClick={handleReview}>review</Button>}
+      <Button href={essay.link} target="_blank" rel="noreferrer" variant="outlined">
         open
       </Button>
     </CardActions>
@@ -74,7 +62,6 @@ const Essay = ({ essay, user, classes, theme, review }) => {
   const showQuestion = essay.question.length > 0;
   const showActions = user && !review;
   const { body, title, background, button } = getColors(user, essay, theme);
-
   return (
     <Card className={classes.card} style={{ height: "100%", backgroundColor: background }}>
       <CardContent>

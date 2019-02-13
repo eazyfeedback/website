@@ -37,7 +37,7 @@ function Actions({ user, essay, classes: { icon, button } }) {
     return axios.delete(`${APIEndpoint}/essays/${essay.id}`).then(() => pageRefresh());
   }
   return (
-    <CardActions>
+    <CardActions style={{ paddingTop: 0 }}>
       {canRemove && (
         <Button className={button} size="small" onClick={handleRemove}>
           <DeleteIcon className={icon} />
@@ -88,7 +88,7 @@ const Essay = ({ essay, user, review, classes, theme }) => {
   const border = `1px solid ${color}`;
   return (
     <Card className={classes.card} style={{ ...(color && { border }) }}>
-      <CardContent style={{ paddingBottom: 0 }}>
+      <CardContent>
         <Typography gutterBottom color="textSecondary" variant="body2">
           Stage
         </Typography>

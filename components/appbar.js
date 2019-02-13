@@ -28,7 +28,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
             <Tooltip title="Home">
               <Button href="/" className={classes.button}>
                 <Hidden mdUp>
-                  <img src={`/static/logo${isActive(route, "/") ? "White" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
+                  <img src={`/static/logo${isActive(route, "/") ? "White" : ""}.png`} alt="essayfeedback" className={classes.logoImage} id="logo" />
                 </Hidden>
                 <Hidden smDown>
                   <span
@@ -130,7 +130,7 @@ const styles = theme => ({
     "&:hover": {
       color: theme.palette.common.white
     },
-    "&:hover img": {
+    "&:hover img#logo": {
       content: "url('/static/logoWhite.png')"
     }
   },

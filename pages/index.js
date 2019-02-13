@@ -8,15 +8,10 @@ import { withStyles } from "@material-ui/core/styles";
 import NextLink from "next/link";
 import withAuth from "../lib/auth";
 import Layout from "../components/layout";
-import getConfig from "next/config";
 import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
 
-const {
-  publicRuntimeConfig: { APIEndpoint }
-} = getConfig();
-
-function usePoints(user) {
+function usePoints(user, APIEndpoint) {
   const [points, setPoints] = useState(0);
 
   function fetchProfile() {
@@ -30,8 +25,8 @@ function usePoints(user) {
   return points;
 }
 
-const Index = ({ classes, handleLogin, handleLogout, user }) => {
-  const points = usePoints(user);
+const Index = ({ classes, handleLogin, handleLogout, user, APIEndpoint }) => {
+  const points = usePoints(user, APIEndpoint);
   return (
     <Layout handleLogin={handleLogin} handleLogout={handleLogout} user={user} signInRequired={false} signInVisible={false} message="">
       <Grid container style={{ minHeight: `calc(100vh - 96px)` }} justify="space-around" alignItems="center" direction="column">

@@ -8,16 +8,11 @@ import Paper from "@material-ui/core/Paper";
 import Layout from "../components/layout";
 import Typography from "@material-ui/core/Typography";
 import withAuth from "../lib/auth";
-import getConfig from "next/config";
 import { useEffect } from "react";
 import axios from "axios";
 import { Essays } from "./essays";
 
-const {
-  publicRuntimeConfig: { APIEndpoint }
-} = getConfig();
-
-const Profile = ({ user, classes, handleLogin, handleLogout }) => {
+const Profile = ({ user, classes, handleLogin, handleLogout, APIEndpoint }) => {
   const [profile, setProfile] = useState(null);
 
   function fetchProfile() {

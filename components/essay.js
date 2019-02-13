@@ -6,14 +6,9 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import getConfig from "next/config";
 import axios from "axios";
 
-const {
-  publicRuntimeConfig: { APIEndpoint }
-} = getConfig();
-
-function Actions({ user, essay, classes, buttonColor }) {
+function Actions({ user, essay, classes, buttonColor, APIEndpoint }) {
   const canRemove = user && user.uid === essay.ownerUID;
   const canComplete = user && user.uid === essay.reviewerUID;
   const canReview = user && !essay.reviewerUID && user.uid !== essay.ownerUID;

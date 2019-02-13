@@ -11,7 +11,6 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import NextLink from "next/link";
 import axios from "axios";
-import getConfig from "next/config";
 import { Stages, Areas, Link, Review } from "../components/post";
 import Layout from "../components/layout";
 import withAuth from "../lib/auth";
@@ -38,7 +37,7 @@ export function getAreas() {
   ];
 }
 
-function Post({ classes, user, handleLogin, handleLogout }) {
+function Post({ classes, user, handleLogin, handleLogout, APIEndpoint }) {
   const steps = getStepsHeadings();
   const initialSelectedAreas = Array.from(Array(areas.length), () => false);
   const [ownerUID, setOwnerUID] = useState("");
@@ -101,9 +100,6 @@ function Post({ classes, user, handleLogin, handleLogout }) {
     setLink("");
   }
   function handleFinish() {
-    const {
-      publicRuntimeConfig: { APIEndpoint }
-    } = getConfig();
     axios
       .post(`${APIEndpoint}/essays`, {
         selectedAreas,

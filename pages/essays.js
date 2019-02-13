@@ -7,6 +7,10 @@ import { getSelectedAreas, getSelectedStage } from "../pages/post";
 import Layout from "../components/layout";
 import withAuth from "../lib/auth";
 
+const {
+  publicRuntimeConfig: { APIEndpoint }
+} = getConfig();
+
 const formatEssays = essays =>
   essays.map(({ selectedStage, selectedAreas, question, link, ownerUID, reviewerUID, isReviewComplete, _id }) => ({
     areas: getSelectedAreas(selectedAreas),
@@ -33,8 +37,8 @@ Essays.propTypes = {
   essays: PropTypes.arrayOf(
     PropTypes.shape({
       question: PropTypes.string,
-      stage: PropTypes.string,
-      areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+      getSelectedStage: PropTypes.number,
+      getSelectedAreas: PropTypes.arrayOf(PropTypes.bool).isRequired,
       link: PropTypes.string.isRequired,
       ownerUID: PropTypes.string.isRequired,
       reviewerUID: PropTypes.string
@@ -56,14 +60,11 @@ const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout }) => (
   </Layout>
 );
 
-EssaysWithLayout.getInitialProps = async function getInitialProps() {
-  const {
-    publicRuntimeConfig: { APIEndpoint }
-  } = getConfig();
+EssaysWithLayout.getInitialProps = async function getInitialProps(props) {
   const {
     data: { essays }
   } = await axios.get(`${APIEndpoint}/essays`);
-  return { essays };
+  return { essays: essays };
 };
 
 EssaysWithLayout.propTypes = {

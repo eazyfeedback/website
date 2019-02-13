@@ -42,7 +42,7 @@ function Actions({ user, essay }) {
         </Button>
       )}
       {canReview && (
-        <Button onClick={handleReview} color="primary">
+        <Button onClick={handleReview} color="primary" variant="contained">
           review
         </Button>
       )}

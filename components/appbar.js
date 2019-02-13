@@ -25,14 +25,12 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
       <Grid container alignItems="center" justify="space-between">
         <Grid item>
           <NextLink href="/" prefetch>
-            <Button href="/" className={classes.button}>
-              <Hidden mdUp>
-                <Tooltip title="Home">
+            <Tooltip title="Home">
+              <Button href="/" className={classes.button}>
+                <Hidden mdUp>
                   <img src={`/static/logo${isActive(route, "/") ? "White" : ""}.png`} alt="essayfeedback" className={classes.logoImage} />
-                </Tooltip>
-              </Hidden>
-              <Hidden smDown>
-                <Tooltip title="Home">
+                </Hidden>
+                <Hidden smDown>
                   <span
                     className={classNames(classes.nav, {
                       [classes.active]: isActive(route, "/")
@@ -40,9 +38,9 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
                   >
                     essayfeedback
                   </span>
-                </Tooltip>
-              </Hidden>
-            </Button>
+                </Hidden>
+              </Button>
+            </Tooltip>
           </NextLink>
         </Grid>
 
@@ -89,15 +87,15 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
             </Tooltip>
           </NextLink>
 
-          <Hidden smDown>
-            <NextLink href="/profile" prefetch>
-              <Tooltip title="My Profile">
-                <Button href="/profile" className={classes.button}>
-                  <AccountCircleIcon
-                    className={classNames(classes.icon, {
-                      [classes.active]: isActive(route, "/profile")
-                    })}
-                  />
+          <NextLink href="/profile" prefetch>
+            <Tooltip title="My Profile">
+              <Button href="/profile" className={classes.button}>
+                <AccountCircleIcon
+                  className={classNames(classes.icon, {
+                    [classes.active]: isActive(route, "/profile")
+                  })}
+                />
+                <Hidden smDown>
                   <span
                     className={classNames(classes.nav, classes.navItem, {
                       [classes.active]: isActive(route, "/profile")
@@ -105,10 +103,10 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
                   >
                     profile
                   </span>
-                </Button>
-              </Tooltip>
-            </NextLink>
-          </Hidden>
+                </Hidden>
+              </Button>
+            </Tooltip>
+          </NextLink>
 
           <Button onClick={user ? handleLogout : handleLogin} variant="outlined" className={classes.button}>
             {user ? <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} /> : <ExitToAppIcon className={classes.icon} />}
@@ -123,10 +121,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
 const styles = theme => ({
   logoImage: {
     width: 30,
-    height: 30,
-    "&:hover": {
-      content: "url('/static/logoWhite.png')"
-    }
+    height: 30
   },
   icon: {
     fontSize: 24
@@ -134,6 +129,9 @@ const styles = theme => ({
   button: {
     "&:hover": {
       color: theme.palette.common.white
+    },
+    "&:hover img": {
+      content: "url('/static/logoWhite.png')"
     }
   },
   active: {

@@ -115,7 +115,9 @@ const styles = theme => ({
   },
   stars: {
     fontSize: "1rem",
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+    color: "transparent",
+    textShadow: `0 0 0 ${theme.palette.secondary.main}`
   },
   paper2: {
     padding: theme.spacing.unit * 2

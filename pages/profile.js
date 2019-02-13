@@ -10,8 +10,61 @@ import Typography from "@material-ui/core/Typography";
 import withAuth from "../lib/auth";
 import { useEffect } from "react";
 import axios from "axios";
+import SwipeableViews from "react-swipeable-views";
+import { makeStyles } from "@material-ui/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import { Essays } from "./essays";
 import APIEndpoint from "../lib/api";
+
+const pointsTip =
+  "You earn points based on the number of essays you review and the rating you get after completing. Top reviwers are listed on the home page!";
+
+function TabContainer({ children }) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {children}
+    </Typography>
+  );
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  dir: PropTypes.string.isRequired
+};
+
+function EssayTabs({}) {
+  const classes = useStyles();
+  const [value, setValue] = useState(0);
+  function handleChange(event, newValue) {
+    setValue(newValue);
+  }
+  function handleChangeIndex(index) {
+    setValue(index);
+  }
+  return (
+    <div className={classes.root}>
+      <AppBar position="static" color="default">
+        <Tabs value={value} onChange={handleChange} indicatorColor="primary" textColor="primary" variant={null}>
+          <Tab label="Pending" />
+          <Tab label="Completed" />
+        </Tabs>
+      </AppBar>
+      <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
+        <TabContainer>Item One</TabContainer>
+        <TabContainer>Item Two</TabContainer>
+      </SwipeableViews>
+    </div>
+  );
+}
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    width: 500
+  }
+}));
 
 function useProfile(user) {
   const [profile, setProfile] = useState(null);
@@ -28,6 +81,13 @@ function getStatus({ reviewerUID, isReviewComplete }) {
   if (isReviewComplete) return "Complete";
   if (reviewerUID && !isReviewComplete) return "Pending";
   return "No Reviewer yet";
+}
+
+function splitEssays(essays) {
+  return {
+    completed,
+    pending
+  };
 }
 
 const Profile = ({ user, classes, handleLogin, handleLogout }) => {
@@ -54,34 +114,28 @@ const Profile = ({ user, classes, handleLogin, handleLogout }) => {
                       <Typography variant="subtitle2" color="textSecondary">
                         {user.email}
                       </Typography>
-                      {profile.rating > 0 && (
-                        <Typography variant="body2" color="textSecondary">
-                          {profile.rating}⭐
-                        </Typography>
-                      )}
+                      <Typography variant="body2">
+                        <span style={{ fontWeight: 700 }}>{profile.points}</span> points <span className={classes.stars}>✨</span>
+                      </Typography>
                     </Grid>
 
                     <Grid item xs={12}>
                       <Divider variant="middle" />
                     </Grid>
 
-                    <Grid item xs={12} sm={4}>
-                      <Typography color="textSecondary"># posted</Typography>
+                    <Grid item xs={12} sm={6}>
+                      <Typography color="textSecondary">essays posted</Typography>
                       <Typography variant="h4">{profile.essaysPosted.length}</Typography>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <Typography color="textSecondary"># reviewed</Typography>
+                    <Grid item xs={12} sm={6}>
+                      <Typography color="textSecondary">essays reviewed</Typography>
                       <Typography variant="h4">{profile.essaysReviewedCount}</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                      <Typography color="textSecondary"># points</Typography>
-                      <Typography variant="h4">{profile.points}</Typography>
                     </Grid>
                   </Grid>
                 </Paper>
               </Grid>
             </Grid>
-            <Grid container justify="flex-start" alignItems="center" spacing={16}>
+            <Grid container spacing={16}>
               {profile.essaysReviewing.length > 0 && (
                 <Grid item>
                   <Typography variant="subtitle1" color="textSecondary">
@@ -126,6 +180,12 @@ const styles = theme => ({
   paper: {
     padding: theme.spacing.unit,
     textAlign: "center"
+  },
+  stars: {
+    fontSize: "1rem",
+    verticalAlign: "middle",
+    color: "transparent",
+    textShadow: `0 0 0 ${theme.palette.secondary.main}`
   }
 });
 

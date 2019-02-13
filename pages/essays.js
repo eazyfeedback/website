@@ -1,15 +1,11 @@
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
-import getConfig from "next/config";
 import Essay from "../components/essay";
 import { getSelectedAreas, getSelectedStage } from "../pages/post";
 import Layout from "../components/layout";
 import withAuth from "../lib/auth";
-
-const {
-  publicRuntimeConfig: { APIEndpoint }
-} = getConfig();
+import APIEndpoint from "../lib/api";
 
 const formatEssays = essays =>
   essays.map(({ selectedStage, selectedAreas, question, link, ownerUID, reviewerUID, isReviewComplete, _id }) => ({
@@ -60,7 +56,7 @@ const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout }) => (
   </Layout>
 );
 
-EssaysWithLayout.getInitialProps = async function getInitialProps(props) {
+EssaysWithLayout.getInitialProps = async function getInitialProps() {
   const {
     data: { essays }
   } = await axios.get(`${APIEndpoint}/essays`);

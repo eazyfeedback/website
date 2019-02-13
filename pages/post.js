@@ -13,6 +13,7 @@ import NextLink from "next/link";
 import axios from "axios";
 import { Stages, Areas, Link, Review } from "../components/post";
 import Layout from "../components/layout";
+import APIEndpoint from "../lib/api";
 import withAuth from "../lib/auth";
 
 const stages = getStages();
@@ -37,7 +38,7 @@ export function getAreas() {
   ];
 }
 
-function Post({ classes, user, handleLogin, handleLogout, APIEndpoint }) {
+function Post({ classes, user, handleLogin, handleLogout }) {
   const steps = getStepsHeadings();
   const initialSelectedAreas = Array.from(Array(areas.length), () => false);
   const [ownerUID, setOwnerUID] = useState("");

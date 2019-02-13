@@ -11,8 +11,9 @@ import withAuth from "../lib/auth";
 import { useEffect } from "react";
 import axios from "axios";
 import { Essays } from "./essays";
+import APIEndpoint from "../lib/api";
 
-const Profile = ({ user, classes, handleLogin, handleLogout, APIEndpoint }) => {
+const Profile = ({ user, classes, handleLogin, handleLogout }) => {
   const [profile, setProfile] = useState(null);
 
   function fetchProfile() {

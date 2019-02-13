@@ -10,8 +10,9 @@ import withAuth from "../lib/auth";
 import Layout from "../components/layout";
 import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
+import APIEndpoint from "../lib/api";
 
-function usePoints(user, APIEndpoint) {
+function usePoints(user) {
   const [points, setPoints] = useState(0);
 
   function fetchProfile() {
@@ -25,8 +26,8 @@ function usePoints(user, APIEndpoint) {
   return points;
 }
 
-const Index = ({ classes, handleLogin, handleLogout, user, APIEndpoint }) => {
-  const points = usePoints(user, APIEndpoint);
+const Index = ({ classes, handleLogin, handleLogout, user }) => {
+  const points = usePoints(user);
   return (
     <Layout handleLogin={handleLogin} handleLogout={handleLogout} user={user} signInRequired={false} signInVisible={false} message="">
       <Grid container style={{ minHeight: `calc(100vh - 96px)` }} justify="space-around" alignItems="center" direction="column">

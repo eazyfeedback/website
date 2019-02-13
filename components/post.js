@@ -82,19 +82,16 @@ Link.propTypes = {
   setLink: PropTypes.func.isRequired
 };
 
-const Review = ({ essay, user }) => {
-  console.log(essay);
-  return (
-    <div>
-      <Typography gutterBottom color="textSecondary" variant="body1">
-        Review your feedback request
-      </Typography>
-      <div style={{ marginBottom: 12, maxWidth: 320 }}>
-        <Essay essay={essay} user={user} review />
-      </div>
+const Review = ({ essay, user }) => (
+  <div>
+    <Typography gutterBottom color="textSecondary" variant="body1">
+      Review your feedback request
+    </Typography>
+    <div style={{ marginBottom: 12, maxWidth: 320 }}>
+      <Essay essay={essay} user={user} review />
     </div>
-  );
-};
+  </div>
+);
 
 Review.propTypes = {
   essay: Object.assign(essayPropTypes, { areas: PropTypes.arrayOf(PropTypes.string).isRequired, stage: PropTypes.string.isRequired }),

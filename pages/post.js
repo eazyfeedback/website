@@ -187,7 +187,8 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2
   },
   reset: {
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 2,
+    paddingTop: 0
   },
   layout: {
     width: "auto",

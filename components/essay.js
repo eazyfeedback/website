@@ -55,8 +55,7 @@ function Actions({ user, essay }) {
 
 Actions.propTypes = {
   user: PropTypes.object,
-  essay: PropTypes.object.isRequired,
-  buttonColor: PropTypes.string.isRequired
+  essay: PropTypes.object.isRequired
 };
 
 function getColor(user, essay, theme) {
@@ -118,8 +117,8 @@ const Essay = ({ essay, user, review, classes, theme }) => {
 
 export const essayPropTypes = PropTypes.shape({
   question: PropTypes.string,
-  selectedAreas: PropTypes.arrayOf(PropTypes.bool).isRequired,
-  selectedStage: PropTypes.number.isRequired,
+  areas: PropTypes.arrayOf(PropTypes.string).isRequired,
+  stage: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   reviewerUID: PropTypes.string,
   ownerUID: PropTypes.string.isRequired,

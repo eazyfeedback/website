@@ -19,7 +19,7 @@ import withAuth from "../lib/auth";
 const stages = getStages();
 const areas = getAreas();
 export const getSelectedAreas = selectedAreas => selectedAreas.map((bool, idx) => (bool ? areas[idx] : "")).filter(area => area !== "");
-export const getSelectedStage = selectedStage => stages[selectedStage];
+export const getSelectedStage = selectedStage => (selectedStage in stages ? stages[selectedStage] : "");
 
 function getStepsHeadings() {
   return ["Stage", "Areas", "Link", "Review"];

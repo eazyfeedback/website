@@ -83,6 +83,7 @@ Link.propTypes = {
 };
 
 const Review = ({ essay, user }) => {
+  console.log(essay);
   return (
     <div>
       <Typography gutterBottom color="textSecondary" variant="body1">

@@ -12,7 +12,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { useEffect } from "react";
 import axios from "axios";
 import SwipeableViews from "react-swipeable-views";
-import { makeStyles } from "@material-ui/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -54,7 +53,6 @@ TabContainer.propTypes = {
 };
 
 function EssayTabs({ user, essays }) {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
   function handleChange(event, newValue) {
     setValue(newValue);
@@ -64,7 +62,7 @@ function EssayTabs({ user, essays }) {
   }
   const { complete = [], notComplete = [], noReviewer = [] } = splitEssays(essays);
   return (
-    <div className={classes.root}>
+    <div style={{ backgroundColor: "white" }}>
       <AppBar position="static" color="default">
         <Tabs value={value} onChange={handleChange} textColor="primary" indicatorColor="primary">
           <Tab label="Awaiting reviewer" />
@@ -80,12 +78,6 @@ function EssayTabs({ user, essays }) {
     </div>
   );
 }
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    backgroundColor: "white"
-  }
-}));
 
 function useProfile(user) {
   const [profile, setProfile] = useState(null);

@@ -5,7 +5,7 @@ import getConfig from "next/config";
 import Essay from "../components/essay";
 import { getSelectedAreas, getSelectedStage } from "../pages/post";
 import Layout from "../components/layout";
-import withAuth from "../components/auth";
+import withAuth from "../lib/auth";
 
 const formatEssays = essays =>
   essays.map(({ selectedStage, selectedAreas, question, link, ownerUID, reviewerUID, isReviewComplete, _id }) => ({

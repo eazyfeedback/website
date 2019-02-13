@@ -7,7 +7,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Layout from "../components/layout";
 import Typography from "@material-ui/core/Typography";
-import withAuth from "../components/auth";
+import withAuth from "../lib/auth";
 import getConfig from "next/config";
 import { useEffect } from "react";
 import axios from "axios";

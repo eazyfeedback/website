@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import NextLink from "next/link";
-import withAuth from "../components/auth";
+import withAuth from "../lib/auth";
 import Layout from "../components/layout";
 import getConfig from "next/config";
 import Avatar from "@material-ui/core/Avatar";

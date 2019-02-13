@@ -14,7 +14,7 @@ import axios from "axios";
 import getConfig from "next/config";
 import { Stages, Areas, Link, Review } from "../components/post";
 import Layout from "../components/layout";
-import withAuth from "../components/auth";
+import withAuth from "../lib/auth";
 
 const stages = getStages();
 const areas = getAreas();

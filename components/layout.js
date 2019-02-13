@@ -25,7 +25,7 @@ const styles = theme => ({
 
 Layout.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
   handleLogin: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired,
   user: PropTypes.object,

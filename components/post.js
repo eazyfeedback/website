@@ -3,7 +3,7 @@ import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
-import Essay from "./essay";
+import Essay, { essayPropTypes } from "./essay";
 
 const Stages = ({ stages, selectedIndex, setSelectedIndex }) => (
   <div>
@@ -96,13 +96,7 @@ const Review = ({ essay, user }) => {
 };
 
 Review.propTypes = {
-  essay: PropTypes.shape({
-    question: PropTypes.string,
-    stage: PropTypes.string,
-    areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-    link: PropTypes.string.isRequired,
-    ownerUID: PropTypes.string.isRequired
-  }).isRequired,
+  essay: essayPropTypes,
   user: PropTypes.object
 };
 

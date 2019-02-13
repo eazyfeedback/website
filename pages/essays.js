@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
-import Essay from "../components/essay";
+import Essay, { essayPropTypes } from "../components/essay";
 import { getSelectedAreas, getSelectedStage } from "../pages/post";
 import Layout from "../components/layout";
 import withAuth from "../lib/auth";
@@ -20,7 +20,7 @@ const formatEssays = essays =>
   }));
 
 export const Essays = ({ essays, user }) => (
-  <Grid container spacing={16} style={{ paddingTop: 8, paddingBottom: 8 }}>
+  <Grid container spacing={16} style={{ paddingTop: 16, paddingBottom: 16 }}>
     {formatEssays(essays).map((essay, idx) => (
       <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={idx}>
         <Essay essay={essay} user={user} />
@@ -30,16 +30,7 @@ export const Essays = ({ essays, user }) => (
 );
 
 Essays.propTypes = {
-  essays: PropTypes.arrayOf(
-    PropTypes.shape({
-      question: PropTypes.string,
-      getSelectedStage: PropTypes.number,
-      getSelectedAreas: PropTypes.arrayOf(PropTypes.bool).isRequired,
-      link: PropTypes.string.isRequired,
-      ownerUID: PropTypes.string.isRequired,
-      reviewerUID: PropTypes.string
-    })
-  ).isRequired,
+  essays: PropTypes.arrayOf(essayPropTypes).isRequired,
   user: PropTypes.object
 };
 
@@ -64,16 +55,7 @@ EssaysWithLayout.getInitialProps = async function getInitialProps() {
 };
 
 EssaysWithLayout.propTypes = {
-  essays: PropTypes.arrayOf(
-    PropTypes.shape({
-      question: PropTypes.string,
-      stage: PropTypes.string,
-      areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-      link: PropTypes.string.isRequired,
-      ownerUID: PropTypes.string.isRequired,
-      reviewerUID: PropTypes.string
-    })
-  ).isRequired,
+  essays: PropTypes.arrayOf(essayPropTypes).isRequired,
   user: PropTypes.object,
   handleLogin: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired

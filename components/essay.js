@@ -13,11 +13,9 @@ function Actions({ user, essay, classes, buttonColor }) {
   const canRemove = user && user.uid === essay.ownerUID;
   const canComplete = user && user.uid === essay.reviewerUID;
   const canReview = user && !essay.reviewerUID && user.uid !== essay.ownerUID;
-
   function pageRefresh() {
     location.reload();
   }
-
   function handleReview() {
     return axios
       .patch(`${APIEndpoint}/essays/${essay.id}`, {
@@ -25,7 +23,6 @@ function Actions({ user, essay, classes, buttonColor }) {
       })
       .then(() => pageRefresh());
   }
-
   function handleComplete() {
     return axios
       .patch(`${APIEndpoint}/essays/${essay.id}`, {
@@ -33,11 +30,9 @@ function Actions({ user, essay, classes, buttonColor }) {
       })
       .then(() => pageRefresh());
   }
-
   function handleRemove() {
     return axios.delete(`${APIEndpoint}/essays/${essay.id}`).then(() => pageRefresh());
   }
-
   return (
     <CardActions className={classes.actions}>
       {canRemove && (
@@ -134,17 +129,19 @@ const Essay = ({ essay, user, classes, theme, review }) => {
   );
 };
 
+export const essayPropTypes = PropTypes.shape({
+  question: PropTypes.string,
+  selectedAreas: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  selectedStage: PropTypes.number.isRequired,
+  link: PropTypes.string.isRequired,
+  reviewerUID: PropTypes.string,
+  ownerUID: PropTypes.string.isRequired,
+  id: PropTypes.string
+}).isRequired;
+
 Essay.propTypes = {
   classes: PropTypes.object.isRequired,
-  essay: PropTypes.shape({
-    question: PropTypes.string,
-    stage: PropTypes.string.isRequired,
-    areas: PropTypes.arrayOf(PropTypes.string).isRequired,
-    link: PropTypes.string.isRequired,
-    reviewerUID: PropTypes.string,
-    ownerUID: PropTypes.string.isRequired,
-    id: PropTypes.string
-  }).isRequired,
+  essay: essayPropTypes,
   user: PropTypes.object,
   review: PropTypes.bool,
   theme: PropTypes.object.isRequired

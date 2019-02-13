@@ -1,7 +1,10 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,6 +14,7 @@ import DoneIcon from "@material-ui/icons/Done";
 import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import APIEndpoint from "../lib/api";
+import { useEffect } from "react";
 
 function Actions({ user, essay, classes: { icon, button } }) {
   const canRemove = user && user.uid === essay.ownerUID;
@@ -81,18 +85,44 @@ function getColor(user, essay, theme) {
   }
 }
 
+const User = ({ name, photoURL }) => (
+  <Avatar
+    alt={name}
+    src={photoURL}
+    style={{
+      width: 40,
+      height: 40
+    }}
+  />
+);
+
 function Essay({ essay, user, review, classes, theme }) {
   const showQuestion = essay.question.length > 0;
   const showActions = user && !review;
   const color = getColor(user, essay, theme);
   const border = `1px solid ${color}`;
+  const [photoURL, setPhotoURL] = useState("");
+  useEffect(() => {
+    const endpoint = `${APIEndpoint}/users/${essay.ownerUID}`;
+    axios.get(endpoint).then(res => setPhotoURL(res.data.user.photoURL));
+  }, []);
+
   return (
     <Card className={classes.card} style={{ ...(color && { border }) }}>
       <CardContent>
-        <Typography gutterBottom color="textSecondary" variant="body2">
-          Stage
-        </Typography>
-        <Typography gutterBottom>{essay.stage}</Typography>
+        <Grid container justify="space-between" alignItems="center">
+          <Grid item>
+            <Typography gutterBottom color="textSecondary" variant="body2">
+              Stage
+            </Typography>
+            <Typography gutterBottom>{essay.stage}</Typography>
+          </Grid>
+          {user && (
+            <Grid item>
+              <User name={user.name} photoURL={photoURL} />
+            </Grid>
+          )}
+        </Grid>
         <Typography gutterBottom color="textSecondary" variant="body2">
           Areas
         </Typography>

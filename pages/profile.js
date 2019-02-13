@@ -44,20 +44,16 @@ function splitEssays(essays) {
   };
 }
 
-function TabContainer({ children }) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 2 }}>
-      {children}
-    </Typography>
-  );
+function TabContainer({ essays, user }) {
+  return <Essays essays={essays} user={user} />;
 }
 
 TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  dir: PropTypes.string.isRequired
+  essays: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired
 };
 
-function EssayTabs({ Complete, NotComplete, NoReviewer }) {
+function EssayTabs({ user, essays }) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
   function handleChange(event, newValue) {
@@ -66,6 +62,7 @@ function EssayTabs({ Complete, NotComplete, NoReviewer }) {
   function handleChangeIndex(index) {
     setValue(index);
   }
+  const { complete = [], notComplete = [], noReviewer = [] } = splitEssays(essays);
   return (
     <div className={classes.root}>
       <AppBar position="static" color="default">
@@ -76,9 +73,9 @@ function EssayTabs({ Complete, NotComplete, NoReviewer }) {
         </Tabs>
       </AppBar>
       <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
-        <TabContainer>{NoReviewer}</TabContainer>
-        <TabContainer>{NotComplete}</TabContainer>
-        <TabContainer>{Complete}</TabContainer>
+        <TabContainer essays={noReviewer} user={user} />
+        <TabContainer essays={notComplete} user={user} />
+        <TabContainer essays={complete} user={user} />
       </SwipeableViews>
     </div>
   );
@@ -104,10 +101,6 @@ function useProfile(user) {
 
 function Profile({ user, classes, handleLogin, handleLogout }) {
   const profile = useProfile(user);
-  let complete,
-    notComplete,
-    noReviewer = [];
-  if (profile) ({ complete, notComplete, noReviewer } = splitEssays(profile.essaysPosted));
   return (
     <Layout
       handleLogin={handleLogin}
@@ -168,11 +161,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
                   <Typography variant="subtitle1" color="textSecondary">
                     My Essays
                   </Typography>
-                  <EssayTabs
-                    Complete={<Essays user={user} essays={complete} />}
-                    NotComplete={<Essays user={user} essays={notComplete} />}
-                    NoReviewer={<Essays user={user} essays={noReviewer} />}
-                  />
+                  <EssayTabs user={user} essays={profile.essaysPosted} />
                 </Grid>
               )}
             </Grid>

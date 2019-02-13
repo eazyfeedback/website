@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import NextLink from "next/link";
 import withAuth from "../lib/auth";
+import Link from "@material-ui/core/Link";
 import Layout from "../components/layout";
 import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
@@ -64,9 +64,9 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
                   Post your essay to get feedback
                 </Typography>
                 <NextLink href="/post" prefetch>
-                  <Button href="/post" variant="contained" color="primary" className={classes.button}>
+                  <Link href="/post" variant="button" color="primary" className={classes.link}>
                     post essay
-                  </Button>
+                  </Link>
                 </NextLink>
               </Paper>
             </Grid>
@@ -79,9 +79,9 @@ const Index = ({ classes, handleLogin, handleLogout, user }) => {
                   Choose an essay to give feedback
                 </Typography>
                 <NextLink href="/essays" prefetch>
-                  <Button href="/essays" color="secondary" variant="contained" className={classes.button}>
+                  <Link href="/essays" color="secondary" variant="button" className={classes.link}>
                     go to essays
-                  </Button>
+                  </Link>
                 </NextLink>
               </Paper>
             </Grid>
@@ -124,7 +124,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     textAlign: "center"
   },
-  button: {
+  link: {
     margin: theme.spacing.unit
   },
   marginTop: {

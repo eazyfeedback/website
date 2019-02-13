@@ -6,8 +6,20 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import MoodIcon from "@material-ui/icons/Mood";
+import DoneIcon from "@material-ui/icons/Done";
+import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import APIEndpoint from "../lib/api";
+
+const icon = {
+  marginRight: 4,
+  fontSize: 16
+};
+
+const button = {
+  margin: 8
+};
 
 function Actions({ user, essay }) {
   const canRemove = user && user.uid === essay.ownerUID;
@@ -35,20 +47,27 @@ function Actions({ user, essay }) {
   }
   return (
     <CardActions>
-      {canRemove && <Button onClick={handleRemove}>remove</Button>}
+      {canRemove && (
+        <Button style={button} size="small" onClick={handleRemove}>
+          <DeleteIcon style={icon} />
+          remove
+        </Button>
+      )}
       {canComplete && (
-        <Button onClick={handleComplete} color="secondary">
+        <Button style={button} size="small" onClick={handleComplete} color="secondary">
+          <DoneIcon style={icon} />
           complete
         </Button>
       )}
       {canReview && (
-        <Button onClick={handleReview} color="primary" variant="contained">
+        <Button style={button} size="small" onClick={handleReview} color="primary" variant="contained">
+          <MoodIcon style={icon} />
           review
         </Button>
       )}
-      <Button href={essay.link} target="_blank" rel="noreferrer" variant="outlined">
+      <Link style={button} href={essay.link} target="_blank" rel="noreferrer" variant="button">
         open
-      </Button>
+      </Link>
     </CardActions>
   );
 }

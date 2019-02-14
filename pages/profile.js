@@ -90,6 +90,7 @@ function useProfile(user) {
       const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
       axios.get(endpoint).then(res => setProfile(res.data.profile));
     } else setProfile(null);
+    return () => axios.CancelToken.source().cancel("Api is being canceled");
   }, [user]);
   return profile;
 }

@@ -94,6 +94,7 @@ function usePhotoURL(uid) {
   useEffect(() => {
     const endpoint = `${APIEndpoint}/users/${uid}/photoURL`;
     axios.get(endpoint).then(res => setPhotoURL(res.data.photoURL));
+    return () => axios.CancelToken.source().cancel("Api is being canceled");
   }, []);
   return photoURL;
 }

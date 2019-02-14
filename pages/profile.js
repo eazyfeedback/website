@@ -112,30 +112,34 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
               <Grid item xs={12}>
                 <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
                 <Paper className={classes.paper}>
-                  <Grid container spacing={16}>
+                  <Grid container spacing={16} justify="center" alignItems="center">
                     <Grid item xs={12}>
                       <Typography variant="subtitle1">{user.name}</Typography>
                       <Typography variant="subtitle2" color="textSecondary">
                         {user.email}
                       </Typography>
-                      <Tooltip title="You earn points based on the number of essays you review and the ratings you receive. Top reviewers are listed on the home page!">
-                        <Typography variant="body2">
-                          <span style={{ fontWeight: 700 }}>{profile.points}</span> points <span className={classes.stars}>✨</span>
-                        </Typography>
-                      </Tooltip>
                     </Grid>
 
                     <Grid item xs={12}>
                       <Divider variant="middle" />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                       <Typography color="textSecondary">essays posted</Typography>
                       <Typography variant="h4">{profile.essaysPosted.length}</Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                       <Typography color="textSecondary">essays reviewed</Typography>
                       <Typography variant="h4">{profile.essaysReviewedCount}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <Typography color="textSecondary">points</Typography>
+                      <Tooltip title="You earn points based on the number of essays you review and the ratings you receive. Top reviewers are listed on the home page!">
+                        <Typography variant="h4">
+                          {profile.points}
+                          <span className={classes.stars}>✨</span>
+                        </Typography>
+                      </Tooltip>
                     </Grid>
                   </Grid>
                 </Paper>

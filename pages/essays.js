@@ -54,10 +54,10 @@ const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout, classes: { 
       1. Click "Review" to select an essay for feedback.
     </Typography>
     <Typography variant="subtitle1" className={text}>
-      2. Click "Open" to open the Google Doc and start adding comments!
+      2. Click "Open" to start adding comments via Google Docs
     </Typography>
     <Typography variant="subtitle1" className={text}>
-      3. When you are done, click "Complete" to notify the owner you've finished.
+      3. When you're done, click "Complete" to notify the owner you've finished.
     </Typography>
     <Essays essays={essays} user={user} />
   </Layout>

@@ -28,7 +28,7 @@ export const getSelectedAreas = selectedAreas => selectedAreas.map((bool, idx) =
 export const getSelectedStage = selectedStage => (selectedStage in stages ? stages[selectedStage] : "");
 
 function Post({ classes, user, handleLogin, handleLogout }) {
-  const steps = ["Stage", "Areas", "Link", "Review"];
+  const steps = ["Stage", "Areas", "Google Docs", "Review"];
   const initialSelectedAreas = Array.from(Array(areas.length), () => false);
   const [ownerUID, setOwnerUID] = useState("");
   useEffect(() => {

@@ -77,8 +77,8 @@ const Link = ({ link, setLink, sharing, setSharing }) => (
       style={{ marginBottom: 20 }}
     />
     <Typography gutterBottom color="textSecondary" variant="body1">
-      <Checkbox checked={sharing} onChange={e => setSharing(e.target.checked)} style={{ padding: `0px 4px` }} />I have set "Anyone with the link can
-      comment" sharing permission on Google Docs
+      <Checkbox checked={sharing} onChange={e => setSharing(e.target.checked)} style={{ padding: `0px 4px` }} />
+      I've set "Anyone with the link can comment" sharing permission on Google Docs<sup>*</sup>
     </Typography>
   </div>
 );

@@ -5,7 +5,11 @@
     "use": "@now/next"
   }],
   "routes": [{
-    "src": "/(.*)",
-    "dest": "/$1"
+    "src": "/auth/login",
+    "dest": "/auth/login"
+  }, {
+    "src": "/auth/logout",
+    "dest": "/auth/logout"
   }]
+
 }

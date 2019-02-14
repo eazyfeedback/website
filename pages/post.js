@@ -104,6 +104,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
     setSelectedAreas(initialSelectedAreas);
     setSelectedStage(-1);
     setLink("");
+    setSharing(false);
   }
   return (
     <Layout
@@ -149,15 +150,15 @@ function Post({ classes, user, handleLogin, handleLogout }) {
             {activeStep === steps.length && (
               <Paper square elevation={0} className={classes.reset}>
                 <Typography gutterBottom>All steps completed. Your essay in now awaiting a reviewer to provide feedback.</Typography>
-                <Typography gutterBottom>Go to your Profile to check your essay's review status.</Typography>
+                <Typography gutterBottom>You can check your essay's review status in your Profile.</Typography>
                 <NextLink href="/profile" prefetch>
-                  <MaterialLink href="/profile#posted" variant="button">
+                  <MaterialLink href="/profile#posted" variant="button" className={classes.finished} color="textPrimary">
                     go to my profile
                   </MaterialLink>
-                  <Button onClick={handleReset} color="primary" variant="contained">
-                    Post another one
-                  </Button>
                 </NextLink>
+                <Button onClick={handleReset} color="primary" variant="outlined" className={classes.finished}>
+                  Post another one
+                </Button>
               </Paper>
             )}
           </Grid>
@@ -193,6 +194,9 @@ const styles = theme => ({
   text: {
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2
+  },
+  finished: {
+    margin: theme.spacing.unit
   }
 });
 

@@ -6,10 +6,12 @@
   }],
   "routes": [{
     "src": "/auth/login",
-    "dest": "/auth/login"
+    "dest": "/auth/login",
+    "methods": ["POST"]
   }, {
     "src": "/auth/logout",
-    "dest": "/auth/logout"
+    "dest": "/auth/logout",
+    "methods": ["POST"]
   }]
 
 }

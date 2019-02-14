@@ -24,7 +24,7 @@
     "dev": "nodemon index.js",
     "build": "next build",
     "now-build": "npm run build",
-    "start": "npm run build && NODE_ENV=production node index.js",
+    "start": "NODE_ENV=production node index.js",
     "deploy": "./deploy.sh",
     "stage": "now"
   },

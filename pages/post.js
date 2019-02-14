@@ -33,7 +33,8 @@ function Post({ classes, user, handleLogin, handleLogout }) {
   const [ownerUID, setOwnerUID] = useState("");
   useEffect(() => {
     if (user) setOwnerUID(user.uid);
-  });
+    else setOwnerUID("");
+  }, [user]);
   const [activeStep, setActiveStep] = useState(0);
   const [question, setQuestion] = useState("");
   const [selectedAreas, setSelectedAreas] = useState(initialSelectedAreas);

@@ -18,7 +18,7 @@ function usePoints(user) {
     if (user) {
       const endpoint = `${APIEndpoint}/users/${user.uid}/points`;
       axios.get(endpoint).then(res => setPoints(res.data.points));
-    }
+    } else setPoints(0);
   }, [user]);
   return points;
 }

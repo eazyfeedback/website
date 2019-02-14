@@ -89,7 +89,7 @@ function useProfile(user) {
     if (user) {
       const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
       axios.get(endpoint).then(res => setProfile(res.data.profile));
-    }
+    } else setProfile(null);
   }, [user]);
   return profile;
 }
@@ -106,7 +106,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
       message="You need to signin to access your profile"
     >
       <div>
-        {user && profile && (
+        {profile && (
           <>
             <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
               <Grid item xs={12}>

@@ -106,7 +106,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
       message="You need to signin to access your profile"
     >
       <div>
-        {profile && (
+        {user && profile && (
           <>
             <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
               <Grid item xs={12}>
@@ -146,7 +146,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
               {profile.essaysReviewing.length > 0 && (
                 <Grid item>
                   <Typography variant="subtitle1" color="textSecondary">
-                    Essays Reviewing
+                    Essays that you're still reviewing
                   </Typography>
                   <Essays user={user} essays={profile.essaysReviewing} />
                 </Grid>
@@ -155,7 +155,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
               {profile.essaysPosted.length > 0 && (
                 <Grid item id="posted">
                   <Typography variant="subtitle1" color="textSecondary">
-                    My Essays
+                    Essays that you've posted for feedback
                   </Typography>
                   <EssayTabs user={user} essays={profile.essaysPosted} />
                 </Grid>

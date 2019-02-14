@@ -9,6 +9,7 @@ import withAuth from "../lib/auth";
 import Link from "@material-ui/core/Link";
 import Layout from "../components/layout";
 import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
 import axios from "axios";
 import APIEndpoint from "../lib/api";
 
@@ -88,6 +89,14 @@ function Index({ classes, handleLogin, handleLogout, user }) {
           </Grid>
         </Grid>
 
+        {!user && (
+          <Grid item className={classes.marginTop}>
+            <Button className={classes.link} variant="contained" size="large" onClick={handleLogin}>
+              Join Essayfeedback
+            </Button>
+          </Grid>
+        )}
+
         <Grid item className={classes.marginTop}>
           <div style={{ marginBottom: 24 }}>
             <Typography align="center" variant="h6" gutterBottom>
@@ -135,6 +144,9 @@ const styles = theme => ({
   avatar: {
     width: 60,
     height: 60
+  },
+  join: {
+    marginRight: theme.spacing.unit
   }
 });
 

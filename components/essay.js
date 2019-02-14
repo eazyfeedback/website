@@ -20,6 +20,7 @@ function Actions({ user, essay, classes: { icon, button } }) {
   const canRemove = user && user.uid === essay.ownerUID;
   const canComplete = user && user.uid === essay.reviewerUID;
   const canReview = user && !essay.reviewerUID && user.uid !== essay.ownerUID;
+  const canOpen = canComplete || canRemove;
   function pageRefresh() {
     location.reload();
   }
@@ -48,21 +49,23 @@ function Actions({ user, essay, classes: { icon, button } }) {
           remove
         </Button>
       )}
-      {canComplete && (
-        <Button className={button} size="small" onClick={handleComplete} color="secondary" variant="contained">
-          <DoneIcon className={icon} />
-          complete
-        </Button>
-      )}
       {canReview && (
         <Button className={button} size="small" onClick={handleReview} color="primary" variant="contained">
           <MoodIcon className={icon} />
           review
         </Button>
       )}
-      <Link className={button} href={essay.link} target="_blank" rel="noreferrer" variant="button">
-        open
-      </Link>
+      {canOpen && (
+        <Link className={button} href={essay.link} target="_blank" rel="noreferrer" variant="button">
+          open
+        </Link>
+      )}
+      {canComplete && (
+        <Button className={button} size="small" onClick={handleComplete} color="secondary" variant="contained">
+          <DoneIcon className={icon} />
+          complete
+        </Button>
+      )}
     </CardActions>
   );
 }

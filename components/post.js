@@ -93,7 +93,7 @@ const Review = ({ essay, user }) => (
     <Typography gutterBottom color="textSecondary" variant="body1">
       Review your feedback request
     </Typography>
-    <div style={{ marginBottom: 12, width: 320 }}>
+    <div style={{ marginBottom: 12, width: 340 }}>
       <Essay essay={essay} user={user} review />
     </div>
   </div>

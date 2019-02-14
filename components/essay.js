@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import MoodIcon from "@material-ui/icons/Mood";
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { withRouter } from "next/router";
 import axios from "axios";
 import APIEndpoint from "../lib/api";
 import { useEffect } from "react";
@@ -97,12 +98,17 @@ function usePhotoURL(uid) {
   return photoURL;
 }
 
-function Essay({ essay, user, review, classes, theme }) {
+function getUID(essay, route) {
+  if (route === "/profile" && essay.reviewerUID) return essay.reviewerUID;
+  return essay.ownerUID;
+}
+
+function Essay({ essay, user, review, classes, theme, router: { route } }) {
   const showQuestion = essay.question.length > 0;
   const showActions = user && !review;
   const color = getColor(user, essay, theme);
   const border = `1px solid ${color}`;
-  const photoURL = usePhotoURL(essay.ownerUID);
+  const photoURL = usePhotoURL(getUID(essay, route));
   return (
     <Card className={classes.card} style={{ ...(color && { border }) }}>
       <CardContent>
@@ -196,4 +202,4 @@ const styles = theme => ({
   }
 });
 
-export default withStyles(styles, { withTheme: true })(Essay);
+export default withStyles(styles, { withTheme: true })(withRouter(Essay));

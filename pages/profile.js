@@ -149,7 +149,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
             <Grid container spacing={16}>
               {profile.essaysReviewing.length > 0 && (
                 <Grid item>
-                  <Typography variant="subtitle1" color="textSecondary">
+                  <Typography variant="subtitle1" color="textSecondary" gutterBottom>
                     Essays that you're still reviewing
                   </Typography>
                   <Essays user={user} essays={profile.essaysReviewing} />
@@ -158,7 +158,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
 
               {profile.essaysPosted.length > 0 && (
                 <Grid item id="posted">
-                  <Typography variant="subtitle1" color="textSecondary">
+                  <Typography variant="subtitle1" color="textSecondary" gutterBottom>
                     Essays that you've posted for feedback
                   </Typography>
                   <EssayTabs user={user} essays={profile.essaysPosted} />

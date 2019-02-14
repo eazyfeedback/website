@@ -103,7 +103,7 @@ function Index({ classes, handleLogin, handleLogout, user }) {
               Your work is private and protected
             </Typography>
             <Typography align="center" gutterBottom>
-              We use sharing links from Google docs to protect your essay. Your essay is only shared with reviewers.
+              We use sharing links from Google Docs to protect your essay. Your essay is only shared with reviewers.
             </Typography>
           </div>
 

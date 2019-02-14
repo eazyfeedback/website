@@ -61,19 +61,25 @@ Areas.propTypes = {
   setQuestion: PropTypes.func.isRequired
 };
 
-const Link = ({ link, setLink }) => (
+const Link = ({ link, setLink, sharing, setSharing }) => (
   <div>
     <Typography gutterBottom color="textSecondary" variant="body1">
-      Enter your essay's Google docs link
+      Enter your essay's Google Docs link
     </Typography>
     <TextField
-      label="Paste Google docs link"
+      label="Paste Google Docs link"
       onChange={e => setLink(e.target.value)}
       value={link}
-      helperText={`ensure "Anyone with link can comment" sharing permission`}
+      InputLabelProps={{ shrink: true }}
       type="url"
+      fullWidth
       required
+      style={{ marginBottom: 20 }}
     />
+    <Typography gutterBottom color="textSecondary" variant="body1">
+      <Checkbox checked={sharing} onChange={e => setSharing(e.target.checked)} style={{ padding: `0px 4px` }} />I have set "Anyone with the link can
+      comment" sharing permission on Google Docs
+    </Typography>
   </div>
 );
 

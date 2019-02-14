@@ -40,12 +40,15 @@ function Post({ classes, user, handleLogin, handleLogout }) {
   const [selectedAreas, setSelectedAreas] = useState(initialSelectedAreas);
   const [selectedStage, setSelectedStage] = useState(-1);
   const [link, setLink] = useState("");
+  const [sharing, setSharing] = useState(false);
   const handleCheck = (e, idx) => setSelectedAreas(selectedAreas.map((bool, i) => (i === idx ? e.target.checked : bool)));
+
   const handleNext = () => setActiveStep(prevActiveStep => prevActiveStep + 1);
   const handleBack = () => setActiveStep(prevActiveStep => prevActiveStep - 1);
-  const isAreasComplete = () => selectedAreas.some(bool => bool === true) || question.length > 0;
-  const isLinkComplete = () => link.length > 0 && link.startsWith("https://docs.google.com/document/d/");
   const isStageComplete = () => selectedStage > -1;
+  const isAreasComplete = () => selectedAreas.some(bool => bool === true) || question.length > 0;
+  const isLinkComplete = () => link.length > 0 && link.startsWith("https://docs.google.com/document/d/") && sharing;
+
   function getStepContent(step) {
     switch (step) {
       case 1:
@@ -53,7 +56,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
       case 0:
         return <Stages stages={stages} selectedIndex={selectedStage} setSelectedIndex={setSelectedStage} />;
       case 2:
-        return <Link link={link} setLink={setLink} />;
+        return <Link link={link} setLink={setLink} sharing={sharing} setSharing={setSharing} />;
       case 3:
         return (
           <Review
@@ -94,6 +97,13 @@ function Post({ classes, user, handleLogin, handleLogout }) {
       })
       .then(() => handleNext())
       .catch(() => handleNext());
+  }
+  function handleReset() {
+    setActiveStep(0);
+    setQuestion("");
+    setSelectedAreas(initialSelectedAreas);
+    setSelectedStage(-1);
+    setLink("");
   }
   return (
     <Layout
@@ -144,6 +154,9 @@ function Post({ classes, user, handleLogin, handleLogout }) {
                   <MaterialLink href="/profile#posted" variant="button">
                     go to my profile
                   </MaterialLink>
+                  <Button onClick={handleReset} color="primary" variant="contained">
+                    Post another one
+                  </Button>
                 </NextLink>
               </Paper>
             )}
@@ -171,8 +184,8 @@ const styles = theme => ({
   },
   layout: {
     width: "auto",
-    [theme.breakpoints.up(600)]: {
-      width: 600,
+    [theme.breakpoints.up(740)]: {
+      width: 740,
       marginLeft: "auto",
       marginRight: "auto"
     }

@@ -106,7 +106,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
       message="You need to signin to access your profile"
     >
       <div>
-        {profile && (
+        {user && profile && (
           <>
             <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
               <Grid item xs={12}>

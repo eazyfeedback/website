@@ -10,6 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import NextLink from "next/link";
+import MaterialLink from "@material-ui/core/Link";
 import axios from "axios";
 import { Stages, Areas, Link, Review } from "../components/post";
 import Layout from "../components/layout";
@@ -20,15 +21,12 @@ const stages = getStages();
 const areas = getAreas();
 export const getSelectedAreas = selectedAreas => selectedAreas.map((bool, idx) => (bool ? areas[idx] : "")).filter(area => area !== "");
 export const getSelectedStage = selectedStage => (selectedStage in stages ? stages[selectedStage] : "");
-
 function getStepsHeadings() {
   return ["Stage", "Areas", "Link", "Review"];
 }
-
 export function getStages() {
   return ["Early draft", "Revised draft", "Late draft"];
 }
-
 export function getAreas() {
   return [
     "Interpretation/analysis i.e. Does my essay make sense? Is it logical and consistent?",
@@ -93,13 +91,6 @@ function Post({ classes, user, handleLogin, handleLogout }) {
         return true;
     }
   }
-  function handleReset() {
-    setActiveStep(0);
-    setQuestion("");
-    setSelectedAreas(initialSelectedAreas);
-    setSelectedStage(-1);
-    setLink("");
-  }
   function handleFinish() {
     axios
       .post(`${APIEndpoint}/essays`, {
@@ -108,7 +99,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
         selectedStage,
         link,
         ownerUID,
-        status: false
+        dateCreated: new Date().toISOString()
       })
       .then(() => handleNext())
       .catch(() => handleNext());
@@ -136,12 +127,8 @@ function Post({ classes, user, handleLogin, handleLogout }) {
                     <div>{getStepContent(index)}</div>
                     <div className={classes.actions}>
                       <div>
-                        <Button
-                          disabled={activeStep === 0}
-                          onClick={activeStep === steps.length - 1 ? handleReset : handleBack}
-                          className={classes.button}
-                        >
-                          {activeStep === steps.length - 1 ? "reset" : "back"}
+                        <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+                          back
                         </Button>
                         <Button
                           variant="contained"
@@ -161,10 +148,10 @@ function Post({ classes, user, handleLogin, handleLogout }) {
             {activeStep === steps.length && (
               <Paper square elevation={0} className={classes.reset}>
                 <Typography>All steps completed. Your essay in now awaiting a reviewer to give feedback</Typography>
-                <NextLink href="/essays" prefetch>
-                  <Button href="/essays" variant="contained" color="secondary" className={classes.button}>
-                    go to essays
-                  </Button>
+                <NextLink href="/profile" prefetch>
+                  <MaterialLink href="/profile" variant="button">
+                    go to my profile
+                  </MaterialLink>
                 </NextLink>
               </Paper>
             )}

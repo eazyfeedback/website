@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
 import Essay, { essayPropTypes } from "../components/essay";
 import { getSelectedAreas, getSelectedStage } from "../pages/post";
 import Layout from "../components/layout";
@@ -39,7 +41,7 @@ Essays.propTypes = {
   user: PropTypes.object
 };
 
-const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout }) => (
+const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout, classes: { text } }) => (
   <Layout
     handleLogin={handleLogin}
     handleLogout={handleLogout}
@@ -48,6 +50,12 @@ const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout }) => (
     signInVisible={true}
     message="You need to sign in to review an essay"
   >
+    <Typography variant="subtitle1" className={text}>
+      Select an essay click "Review" to start providing feedback.
+    </Typography>
+    <Typography variant="subtitle1" className={text}>
+      Click "Open" to access the Google Doc and start adding comments!
+    </Typography>
     <Essays essays={essays} user={user} />
   </Layout>
 );
@@ -59,11 +67,18 @@ EssaysWithLayout.getInitialProps = async function getInitialProps() {
   return { essays: essays };
 };
 
+const styles = {
+  text: {
+    color: "#424242"
+  }
+};
+
 EssaysWithLayout.propTypes = {
   essays: PropTypes.arrayOf(essayPropTypes).isRequired,
   user: PropTypes.object,
   handleLogin: PropTypes.func.isRequired,
-  handleLogout: PropTypes.func.isRequired
+  handleLogout: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
-export default withAuth(EssaysWithLayout);
+export default withStyles(styles)(withAuth(EssaysWithLayout));

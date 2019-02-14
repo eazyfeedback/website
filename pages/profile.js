@@ -66,7 +66,7 @@ function EssayTabs({ user, essays }) {
   }
   const { complete = [], notComplete = [], noReviewer = [] } = splitEssays(essays);
   return (
-    <div style={{ backgroundColor: "white" }}>
+    <div style={{ backgroundColor: "white", width: "calc(100vw - 47px)" }}>
       <AppBar position="static" color="default">
         <Tabs value={value} onChange={handleChange} textColor="primary" indicatorColor="primary">
           <Tab label="Awaiting reviewer" />
@@ -141,6 +141,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
                 </Paper>
               </Grid>
             </Grid>
+
             <Grid container spacing={16}>
               {profile.essaysReviewing.length > 0 && (
                 <Grid item>
@@ -152,7 +153,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
               )}
 
               {profile.essaysPosted.length > 0 && (
-                <Grid item>
+                <Grid item id="posted">
                   <Typography variant="subtitle1" color="textSecondary">
                     My Essays
                   </Typography>

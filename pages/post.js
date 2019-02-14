@@ -17,27 +17,18 @@ import Layout from "../components/layout";
 import APIEndpoint from "../lib/api";
 import withAuth from "../lib/auth";
 
-const stages = getStages();
-const areas = getAreas();
+const stages = ["Early draft", "Revised draft", "Late draft"];
+const areas = [
+  "Interpretation/analysis i.e. Does my essay make sense? Is it logical and consistent?",
+  "Organization i.e. Are my ideas in a useful order? Is there another way to consider ordering them?",
+  "Flow i.e. Do I have good transitions? Can the reader follow me?",
+  "Style i.e. Is my writing style appealing? Do I use the passive voice too often?"
+];
 export const getSelectedAreas = selectedAreas => selectedAreas.map((bool, idx) => (bool ? areas[idx] : "")).filter(area => area !== "");
 export const getSelectedStage = selectedStage => (selectedStage in stages ? stages[selectedStage] : "");
-function getStepsHeadings() {
-  return ["Stage", "Areas", "Link", "Review"];
-}
-export function getStages() {
-  return ["Early draft", "Revised draft", "Late draft"];
-}
-export function getAreas() {
-  return [
-    "Interpretation/analysis i.e. Does my essay make sense? Is it logical and consistent?",
-    "Organization i.e. Are my ideas in a useful order? Is there another way to consider ordering them?",
-    "Flow i.e. Do I have good transitions? Can the reader follow me?",
-    "Style i.e. Is my writing style appealing? Do I use the passive voice too often?"
-  ];
-}
 
 function Post({ classes, user, handleLogin, handleLogout }) {
-  const steps = getStepsHeadings();
+  const steps = ["Stage", "Areas", "Link", "Review"];
   const initialSelectedAreas = Array.from(Array(areas.length), () => false);
   const [ownerUID, setOwnerUID] = useState("");
   useEffect(() => {
@@ -98,8 +89,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
         question,
         selectedStage,
         link,
-        ownerUID,
-        dateCreated: new Date().toISOString()
+        ownerUID
       })
       .then(() => handleNext())
       .catch(() => handleNext());
@@ -147,9 +137,10 @@ function Post({ classes, user, handleLogin, handleLogout }) {
             </Stepper>
             {activeStep === steps.length && (
               <Paper square elevation={0} className={classes.reset}>
-                <Typography>All steps completed. Your essay in now awaiting a reviewer to give feedback</Typography>
+                <Typography gutterBottom>All steps completed. Your essay in now awaiting a reviewer to provide feedback.</Typography>
+                <Typography gutterBottom>Go to your Profile to check your essay's review status.</Typography>
                 <NextLink href="/profile" prefetch>
-                  <MaterialLink href="/profile" variant="button">
+                  <MaterialLink href="/profile#posted" variant="button">
                     go to my profile
                   </MaterialLink>
                 </NextLink>

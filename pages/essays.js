@@ -51,7 +51,7 @@ const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout, classes: { 
     message="You need to sign in to review an essay"
   >
     <Typography variant="subtitle1" className={text}>
-      Select an essay click "Review" to start providing feedback.
+      Select an essay then click "Review" to start providing feedback.
     </Typography>
     <Typography variant="subtitle1" className={text}>
       Click "Open" to access the Google Doc and start adding comments!

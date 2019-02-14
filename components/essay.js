@@ -85,28 +85,21 @@ function getColor(user, essay, theme) {
   }
 }
 
-const User = ({ name, photoURL }) => (
-  <Avatar
-    alt={name}
-    src={photoURL}
-    style={{
-      width: 40,
-      height: 40
-    }}
-  />
-);
+function usePhotoURL(uid) {
+  const [photoURL, setPhotoURL] = useState("");
+  useEffect(() => {
+    const endpoint = `${APIEndpoint}/users/${uid}/photoURL`;
+    axios.get(endpoint).then(res => setPhotoURL(res.data.photoURL));
+  }, []);
+  return photoURL;
+}
 
 function Essay({ essay, user, review, classes, theme }) {
   const showQuestion = essay.question.length > 0;
   const showActions = user && !review;
   const color = getColor(user, essay, theme);
   const border = `1px solid ${color}`;
-  const [photoURL, setPhotoURL] = useState("");
-  useEffect(() => {
-    const endpoint = `${APIEndpoint}/users/${essay.ownerUID}`;
-    axios.get(endpoint).then(res => setPhotoURL(res.data.user.photoURL));
-  }, []);
-
+  const photoURL = usePhotoURL(essay.ownerUID);
   return (
     <Card className={classes.card} style={{ ...(color && { border }) }}>
       <CardContent>
@@ -119,7 +112,14 @@ function Essay({ essay, user, review, classes, theme }) {
           </Grid>
           {user && (
             <Grid item>
-              <User name={user.name} photoURL={photoURL} />
+              <Avatar
+                alt={user.name}
+                src={photoURL}
+                style={{
+                  width: 40,
+                  height: 40
+                }}
+              />
             </Grid>
           )}
         </Grid>

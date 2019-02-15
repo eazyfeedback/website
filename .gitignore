@@ -3,4 +3,4 @@
 /.next
 /.vscode
 nodemon.json
-secrets.json
+secrets.js

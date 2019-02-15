@@ -1,17 +1,26 @@
 {
   "version": 2,
   "builds": [{
-    "src": "next.config.js",
-    "use": "@now/next"
-  }],
+      "src": "next.config.js",
+      "use": "@now/next"
+    },
+    {
+      "src": "index.js",
+      "use": "@now/node-server"
+    }
+  ],
   "routes": [{
-    "src": "/auth/login",
-    "dest": "index.js",
-    "methods": ["POST"]
-  }, {
-    "src": "/auth/logout",
-    "dest": "index.js",
-    "methods": ["POST"]
-  }]
-
+      "src": "/api/(.*)",
+      "dest": "index.js"
+    },
+    {
+      "src": "/auth/login",
+      "dest": "index.js",
+      "methods": ["POST"]
+    }, {
+      "src": "/auth/logout",
+      "dest": "index.js",
+      "methods": ["POST"]
+    }
+  ]
 }

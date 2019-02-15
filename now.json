@@ -10,17 +10,12 @@
     }
   ],
   "routes": [{
-      "src": "/api/(.*)",
+      "src": "/api.*|/auth/(logout|login)",
       "dest": "api/index.js"
     },
     {
-      "src": "/auth/login",
-      "dest": "auth/index.js",
-      "methods": ["POST"]
-    }, {
-      "src": "/auth/logout",
-      "dest": "auth/index.js",
-      "methods": ["POST"]
+      "src": "/(.*)",
+      "dest": "/website/$1"
     }
   ]
 }

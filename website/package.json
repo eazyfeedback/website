@@ -13,15 +13,12 @@
     "react-jss": "^8.1.0",
     "react-swipeable-views": "^0.13.1",
     "recompose": "^0.30.0"
-
   },
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "next",
+    "start": "next start",
     "build": "next build",
-    "now-build": "npm run build",
-    "start": "NODE_ENV=production node index.js",
-    "deploy": "./deploy.sh",
-    "stage": "now"
+    "now-build": "npm run build"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

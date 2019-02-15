@@ -6,11 +6,11 @@
   }],
   "routes": [{
     "src": "/auth/login",
-    "dest": "/auth/login",
+    "dest": "index.js",
     "methods": ["POST"]
   }, {
     "src": "/auth/logout",
-    "dest": "/auth/logout",
+    "dest": "index.js",
     "methods": ["POST"]
   }]
 

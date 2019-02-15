@@ -91,10 +91,11 @@ function getColor(user, essay, theme) {
 
 function usePhotoURL(uid) {
   const [photoURL, setPhotoURL] = useState("");
+  const signal = axios.CancelToken.source();
   useEffect(() => {
     const endpoint = `${APIEndpoint}/users/${uid}/photoURL`;
-    axios.get(endpoint).then(res => setPhotoURL(res.data.photoURL));
-    return () => axios.CancelToken.source().cancel("Api is being canceled");
+    axios.get(endpoint, { cancelToken: signal.token }).then(res => setPhotoURL(res.data.photoURL));
+    return () => signal.cancel("Api is being canceled");
   }, []);
   return photoURL;
 }

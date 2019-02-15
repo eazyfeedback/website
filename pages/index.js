@@ -16,11 +16,12 @@ import APIEndpoint from "../lib/api";
 function usePoints(user) {
   const [points, setPoints] = useState(0);
   useEffect(() => {
+    const signal = axios.CancelToken.source();
     if (user) {
       const endpoint = `${APIEndpoint}/users/${user.uid}/points`;
-      axios.get(endpoint).then(res => setPoints(res.data.points));
+      axios.get(endpoint, { cancelToken: signal.token }).then(res => setPoints(res.data.points));
     } else setPoints(0);
-    return () => axios.CancelToken.source().cancel("Api is being canceled");
+    return () => signal.cancel("Api is being canceled");
   }, [user]);
   return points;
 }

@@ -86,9 +86,10 @@ function EssayTabs({ user, essays }) {
 function useProfile(user) {
   const [profile, setProfile] = useState(null);
   useEffect(() => {
+    const signal = axios.CancelToken.source();
     if (user) {
       const endpoint = `${APIEndpoint}/users/${user.uid}/profile`;
-      axios.get(endpoint).then(res => setProfile(res.data.profile));
+      axios.get(endpoint, { cancelToken: signal.token }).then(res => setProfile(res.data.profile));
     } else setProfile(null);
     return () => axios.CancelToken.source().cancel("Api is being canceled");
   }, [user]);

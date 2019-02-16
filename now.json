@@ -1,16 +1,16 @@
 {
   "version": 2,
   "builds": [{
-      "src": "next.config.js",
+      "src": "website/next.config.js",
       "use": "@now/next"
     },
     {
-      "src": "index.js",
+      "src": "api/index.js",
       "use": "@now/node-server"
     }
   ],
   "routes": [{
-      "src": "/api.*|/auth/(logout|login)",
+      "src": "/api(.*)|/auth/(logout|login)",
       "dest": "api/index.js"
     },
     {

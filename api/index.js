@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.NODE_ENV === "production" ? 80 : 3001;
 const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");
@@ -14,8 +14,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(require("./logger"));
-app.use("/api/essays", require("./routes/essays"));
-app.use("/api/users", require("./routes/users"));
 
 const {
   mongodb: { username, password }
@@ -47,6 +45,9 @@ app.use((req, res, next) => {
   req.firebaseServer = firebase;
   next();
 });
+
+app.use("/api/essays", require("./routes/essays"));
+app.use("/api/users", require("./routes/users"));
 
 app.post("/api/auth/login", (req, res) => {
   if (!req.body) return res.sendStatus(400);

@@ -1,10 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3000;
 const mongoose = require("mongoose");
 const cors = require("cors");
-const express = require("express");
-const bodyParser = require("body-parser");
 const session = require("express-session");
 const fileStore = require("session-file-store")(session);
 const admin = require("firebase-admin");
@@ -23,7 +21,7 @@ const secret = secrets.firebase.secret;
 
 const firebase = admin.initializeApp(
   {
-    credential: admin.credential.cert(secrets.firebase.server)
+    credential: admin.credential.cert(secrets.firebase)
   },
   "server"
 );

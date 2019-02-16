@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const PORT = process.env.NODE_ENV === "production" ? 80 : 3001;
+const PORT = 3001;
 const mongoose = require("mongoose");
 const cors = require("cors");
 const session = require("express-session");

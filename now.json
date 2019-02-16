@@ -10,7 +10,7 @@
     }
   ],
   "routes": [{
-      "src": "/api(.*)|/auth/(logout|login)",
+      "src": "/api(.*)",
       "dest": "api/index.js"
     },
     {

@@ -1,11 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const PORT = 3001;
 const mongoose = require("mongoose");
 const session = require("express-session");
 const fileStore = require("session-file-store")(session);
+const cors = require("cors");
 const admin = require("firebase-admin");
 const secrets = require("./secrets");
+
+const PORT = 3001;
 
 const app = express();
 
@@ -15,6 +17,7 @@ const {
 
 mongoose.connect(`mongodb://${username}:${encodeURIComponent(password)}@ds161804.mlab.com:61804/essayfeedback`, { useNewUrlParser: true });
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require("./logger"));

@@ -23,7 +23,7 @@ process.on("SIGINT", function() {
   });
 });
 
-// req / res
+// req/res logs
 
 const getLoggerForStatusCode = function(statusCode) {
   if (statusCode >= 500) {

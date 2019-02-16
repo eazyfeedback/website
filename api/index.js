@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const PORT = 3001;
 const mongoose = require("mongoose");
-const cors = require("cors");
 const session = require("express-session");
 const fileStore = require("session-file-store")(session);
 const admin = require("firebase-admin");
@@ -10,23 +9,16 @@ const secrets = require("./secrets");
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
-app.use(require("./logger"));
-
 const {
   mongodb: { username, password }
 } = secrets;
 
 mongoose.connect(`mongodb://${username}:${encodeURIComponent(password)}@ds161804.mlab.com:61804/essayfeedback`, { useNewUrlParser: true });
 
-const firebase = admin.initializeApp(
-  {
-    credential: admin.credential.cert(secrets.firebase)
-  },
-  "server"
-);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(require("./logger"));
+
 const secret = secrets.firebase.secret;
 
 app.use(
@@ -39,6 +31,13 @@ app.use(
     httpOnly: true,
     cookie: { maxAge: 604800000 } // week
   })
+);
+
+const firebase = admin.initializeApp(
+  {
+    credential: admin.credential.cert(secrets.firebase)
+  },
+  "server"
 );
 
 app.use((req, res, next) => {

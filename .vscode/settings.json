@@ -1,9 +1,0 @@
-{
-  "[javascript]": {
-    "editor.formatOnSave": true
-  },
-  "prettier.disableLanguages": [],
-  "files.associations": {
-    "*.js": "javascriptreact"
-  }
-}

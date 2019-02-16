@@ -17,7 +17,11 @@ app.use(require("./logger"));
 app.use("/api/essays", require("./routes/essays"));
 app.use("/api/users", require("./routes/users"));
 
-const secret = secrets.firebase.secret;
+const {
+  mongodb: { username, password }
+} = secrets;
+
+mongoose.connect(`mongodb://${username}:${encodeURIComponent(password)}@ds161804.mlab.com:61804/essayfeedback`, { useNewUrlParser: true });
 
 const firebase = admin.initializeApp(
   {
@@ -25,6 +29,7 @@ const firebase = admin.initializeApp(
   },
   "server"
 );
+const secret = secrets.firebase.secret;
 
 app.use(
   session({
@@ -43,12 +48,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const {
-  mongodb: { username, password }
-} = secrets;
-mongoose.connect(`mongodb://${username}:${encodeURIComponent(password)}@ds161804.mlab.com:61804/essayfeedback`, { useNewUrlParser: true });
-
-app.post("/auth/login", (req, res) => {
+app.post("/api/auth/login", (req, res) => {
   if (!req.body) return res.sendStatus(400);
   const token = req.body.token || "";
   firebase
@@ -62,7 +62,7 @@ app.post("/auth/login", (req, res) => {
     .catch(error => res.json({ error }));
 });
 
-app.post("/auth/logout", (req, res) => {
+app.post("/api/auth/logout", (req, res) => {
   req.session.decodedToken = null;
   res.json({ status: true });
 });

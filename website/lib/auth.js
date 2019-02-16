@@ -39,7 +39,7 @@ function withAuth(Page) {
         user
           .getIdToken()
           .then(token =>
-            axios("/auth/login", {
+            axios(`${APIEndpoint}/auth/login`, {
               method: "POST",
               headers: new Headers({
                 "Content-Type": "application/json"
@@ -54,7 +54,7 @@ function withAuth(Page) {
           .catch(err => createUser(selector(user)))
           .then(res => setUser(res.data.user));
       } else {
-        axios("/auth/logout", {
+        axios(`${APIEndpoint}/auth/logout`, {
           method: "POST",
           credentials: "same-origin"
         }).then(() => setUser(null));
@@ -62,7 +62,7 @@ function withAuth(Page) {
     }
     useEffect(() => {
       let unsubscribe;
-      if (!firebase.apps.length) firebase.initializeApp(secrets.firebase.client);
+      if (!firebase.apps.length) firebase.initializeApp(secrets.firebase);
       if (!unsubscribe) unsubscribe = firebase.auth().onAuthStateChanged(handleAuth);
       return () => unsubscribe();
     }, []);

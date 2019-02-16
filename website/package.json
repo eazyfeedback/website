@@ -4,29 +4,22 @@
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
-    "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
-    "express": "^4.16.4",
-    "express-session": "^1.15.6",
-    "firebase": "^5.8.2",
-    "firebase-admin": "^6.5.1",
     "jss": "^9.8.7",
     "next": "^8.0.1",
     "prop-types": "^15.7.2",
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
     "react-jss": "^8.1.0",
     "react-swipeable-views": "^0.13.1",
     "recompose": "^0.30.0",
-    "session-file-store": "^1.2.0"
+    "firebase": "^5.8.2"
   },
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "next",
+    "start": "next start",
     "build": "next build",
-    "now-build": "npm run build",
-    "start": "NODE_ENV=production node index.js",
-    "deploy": "./deploy.sh",
-    "stage": "now"
+    "now-build": "npm run build"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

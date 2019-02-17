@@ -34,8 +34,6 @@ function withAuth(Page) {
               token
             });
           })
-          .then(user => getUser(user.uid))
-          .catch(err => createUser(user.uid))
           .then(res => setUser(res.data.user));
       } else {
         axios(`${APIEndpoint}/auth/logout`, {

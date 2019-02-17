@@ -17,7 +17,12 @@ router
     user.save().then(savedUser => res.status(201).json({ user: savedUser }));
   });
 
-router.use("/:uid*", (req, res, next) => {
+function checkSession(req, res, next) {
+  if (req.session) next();
+  else res.status(401).end();
+}
+
+router.use("/:uid*", checkSession, (req, res, next) => {
   User.findOne({ uid: req.params.uid }).then(user => {
     if (!user) {
       res.status(404).end();

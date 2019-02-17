@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const fileStore = require("session-file-store")(session);
 const cors = require("cors");
 const admin = require("firebase-admin");
 const secrets = require("./secrets");
@@ -20,7 +19,6 @@ mongoose.connect(`mongodb://${username}:${encodeURIComponent(password)}@ds161804
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(require("./logger"));
 
 const secret = secrets.firebase.secret;
 
@@ -28,7 +26,6 @@ app.use(
   session({
     secret,
     saveUninitialized: true,
-    store: new fileStore({ path: "/tmp/sessions", secret }),
     resave: false,
     rolling: true,
     httpOnly: true,
@@ -48,6 +45,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(require("./logger"));
 app.use("/api/essays", require("./routes/essays"));
 app.use("/api/users", require("./routes/users"));
 

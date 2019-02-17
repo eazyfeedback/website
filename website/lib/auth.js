@@ -39,15 +39,8 @@ function withAuth(Page) {
         user
           .getIdToken()
           .then(token =>
-            axios(`${APIEndpoint}/auth/login`, {
-              method: "POST",
-              headers: new Headers({
-                "Content-Type": "application/json"
-              }),
-              credentials: "same-origin",
-              body: JSON.stringify({
-                token
-              })
+            axios.post(`${APIEndpoint}/auth/login`, {
+              token: JSON.stringify(token)
             })
           )
           .then(() => getUser(user.uid))
@@ -55,8 +48,7 @@ function withAuth(Page) {
           .then(res => setUser(res.data.user));
       } else {
         axios(`${APIEndpoint}/auth/logout`, {
-          method: "POST",
-          credentials: "same-origin"
+          method: "POST"
         }).then(() => setUser(null));
       }
     }

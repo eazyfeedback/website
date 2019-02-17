@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const session = require("express-session");
+const cookieSession = require("cookie-session");
 const cors = require("cors");
 const admin = require("firebase-admin");
 const secrets = require("./secrets");
@@ -21,13 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const secret = secrets.firebase.secret;
 
 app.use(
-  session({
-    secret,
-    saveUninitialized: true,
-    resave: false,
-    rolling: true,
-    httpOnly: true,
-    cookie: { maxAge: 604800000 } // week
+  cookieSession({
+    keys: secret
   })
 );
 
@@ -58,7 +53,9 @@ app.post("/api/auth/login", (req, res) => {
       return decodedToken;
     })
     .then(decodedToken => res.json({ status: true, decodedToken }))
-    .catch(error => res.json({ error }));
+    .catch(error => {
+      res.json({ error });
+    });
 });
 
 app.post("/api/auth/logout", (req, res) => {
@@ -66,7 +63,8 @@ app.post("/api/auth/logout", (req, res) => {
   res.json({ status: true });
 });
 
-app.listen(3001, err => {
+const PORT = 3001;
+app.listen(PORT, err => {
   if (err) throw err;
   console.info(`server ready at http://localhost:${PORT}`);
 });

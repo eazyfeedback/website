@@ -12,7 +12,7 @@ function auth(req, res, next) {
     .auth()
     .verifyIdToken(req.body.token)
     .then(decodedToken => {
-      req.session = decodedToken;
+      req.session = decodedToken.uid;
       next();
     })
     .catch(next);

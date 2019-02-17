@@ -12,7 +12,8 @@ module.exports = [
     next();
   },
   cookieSession({
-    keys: secrets.firebase.secret
+    keys: secrets.firebase.secret,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }),
   require("./logger"),
   require("./auth")

@@ -6,17 +6,8 @@ import axios from "axios";
 import secrets from "../secrets";
 import APIEndpoint from "../lib/api";
 
-function selector(user) {
-  return {
-    uid: user.uid,
-    name: user.displayName,
-    email: user.email,
-    photoURL: user.photoURL
-  };
-}
-
-function createUser(user) {
-  return axios.post(`${APIEndpoint}/users`, user);
+function createUser(uid) {
+  return axios.post(`${APIEndpoint}/users`, uid);
 }
 
 function getUser(uid) {
@@ -43,8 +34,8 @@ function withAuth(Page) {
               token
             });
           })
-          .then(() => getUser(user.uid))
-          .catch(err => createUser(selector(user)))
+          .then(user => getUser(user.uid))
+          .catch(err => createUser(user.uid))
           .then(res => setUser(res.data.user));
       } else {
         axios(`${APIEndpoint}/auth/logout`, {
@@ -62,13 +53,9 @@ function withAuth(Page) {
     return <Page {...props} user={user} handleLogin={handleLogin} handleLogout={handleLogout} />;
   }
 
-  WithAuth.getInitialProps = async context => {
-    const { req } = context;
-    const user = req && req.session ? req.session.decodedToken : null;
-    return {
-      ...(Page.getInitialProps ? await Page.getInitialProps(context) : {})
-    };
-  };
+  WithAuth.getInitialProps = async context => ({
+    ...(Page.getInitialProps ? await Page.getInitialProps(context) : {})
+  });
 
   return WithAuth;
 }

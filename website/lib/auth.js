@@ -62,9 +62,14 @@ function withAuth(Page) {
     return <Page {...props} user={user} handleLogin={handleLogin} handleLogout={handleLogout} />;
   }
 
-  WithAuth.getInitialProps = async context => ({
-    ...(Page.getInitialProps ? await Page.getInitialProps(context) : {})
-  });
+  WithAuth.getInitialProps = async context => {
+    const { req } = context;
+    const user = req && req.session ? req.session.decodedToken : null;
+    console.log(user);
+    return {
+      ...(Page.getInitialProps ? await Page.getInitialProps(context) : {})
+    };
+  };
 
   return WithAuth;
 }

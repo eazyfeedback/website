@@ -18,6 +18,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  req.firebaseServer = firebase;
+  next();
+});
+
 const secret = secrets.firebase.secret;
 
 app.use(
@@ -33,18 +38,14 @@ const firebase = admin.initializeApp(
   "server"
 );
 
-app.use((req, res, next) => {
-  req.firebaseServer = firebase;
-  next();
-});
-
 app.use(require("./logger"));
 app.use("/api/essays", require("./routes/essays"));
 app.use("/api/users", require("./routes/users"));
 
 app.post("/api/auth/login", (req, res) => {
   if (!req.body) return res.sendStatus(400);
-  const token = req.body.token || "";
+  const token = req.body.token;
+  console.log("token", token);
   firebase
     .auth()
     .verifyIdToken(token)
@@ -52,10 +53,7 @@ app.post("/api/auth/login", (req, res) => {
       req.session.decodedToken = decodedToken;
       return decodedToken;
     })
-    .then(decodedToken => res.json({ status: true, decodedToken }))
-    .catch(error => {
-      res.json({ error });
-    });
+    .then(decodedToken => res.json({ status: true, decodedToken }));
 });
 
 app.post("/api/auth/logout", (req, res) => {

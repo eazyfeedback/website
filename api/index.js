@@ -6,8 +6,6 @@ const cors = require("cors");
 const admin = require("firebase-admin");
 const secrets = require("./secrets");
 
-const PORT = 3001;
-
 const app = express();
 
 const {
@@ -68,7 +66,7 @@ app.post("/api/auth/logout", (req, res) => {
   res.json({ status: true });
 });
 
-app.listen(PORT, err => {
+app.listen(3001, err => {
   if (err) throw err;
   console.info(`server ready at http://localhost:${PORT}`);
 });

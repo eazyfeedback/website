@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "alias": ["essayfeedback"],
   "builds": [{
       "src": "website/next.config.js",
       "use": "@now/next"

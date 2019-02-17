@@ -21,13 +21,12 @@ const firebase = admin.initializeApp(
   },
   "server"
 );
-function checkCreateUser(uid) {}
+
 app.post("/auth/login", (req, res) => {
   firebase
     .auth()
     .verifyIdToken(req.body.token)
     .then(decodedToken => {
-      checkCreateUser(decodedToken.uid);
       req.session = decodedToken;
       res.json({ user: decodedToken });
     });

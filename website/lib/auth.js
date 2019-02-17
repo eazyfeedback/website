@@ -6,14 +6,6 @@ import axios from "axios";
 import secrets from "../secrets";
 import APIEndpoint from "../lib/api";
 
-function createUser(uid) {
-  return axios.post(`${APIEndpoint}/users`, uid);
-}
-
-function getUser(uid) {
-  return axios.get(`${APIEndpoint}/users/${uid}`);
-}
-
 function handleLogin() {
   firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
 }
@@ -26,20 +18,19 @@ function withAuth(Page) {
   function WithAuth(props) {
     const [user, setUser] = useState(null);
     function handleAuth(user) {
-      if (user) {
+      if (user)
         user
           .getIdToken()
-          .then(token => {
-            return axios.post(`${APIEndpoint}/auth/login`, {
+          .then(token =>
+            axios.post(`${APIEndpoint}/auth/login`, {
               token
-            });
-          })
+            })
+          )
           .then(res => setUser(res.data.user));
-      } else {
+      else
         axios(`${APIEndpoint}/auth/logout`, {
           method: "POST"
         }).then(() => setUser(null));
-      }
     }
     useEffect(() => {
       let unsubscribe;

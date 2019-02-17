@@ -2,7 +2,6 @@ const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const cors = require("cors");
 const secrets = require("../secrets");
-const secrets = require("../secrets");
 
 module.exports = [
   cors(),
@@ -15,5 +14,6 @@ module.exports = [
   cookieSession({
     keys: secrets.firebase.secret
   }),
-  require("../middleware/logger")
+  require("./logger"),
+  require("./auth")
 ];

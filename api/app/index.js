@@ -1,10 +1,8 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const cookieSession = require("cookie-session");
-const cors = require("cors");
 const admin = require("firebase-admin");
-const secrets = require("./secrets");
+require("./db");
+const secrets = require("../secrets");
 
 const app = express();
 
@@ -14,23 +12,6 @@ const {
 
 mongoose.connect(`mongodb://${username}:${encodeURIComponent(password)}@ds161804.mlab.com:61804/essayfeedback`, { useNewUrlParser: true });
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use((req, res, next) => {
-  req.firebaseServer = firebase;
-  next();
-});
-
-const secret = secrets.firebase.secret;
-
-app.use(
-  cookieSession({
-    keys: secret
-  })
-);
-
 const firebase = admin.initializeApp(
   {
     credential: admin.credential.cert(secrets.firebase)
@@ -38,14 +19,12 @@ const firebase = admin.initializeApp(
   "server"
 );
 
-app.use(require("./logger"));
-app.use("/api/essays", require("./routes/essays"));
-app.use("/api/users", require("./routes/users"));
+app.use("/api/essays", require("../routes/essays"));
+app.use("/api/users", require("../routes/users"));
 
 app.post("/api/auth/login", (req, res) => {
   if (!req.body) return res.sendStatus(400);
   const token = req.body.token;
-  console.log("token", token);
   firebase
     .auth()
     .verifyIdToken(token)
@@ -61,8 +40,4 @@ app.post("/api/auth/logout", (req, res) => {
   res.json({ status: true });
 });
 
-const PORT = 3001;
-app.listen(PORT, err => {
-  if (err) throw err;
-  console.info(`server ready at http://localhost:${PORT}`);
-});
+process.env.NODE_ENV === "production" ? app.listen() : app.listen(3001);

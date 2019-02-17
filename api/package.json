@@ -9,9 +9,8 @@
     "mongoose": "^5.4.13"
   },
   "scripts": {
-    "start": "NODE_ENV=production node index.js",
-    "dev": "nodemon index.js",
-    "deploy": "./deploy.sh",
+    "start": "NODE_ENV=production node app/index.js",
+    "dev": "nodemon app/index.js",
     "stage": "now"
   },
   "devDependencies": {

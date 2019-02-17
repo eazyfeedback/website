@@ -16,12 +16,6 @@ const Rating = new Schema({
 
 const User = new Schema({
   uid: { type: String, required: true },
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  photoURL: {
-    type: String,
-    default: ""
-  },
   isAdmin: {
     type: Number,
     default: 0

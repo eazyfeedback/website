@@ -1,30 +1,3 @@
-const mongoose = require("mongoose");
-
-// mongoose logs
-
-mongoose.set("debug", true);
-
-mongoose.connection.on("connected", function() {
-  console.info("Mongoose is connected");
-});
-
-mongoose.connection.on("error", function(err) {
-  console.error("Mongoose connection error: " + err);
-});
-
-mongoose.connection.on("disconnected", function() {
-  console.warn("Mongoose connection disconnected");
-});
-
-process.on("SIGINT", function() {
-  mongoose.connection.close(function() {
-    console.log("Mongoose connection disconnected through app termination");
-    process.exit(0);
-  });
-});
-
-// req/res logs
-
 const getLoggerForStatusCode = function(statusCode) {
   if (statusCode >= 500) {
     return console.error.bind(console);
@@ -55,9 +28,9 @@ const logger = function(req, res, next) {
     cleanup();
     console.error("Request pipeline error: " + err);
   };
-  res.on("finish", logFn); // successful pipeline (regardless of its response)
-  res.on("close", abortFn); // aborted pipeline
-  res.on("error", errorFn); // pipeline internal error
+  res.on("finish", logFn);
+  res.on("close", abortFn);
+  res.on("error", errorFn);
   next();
 };
 

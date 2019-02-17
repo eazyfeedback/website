@@ -38,11 +38,11 @@ function withAuth(Page) {
       if (user) {
         user
           .getIdToken()
-          .then(token =>
-            axios.post(`${APIEndpoint}/auth/login`, {
-              token: JSON.stringify(token)
-            })
-          )
+          .then(token => {
+            return axios.post(`${APIEndpoint}/auth/login`, {
+              token
+            });
+          })
           .then(() => getUser(user.uid))
           .catch(err => createUser(selector(user)))
           .then(res => setUser(res.data.user));
@@ -65,7 +65,6 @@ function withAuth(Page) {
   WithAuth.getInitialProps = async context => {
     const { req } = context;
     const user = req && req.session ? req.session.decodedToken : null;
-    console.log(user);
     return {
       ...(Page.getInitialProps ? await Page.getInitialProps(context) : {})
     };

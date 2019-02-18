@@ -1,13 +1,12 @@
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-import axios from "axios";
+import axios from "../lib/axios";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Essay, { essayPropTypes } from "../components/essay";
 import { getSelectedAreas, getSelectedStage } from "../pages/post";
 import Layout from "../components/layout";
 import withAuth from "../lib/auth";
-import APIEndpoint from "../lib/api";
 
 Object.assign(essayPropTypes, {
   selectedAreas: PropTypes.arrayOf(PropTypes.bool).isRequired,
@@ -66,7 +65,7 @@ const EssaysWithLayout = ({ essays, user, handleLogin, handleLogout, classes: { 
 EssaysWithLayout.getInitialProps = async function getInitialProps() {
   const {
     data: { essays }
-  } = await axios.get(`${APIEndpoint}/essays`);
+  } = await axios.get(`/api/essays`);
   return { essays: essays };
 };
 

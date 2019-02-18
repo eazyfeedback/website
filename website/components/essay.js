@@ -13,8 +13,7 @@ import MoodIcon from "@material-ui/icons/Mood";
 import DoneIcon from "@material-ui/icons/Done";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { withRouter } from "next/router";
-import axios from "axios";
-import APIEndpoint from "../lib/api";
+import axios from "../lib/axios";
 import { useEffect } from "react";
 
 function Actions({ user, essay, classes: { icon, button } }) {
@@ -27,20 +26,20 @@ function Actions({ user, essay, classes: { icon, button } }) {
   }
   function handleReview() {
     return axios
-      .patch(`${APIEndpoint}/essays/${essay.id}`, {
+      .patch(`/api/essays/${essay.id}`, {
         reviewerUID: user.uid
       })
       .then(() => pageRefresh());
   }
   function handleComplete() {
     return axios
-      .patch(`${APIEndpoint}/essays/${essay.id}`, {
+      .patch(`/api/essays/${essay.id}`, {
         isReviewComplete: true
       })
       .then(() => pageRefresh());
   }
   function handleRemove() {
-    return axios.delete(`${APIEndpoint}/essays/${essay.id}`).then(() => pageRefresh());
+    return axios.delete(`/api/essays/${essay.id}/api`).then(() => pageRefresh());
   }
   return (
     <CardActions style={{ paddingTop: 0 }}>
@@ -93,7 +92,7 @@ function usepicture(uid) {
   const [picture, setpicture] = useState("");
   const signal = axios.CancelToken.source();
   useEffect(() => {
-    const endpoint = `${APIEndpoint}/users/${uid}/picture`;
+    const endpoint = `/api/users/${uid}/picture`;
     axios.get(endpoint, { cancelToken: signal.token }).then(res => setpicture(res.data.picture));
     return () => signal.cancel("Api is being canceled");
   }, []);

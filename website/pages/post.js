@@ -11,10 +11,9 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import NextLink from "next/link";
 import MaterialLink from "@material-ui/core/Link";
-import axios from "axios";
+import axios from "../lib/axios";
 import { Stages, Areas, Link, Review } from "../components/post";
 import Layout from "../components/layout";
-import APIEndpoint from "../lib/api";
 import withAuth from "../lib/auth";
 
 const stages = ["Early draft", "Revised draft", "Late draft"];
@@ -88,7 +87,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
   }
   function handleFinish() {
     axios
-      .post(`${APIEndpoint}/essays`, {
+      .post(`/api/essays`, {
         selectedAreas,
         question,
         selectedStage,

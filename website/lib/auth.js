@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase/app";
 import "firebase/auth";
-import axios from "axios";
+import axios from "../lib/axios";
 import secrets from "../../secrets";
-import APIEndpoint from "../lib/api";
 
 function handleLogin() {
   firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
@@ -22,12 +21,12 @@ function withAuth(Page) {
         user
           .getIdToken()
           .then(token =>
-            axios.post(`${APIEndpoint}/auth/login`, {
+            axios.post(`auth/login`, {
               token
             })
           )
           .then(res => setUser(res.data.user));
-      else axios.post(`${APIEndpoint}/auth/logout`).then(() => setUser(null));
+      else axios.post(`/auth/logout`).then(() => setUser(null));
     }
     useEffect(() => {
       let unsubscribe;

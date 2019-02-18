@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import firebase from "firebase/app";
 import "firebase/auth";
 import axios from "axios";
-import secrets from "../secrets";
+import secrets from "../../secrets";
 import APIEndpoint from "../lib/api";
 
 function handleLogin() {
@@ -27,10 +27,7 @@ function withAuth(Page) {
             })
           )
           .then(res => setUser(res.data.user));
-      else
-        axios(`${APIEndpoint}/auth/logout`, {
-          method: "POST"
-        }).then(() => setUser(null));
+      else axios.post(`${APIEndpoint}/auth/logout`).then(() => setUser(null));
     }
     useEffect(() => {
       let unsubscribe;

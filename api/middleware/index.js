@@ -1,7 +1,7 @@
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const cors = require("cors");
-const secrets = require("../secrets");
+const secrets = require("../../secrets");
 
 module.exports = [
   cors(),

@@ -5,7 +5,8 @@ require("./db");
 const middleware = require("../middleware");
 const {
   mongodb: { url: mongodbURL }
-} = require("../secrets");
+} = require("../../secrets");
+const checkCreateUser = require("./checkCreate");
 
 const app = express();
 
@@ -26,8 +27,9 @@ app.post("/auth/login", (req, res) => {
   firebase
     .auth()
     .verifyIdToken(req.body.token)
-    .then(decodedToken => {
+    .then(async decodedToken => {
       req.session = decodedToken;
+      await checkCreateUser(decodedToken.uid);
       res.json({ user: decodedToken });
     });
 });

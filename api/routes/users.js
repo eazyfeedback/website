@@ -1,7 +1,6 @@
-const express = require("express");
+const router = require("express").Router();
 const User = require("../models/user");
-
-const router = express.Router();
+const secrets = require("../../secrets");
 
 router
   .route("/")
@@ -19,7 +18,12 @@ router
 
 function checkSession(req, res, next) {
   if (req.session) next();
-  else res.status(401).end();
+  else res.status(403).end("Not in session");
+}
+
+function checkAuthorization(req, res, next) {
+  if (req.body.secret === secrets.auth.apiToken) next();
+  else res.status(403).end("Not authorized");
 }
 
 router.use("/:uid*", checkSession, (req, res, next) => {

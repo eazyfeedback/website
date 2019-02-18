@@ -7,8 +7,12 @@ const signal = axios.CancelToken.source();
 
 export const cancelRequest = () => signal.cancel("Cancelling API request");
 
-export default axios.create({
+const instance = axios.create({
   baseURL: APIEndpoint,
   CancelToken: signal.token,
-  secret: secrets.auth.apiToken
+  data: {
+    secret: secrets.auth.apiToken
+  }
 });
+
+export default instance;

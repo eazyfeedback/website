@@ -5,7 +5,9 @@ const { timeStamp } = require("../utils");
 router
   .route("/")
   .get((req, res) => {
-    Essay.find({ isReviewComplete: false }).then(essays => Essay.statics.sortByPoints(essays).then(essays => res.json({ essays })));
+    Essay.find({ isReviewComplete: false })
+      .limit(12)
+      .then(essays => Essay.statics.sortByPoints(essays).then(essays => res.json({ essays })));
   })
   .post((req, res) => {
     const essay = new Essay(req.body);

@@ -7,7 +7,7 @@ router
   .route("/")
   .get((req, res) => {
     const { sort } = req.query;
-    let getUsers = User.find({});
+    let getUsers = User.find({}).limit(12);
     if (sort === "rating" || sort === "points") getUsers = getUsers.sort({ [sort]: -1 });
     getUsers.exec().then(users => res.json({ users }));
   })

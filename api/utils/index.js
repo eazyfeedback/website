@@ -2,7 +2,7 @@ function checkCreateUser(uid) {
   return require("../models/user")
     .find({ uid })
     .catch(() => User.create({ uid }))
-    .exec();
+    .then(() => true);
 }
 
 function timeStamp(method, entity) {

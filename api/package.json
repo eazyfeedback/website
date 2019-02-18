@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=production node app/index.js",
-    "dev": "nodemon app/index.js"
+    "dev": "nodemon -e js app/index.js"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const admin = require("firebase-admin");
 require("./db");
 const middleware = require("../middleware");
-const {
-  mongodb: { url: mongodbURL }
-} = require("../../secrets");
+const secrets = require("../../secrets");
 const checkCreateUser = require("./checkCreate");
 
 const app = express();
 
+const {
+  mongodb: { url: mongodbURL }
+} = secrets;
 mongoose.connect(mongodbURL, { useNewUrlParser: true });
 
 app.use(...middleware);
@@ -18,7 +19,7 @@ app.use("/api/users", require("../routes/users"));
 
 const firebase = admin.initializeApp(
   {
-    credential: admin.credential.cert(secrets.firebase)
+    credential: admin.credential.cert(secrets.firebase.server)
   },
   "server"
 );

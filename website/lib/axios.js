@@ -5,12 +5,10 @@ const APIEndpoint = process.env.NODE_ENV === "production" ? "https://essayfeedba
 
 const signal = axios.CancelToken.source();
 
-export const cancel = () => signal.cancel();
+export const cancelRequest = () => signal.cancel("Cancelling API request");
 
-axios.create({
+export default axios.create({
   baseURL: APIEndpoint,
   CancelToken: signal.token,
   secret: secrets.auth.apiToken
 });
-
-export default axios;

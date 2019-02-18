@@ -10,17 +10,16 @@ import Link from "@material-ui/core/Link";
 import Layout from "../components/layout";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import axios from "../lib/axios";
+import axios, { cancelRequest } from "../lib/axios";
 
 function usePoints(user) {
   const [points, setPoints] = useState(0);
   useEffect(() => {
-    const signal = axios.CancelToken.source();
     if (user) {
       const endpoint = `/api/users/${user.uid}/points`;
-      axios.get(endpoint, { cancelToken: signal.token }).then(res => setPoints(res.data.points));
+      axios.get(endpoint).then(res => setPoints(res.data.points));
     } else setPoints(0);
-    return () => signal.cancel("Api is being canceled");
+    return cancelRequest;
   }, [user]);
   return points;
 }

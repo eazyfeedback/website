@@ -24,13 +24,18 @@ const firebase = admin.initializeApp(
   "server"
 );
 
+app.use((req, res, next) => {
+  req.firebaseServer = firebase;
+  next();
+});
+
 app.post("/auth/login", (req, res) => {
   firebase
     .auth()
     .verifyIdToken(req.body.token)
     .then(async decodedToken => {
-      req.session = decodedToken;
       await checkCreateUser(decodedToken.uid);
+      req.session = decodedToken;
       res.json({ user: decodedToken });
     });
 });

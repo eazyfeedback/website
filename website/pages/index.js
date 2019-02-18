@@ -15,10 +15,11 @@ import axios, { cancelRequest } from "../lib/axios";
 function usePoints(user) {
   const [points, setPoints] = useState(0);
   useEffect(() => {
-    if (user) {
-      const endpoint = `/api/users/${user.uid}/points`;
-      axios.get(endpoint).then(res => setPoints(res.data.points));
-    } else setPoints(0);
+    if (user)
+      axios()
+        .get(`/api/users/${user.uid}/points`)
+        .then(res => setPoints(res.data.points));
+    else setPoints(0);
     return cancelRequest;
   }, [user]);
   return points;

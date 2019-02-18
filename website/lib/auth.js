@@ -21,12 +21,15 @@ function withAuth(Page) {
         user
           .getIdToken()
           .then(token =>
-            axios.post(`auth/login`, {
+            axios().post(`auth/login`, {
               token
             })
           )
           .then(res => setUser(res.data.user));
-      else axios.post(`/auth/logout`).then(() => setUser(null));
+      else
+        axios()
+          .post(`/auth/logout`)
+          .then(() => setUser(null));
     }
     useEffect(() => {
       let unsubscribe;

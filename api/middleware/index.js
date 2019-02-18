@@ -8,7 +8,7 @@ module.exports = [
   bodyParser.json(),
   bodyParser.urlencoded({ extended: true }),
   cookieSession({
-    secret: require("../../secrets").auth.secret,
+    secret: require("../../secrets").session.secret,
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }),
   require("./logger")

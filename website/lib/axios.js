@@ -1,18 +1,27 @@
 import axios from "axios";
-import secrets from "../../secrets";
 
 const APIEndpoint = process.env.NODE_ENV === "production" ? "https://essayfeedback.now.sh" : "http://localhost:3001";
 
 const signal = axios.CancelToken.source();
-
 export const cancelRequest = () => signal.cancel("Cancelling API request");
 
-const instance = axios.create({
-  baseURL: APIEndpoint,
-  CancelToken: signal.token,
-  data: {
-    secret: secrets.auth.apiToken
-  }
-});
+function create() {
+  const instance = axios.create({
+    baseURL: APIEndpoint,
+    CancelToken: signal.token
+  });
 
-export default instance;
+  instance.interceptors.request.use(request => {
+    console.log("Request", request);
+    return request;
+  });
+
+  instance.interceptors.response.use(response => {
+    console.log("Response:", response);
+    return response;
+  });
+
+  return instance;
+}
+
+export default create;

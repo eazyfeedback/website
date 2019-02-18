@@ -51,7 +51,7 @@ app.post("/auth/login", (req, res) => {
 
 app.post("/auth/logout", (req, res) => {
   req.session = null;
-  res.json({ status: true });
+  res.status(200).end("signed out");
 });
 
 process.env.NODE_ENV === "production" ? app.listen() : app.listen(3001);

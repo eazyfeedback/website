@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Essay = require("../models/essay");
+const User = require("../models/user");
 const { timeStamp } = require("../utils");
 
 router
@@ -7,7 +8,7 @@ router
   .get((req, res) => {
     Essay.find({ isReviewComplete: false })
       .limit(12)
-      .then(essays => Essay.statics.sortByPoints(essays).then(essays => res.json({ essays })));
+      .then(essays => User.sortByPoints(essays).then(essays => res.json({ essays })));
   })
   .post((req, res) => {
     const essay = new Essay(req.body);

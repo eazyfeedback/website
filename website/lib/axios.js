@@ -11,13 +11,17 @@ function create() {
     CancelToken: signal.token
   });
 
+  const checkData = data => (data ? JSON.stringify(data) : "");
+
   instance.interceptors.request.use(request => {
-    console.log("Request", request);
+    let { method, url, data } = request;
+    console.info(`Request: ${method.toUpperCase()} ${url} ${checkData(data)}`);
     return request;
   });
 
   instance.interceptors.response.use(response => {
-    console.log("Response:", response);
+    const { status, statusText, data } = response;
+    console.info(`Response ${status} ${statusText} ${checkData(data)}`);
     return response;
   });
 

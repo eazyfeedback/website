@@ -10,11 +10,11 @@ import Typography from "@material-ui/core/Typography";
 import withAuth from "../lib/auth";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useEffect } from "react";
-import axios from "../lib/axios";
 import SwipeableViews from "react-swipeable-views";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import axios, { cancelRequest } from "../lib/axios";
 import { Essays } from "./essays";
 
 function groupBy(xs, key) {
@@ -85,12 +85,12 @@ function EssayTabs({ user, essays }) {
 function useProfile(user) {
   const [profile, setProfile] = useState(null);
   useEffect(() => {
-    const signal = axios.CancelToken.source();
     if (user) {
-      const endpoint = `/api/users/${user.uid}/profile`;
-      axios.get(endpoint, { cancelToken: signal.token }).then(res => setProfile(res.data.profile));
+      axios()
+        .get(`/api/users/${user.uid}/profile`)
+        .then(res => setProfile(res.data.profile));
     } else setProfile(null);
-    return () => axios.CancelToken.source().cancel("Api is being canceled");
+    return () => cancelToken;
   }, [user]);
   return profile;
 }

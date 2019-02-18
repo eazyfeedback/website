@@ -86,7 +86,7 @@ function Post({ classes, user, handleLogin, handleLogout }) {
     }
   }
   function handleFinish() {
-    axios
+    axios()
       .post(`/api/essays`, {
         selectedAreas,
         question,

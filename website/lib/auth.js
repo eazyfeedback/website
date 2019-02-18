@@ -21,7 +21,7 @@ function withAuth(Page) {
         user
           .getIdToken()
           .then(token =>
-            axios().post(`auth/login`, {
+            axios().post(`/auth/login`, {
               token
             })
           )

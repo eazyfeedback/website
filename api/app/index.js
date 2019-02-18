@@ -4,7 +4,7 @@ const admin = require("firebase-admin");
 require("./db");
 const middleware = require("../middleware");
 const secrets = require("../../secrets");
-const checkCreateUser = require("./checkCreate");
+const { checkCreateUser } = require("../utils");
 
 const app = express();
 

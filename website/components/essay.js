@@ -89,15 +89,15 @@ function getColor(user, essay, theme) {
   }
 }
 
-function usePhotoURL(uid) {
-  const [photoURL, setPhotoURL] = useState("");
+function usepicture(uid) {
+  const [picture, setpicture] = useState("");
   const signal = axios.CancelToken.source();
   useEffect(() => {
-    const endpoint = `${APIEndpoint}/users/${uid}/photoURL`;
-    axios.get(endpoint, { cancelToken: signal.token }).then(res => setPhotoURL(res.data.photoURL));
+    const endpoint = `${APIEndpoint}/users/${uid}/picture`;
+    axios.get(endpoint, { cancelToken: signal.token }).then(res => setpicture(res.data.picture));
     return () => signal.cancel("Api is being canceled");
   }, []);
-  return photoURL;
+  return picture;
 }
 
 function getUID(essay, route) {
@@ -110,7 +110,7 @@ function Essay({ essay, user, review, classes, theme, router: { route } }) {
   const showActions = user && !review;
   const color = getColor(user, essay, theme);
   const border = `1px solid ${color}`;
-  const photoURL = usePhotoURL(getUID(essay, route));
+  const picture = usepicture(getUID(essay, route));
   return (
     <Card className={classes.card} style={{ ...(color && { border }) }}>
       <CardContent>
@@ -125,7 +125,7 @@ function Essay({ essay, user, review, classes, theme, router: { route } }) {
             <Grid item>
               <Avatar
                 alt={user.name}
-                src={photoURL}
+                src={picture}
                 style={{
                   width: 40,
                   height: 40

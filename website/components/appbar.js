@@ -109,7 +109,7 @@ const Appbar = ({ classes, handleLogin, handleLogout, user, router: { route } })
           </NextLink>
 
           <Button onClick={user ? handleLogout : handleLogin} variant="outlined" className={classes.button}>
-            {user ? <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} /> : <ExitToAppIcon className={classes.icon} />}
+            {user ? <Avatar alt={user.name} src={user.picture} className={classes.avatar} /> : <ExitToAppIcon className={classes.icon} />}
             <span className={classNames(classes.nav, classes.navItem)}>{user ? "logout" : "sign in"}</span>
           </Button>
         </Grid>

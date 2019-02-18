@@ -112,7 +112,7 @@ function Profile({ user, classes, handleLogin, handleLogout }) {
           <>
             <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
               <Grid item xs={12}>
-                <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
+                <Avatar alt={user.name} src={user.picture} className={classes.avatar} />
                 <Paper className={classes.paper}>
                   <Grid container spacing={16} justify="center" alignItems="center">
                     <Grid item xs={12}>

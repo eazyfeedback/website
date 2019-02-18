@@ -1,6 +1,8 @@
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const cors = require("cors");
+const { checkAPIAuth } = require("./auth");
+const logger = require("./logger");
 const secrets = require("../../secrets");
 
 module.exports = [
@@ -15,5 +17,6 @@ module.exports = [
     secret: secrets.auth.secret,
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }),
-  require("./logger")
+  logger,
+  checkAPIAuth
 ];

@@ -1,26 +1,22 @@
 const router = require("express").Router();
 const Essay = require("../models/essay");
+const { timeStamp } = require("../utils");
 
 router
   .route("/")
   .get((req, res) => {
-    Essay.find({ isReviewComplete: false })
-      .sort({ dateCreated: -1 })
-      .then(essays => {
-        if (req.query.sort === "points") Essay.statics.sortByPoints(essays).then(essaysSorted => res.json({ essays: essaysSorted }));
-        else res.json({ essays });
-      });
+    Essay.find({ isReviewComplete: false }).then(essays => Essay.statics.sortByPoints(essays).then(essays => res.json({ essays })));
   })
   .post((req, res) => {
     const essay = new Essay(req.body);
-    essay.dateCreated = new Date().toISOString();
-    essay.save().then(savedEssay => res.status(201).json({ essay: savedEssay }));
+    timeStamp(req.method, essay);
+    essay.save().then(essay => res.status(201).json({ essay }));
   });
 
 router.use("/:id", (req, res, next) => {
   Essay.findById(req.params.id).then(essay => {
     if (!essay) {
-      res.status(404).end();
+      res.status(500).end("essay not found");
     } else {
       req.essay = essay;
       next();
@@ -33,22 +29,15 @@ router
   .get((req, res) => {
     res.json({ essay: req.essay });
   })
-  .put((req, res) => {
-    Object.keys(req.body).map(key => {
-      req.essay[key] = req.body[key];
-    });
-    req.essay.lastModified = new Date().toISOString();
-    req.essay.save().then(() => res.status(200).end());
-  })
   .patch((req, res) => {
-    for (let p in req.body) {
-      req.essay[p] = req.body[p];
+    for (const prop in req.body) {
+      req.essay[prop] = req.body[prop];
     }
-    req.essay.lastModified = new Date().toISOString();
+    timeStamp(req.method, req.essay);
     req.essay.save().then(() => res.status(200).end());
   })
   .delete((req, res) => {
-    req.essay.remove().then(() => res.status(204).end());
+    req.essay.remove().then(() => res.status(200).end());
   });
 
 module.exports = router;

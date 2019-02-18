@@ -42,7 +42,7 @@ function Index({ classes, handleLogin, handleLogout, user }) {
             <Paper className={classes.paper2}>
               <Grid container>
                 <Grid item xs={4}>
-                  <Avatar alt={user.name} src={user.photoURL} className={classes.avatar} />
+                  <Avatar alt={user.name} src={user.picture} className={classes.avatar} />
                 </Grid>
                 <Grid item xs={8}>
                   <Typography color="textSecondary">Welcome back</Typography>

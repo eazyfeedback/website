@@ -1,8 +1,10 @@
+const User = require("../models/user");
+
 function checkCreateUser(uid) {
-  return require("../models/user")
-    .find({ uid })
-    .catch(() => User.create({ uid }))
-    .then(() => true);
+  return User.findOne({ uid }).then((err, user) => {
+    if (!user) return User.create({ uid });
+    else return Promise.resolve(true);
+  });
 }
 
 function timeStamp(method, entity) {

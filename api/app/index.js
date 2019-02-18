@@ -29,14 +29,23 @@ app.use((req, res, next) => {
   next();
 });
 
+const selector = ({ email, uid, email_verified, name, picture }) => ({
+  uid,
+  name,
+  email,
+  email_verified,
+  picture
+});
+
 app.post("/auth/login", (req, res) => {
   firebase
     .auth()
     .verifyIdToken(req.body.token)
-    .then(async decodedToken => {
-      await checkCreateUser(decodedToken.uid);
-      req.session = decodedToken;
-      res.json({ user: decodedToken });
+    .then(decodedToken => selector(decodedToken))
+    .then(async user => {
+      await checkCreateUser(user.uid);
+      req.session = user;
+      res.json({ user: user });
     });
 });
 

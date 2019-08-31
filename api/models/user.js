@@ -82,17 +82,18 @@ User.statics.getUsersCount = function() {
   return User.countDocuments().exec();
 };
 
-User.statics.sortbyPoints = function(essays) {
+User.statics.sortByPoints = function(essays) {
   return new Promise(resolve => {
     let ownersUIDs = new Set(essays.map(({ ownerUID }) => ownerUID));
-    let ownersMap = {};
-    User.find({ uid: { $all: [...ownersUIDs] } }).then(owners => {
-      owners.forEach(({ uid, points }) => {
-        ownersMap[uid] = points;
-      });
-      const essaysSorted = essays.sort((a, b) => ownersMap[a.ownerUID] - ownersMap[b.ownerUID]);
-      resolve(essaysSorted);
-    });
+	let ownersMap = {};
+	resolve(essays)
+    // User.methods.find({ uid: { $all: [...ownersUIDs] } }).then(owners => {
+    //   owners.forEach(({ uid, points }) => {
+    //     ownersMap[uid] = points;
+    //   });
+    //   const essaysSorted = essays.sort((a, b) => ownersMap[a.ownerUID] - ownersMap[b.ownerUID]);
+    //   resolve(essaysSorted);
+    // });
   });
 };
 

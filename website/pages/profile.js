@@ -90,7 +90,7 @@ function useProfile(user) {
         .get(`/api/users/${user.uid}/profile`)
         .then(res => setProfile(res.data.profile));
     } else setProfile(null);
-    return () => cancelToken;
+    return () => axios.cancelToken;
   }, [user]);
   return profile;
 }
